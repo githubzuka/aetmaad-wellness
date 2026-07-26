@@ -1,0 +1,148 @@
+/* src/components/Features.css */
+
+.why-choose-section {
+  width: 100%;
+  padding: 60px 0 80px 0;
+  background-color: #fcfbfa; /* Matches premium cream background */
+  position: relative;
+}
+
+.why-choose-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+/* Header Styling - Clean & Balanced */
+.why-choose-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 48px; /* Slightly more space now that the leaf is gone */
+  width: 100%;
+}
+
+.header-divider-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 24px;
+}
+
+.header-title-text {
+  font-family: var(--font-serif);
+  font-size: 26px; 
+  font-weight: 700;
+  color: #1e1d1b;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+.line-left, .line-right {
+  height: 1px;
+  flex-grow: 1;
+  max-width: 300px;
+  background: linear-gradient(
+    to var(--line-direction, right), 
+    rgba(222, 218, 212, 0) 0%, 
+    rgba(222, 218, 212, 1) 100%
+  );
+}
+
+.line-left {
+  --line-direction: left;
+}
+
+/* Grid Alignment */
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+/* Luxury Card Aesthetics */
+.why-choose-card {
+  background-color: #ffffff;
+  border: 1px solid #e9e5df;
+  border-radius: 8px;
+  padding: 24px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  min-height: 145px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              border-color 0.25s ease;
+}
+
+/* Sophisticated interactive hovering */
+.why-choose-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(106, 126, 102, 0.07);
+  border-color: var(--color-primary-green);
+}
+
+/* Sizing and Alignment of Custom SVGs */
+.card-icon-box {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--color-primary-green);
+  transition: transform 0.3s ease;
+}
+
+.card-icon-box svg {
+  width: 28px;
+  height: 28px;
+}
+
+.why-choose-card:hover .card-icon-box {
+  transform: scale(1.08); 
+}
+
+/* Typography Label */
+.card-label-text {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #1e1d1b;
+  margin: 0;
+  max-width: 115px; 
+}
+
+/* Responsive Scaling */
+@media (max-width: 1200px) {
+  .why-choose-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .why-choose-container {
+    padding: 0 24px;
+  }
+  .header-title-text {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 768px) {
+  .why-choose-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .line-left, .line-right {
+    display: none; 
+  }
+}

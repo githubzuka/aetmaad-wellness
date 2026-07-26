@@ -1,0 +1,276 @@
+.donatemodal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 18, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.donatemodal-container {
+  background-color: #FAF8F5;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  padding: 32px 28px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid #E8E3D8;
+  animation: donatemodal-slide-up 0.25s ease-out;
+}
+
+@keyframes donatemodal-slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.donatemodal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #666;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.donatemodal-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.donatemodal-badge {
+  display: inline-block;
+  background-color: #E8F0E9;
+  color: #1B4D2E;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.donatemodal-header h2 {
+  font-family: 'Georgia', serif;
+  font-size: 22px;
+  color: #1A1A1A;
+  margin: 4px 0 8px;
+}
+
+.donatemodal-amount-display {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1B4D2E;
+}
+
+.donatemodal-frequency {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+.donatemodal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.donatemodal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.donatemodal-field label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #444;
+}
+
+.donatemodal-field input {
+  padding: 12px;
+  border: 1px solid #D8D2C4;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  font-size: 14px;
+  color: #1A1A1A;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.donatemodal-field input:focus {
+  border-color: #1B4D2E;
+}
+
+.donatemodal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.donatemodal-trust-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #1B4D2E;
+  background-color: #EEF4EF;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.donatemodal-pay-btn {
+  background-color: #5D311A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 8px;
+}
+
+.donatemodal-pay-btn:hover {
+  background-color: #4A2613;
+}
+
+/* Success View */
+.donatemodal-success {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.donatemodal-success-icon {
+  width: 60px;
+  height: 60px;
+  background-color: #1B4D2E;
+  color: white;
+  font-size: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.donatemodal-success h2 {
+  font-family: 'Georgia', serif;
+  color: #1B4D2E;
+  margin-bottom: 12px;
+}
+
+.donatemodal-receipt-note {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* UPI Badges Styling */
+.donatemodal-upi-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #555;
+  margin-top: 4px;
+}
+
+.upi-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.upi-badge {
+  background-color: #EFECE6;
+  color: #2D2D2D;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 11px;
+  border: 1px solid #D8D2C4;
+}
+
+.donatemodal-pay-btn:disabled {
+  background-color: #A08C80;
+  cursor: not-allowed;
+}
+.donatemodal-qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.donatemodal-qr-box {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #1B4D2E;
+  margin: 10px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.donatemodal-qr-image {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+}
+
+.donatemodal-upi-id-box {
+  background-color: #EFECE6;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.upi-id-text {
+  font-weight: 800;
+  color: #1B4D2E;
+  font-size: 14px;
+  margin-top: 2px;
+  user-select: all;
+}
+
+.donatemodal-mobile-pay-link {
+  font-size: 12px;
+  color: #1B4D2E;
+  font-weight: 700;
+  text-decoration: underline;
+  margin: 4px 0 8px;
+}
+.donatemodal-upi-id-box {
+  background-color: #EFECE6;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #2D2D2D;
+  margin-bottom: 12px;
+}
+
+.donatemodal-mobile-pay-link {
+  display: block;
+  font-size: 12px;
+  color: #1B4D2E;
+  font-weight: 700;
+  text-decoration: underline;
+  margin-bottom: 8px;
+}
