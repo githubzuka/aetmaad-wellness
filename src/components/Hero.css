@@ -1,4 +1,20 @@
 /* src/components/Hero/Hero.css */
+
+:root {
+  --color-primary-green: #2e6f40;
+  --color-primary-green-hover: #235531;
+  --color-accent-brown: #8c533e;
+  --color-accent-brown-hover: #6e402f;
+  --color-border: #e2e8f0;
+  --color-text-dark: #1a202c;
+  --font-serif: Georgia, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 .hero-section {
   width: 100%;
   min-height: 560px; 
@@ -6,30 +22,26 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  background-color: #fcfbfa; /* Base solid brand cream background */
+  background-color: #FAF8F5; /* Warm solid cream base */
 }
 
-/* THE PERFECT FIX: 
-  We isolate the background image and its mask strictly inside this pseudo-element.
-  This allows the image to blend into the cream background perfectly on the right,
-  while keeping the text layer on top completely unaffected and 100% solid!
-*/
+/* Background image isolated layer */
 .hero-section::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
   background-image: url('/images/hero-horse-main.png');
   background-position: right center; 
   background-size: contain; 
   background-repeat: no-repeat;
-  z-index: 1; /* Sits safely underneath the text content */
+  z-index: 1;
 
-  /* The image naturally fades to absolute zero on the left, erasing the sharp edge */
-  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 55%);
-  mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 55%);
+  /* Smooth fade mask to keep left side clear for text */
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 60%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 60%);
 }
 
 .hero-container {
@@ -40,39 +52,43 @@
   display: flex;
   justify-content: flex-start; 
   position: relative;
-  z-index: 10; /* Forces the text to render on top of the image container */
+  z-index: 10;
 }
 
-/* Constrain the text box slightly so it never spills over */
+/* Text box container */
 .hero-content {
-  max-width: 540px; 
+  max-width: 560px; 
   width: 100%;
   padding: 50px 0; 
-  z-index: 20; /* Absolute top priority layer */
+  z-index: 20;
 }
 
+/* High contrast header title */
 .hero-title {
   font-family: var(--font-serif);
   font-size: 52px; 
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.15; 
-  color: #1e1d1b; /* Solid, deep dark charcoal for flawless readability */
+  color: #0F1712; /* Deep, vibrant ultra-dark black */
   margin-bottom: 24px;
   letter-spacing: -1px; 
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); /* Ensures separation from images */
 }
 
 .hero-highlight {
-  color: var(--color-primary-green);
+  color: #1B4D2E; /* Richer vibrant green */
 }
 
-/* Elegant description body text */
+/* High contrast description body text */
 .hero-description {
   font-family: var(--font-sans);
-  font-size: 14.5px; 
-  line-height: 1.6;
-  color: #2b2927; /* Rich, dark grey text for perfect clarity */
-  max-width: 460px; 
+  font-size: 15.5px; 
+  line-height: 1.65;
+  color: #1A1A1A; /* Solid dark text for maximum legibility */
+  font-weight: 500;
+  max-width: 480px; 
   margin-bottom: 32px;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
 }
 
 /* Actions Bar */
@@ -83,64 +99,68 @@
 }
 
 .btn-buy-now {
-  background-color: var(--color-primary-green);
+  background-color: #1B4D2E;
   color: #ffffff;
   border: none;
   padding: 14px 30px;
   border-radius: 6px;
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(27, 77, 46, 0.2);
 }
 
 .btn-buy-now:hover {
-  background-color: var(--color-primary-green-hover);
+  background-color: #133922;
+  transform: translateY(-1px);
 }
 
 .btn-donate-help {
-  background-color: var(--color-accent-brown);
+  background-color: #5D311A;
   color: #ffffff;
   border: none;
   padding: 14px 30px;
   border-radius: 6px;
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(93, 49, 26, 0.2);
 }
 
 .btn-donate-help:hover {
-  background-color: var(--color-accent-brown-hover);
+  background-color: #4A2613;
+  transform: translateY(-1px);
 }
 
-/* AESTHETIC & ENLARGED TRUST BADGES */
+/* Trust Badges */
 .hero-trust-badges {
   display: flex;
   align-items: center;
   flex-wrap: nowrap; 
   gap: 12px; 
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid #E2DCD2;
   padding-top: 26px;
   width: 100%;
 }
 
 .trust-label {
   font-family: var(--font-sans);
-  font-size: 14.5px; 
-  font-weight: 700;
-  color: var(--color-text-dark);
-  margin-right: 10px;
+  font-size: 13.5px; 
+  font-weight: 800;
+  color: #0F1712;
+  margin-right: 6px;
   text-transform: uppercase; 
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   white-space: nowrap; 
 }
 
@@ -148,64 +168,72 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #f5f3ef;
+  background-color: #FFFFFF;
   padding: 8px 16px; 
   border-radius: 24px;
-  border: 1px solid #eeebe7;
+  border: 1.5px solid #E5DFD5;
   white-space: nowrap; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
 }
 
 .badge-icon {
   font-size: 14px; 
-  color: var(--color-primary-green);
+  color: #1B4D2E;
 }
 
 .badge-text {
   font-family: var(--font-sans);
   font-size: 13px; 
-  font-weight: 600;
-  color: var(--color-text-dark);
+  font-weight: 700;
+  color: #1A1A1A;
 }
 
-/* --- High-Performance Responsive Styling --- */
+/* --- High-Performance Responsive & Mobile Readability --- */
+
 @media (max-width: 1120px) {
   .hero-title {
-    font-size: 46px; 
+    font-size: 44px; 
   }
 }
 
 @media (max-width: 1024px) {
-  .hero-section::before {
-    background-position: center bottom;
-    background-size: cover;
-    
-    /* Smooth vertical mask transition for tablet/mobile */
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-  }
-
   .hero-section {
-    padding: 60px 0;
+    padding: 40px 0 60px;
     min-height: auto;
   }
 
+  /* Fade background down on mobile/tablet */
+  .hero-section::before {
+    background-position: center bottom;
+    background-size: cover;
+    opacity: 0.35; /* Dims image slightly on mobile so overlay text is 100% sharp */
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+  }
+
   .hero-container {
-    padding: 0 24px;
+    padding: 0 20px;
     justify-content: center;
   }
 
   .hero-content {
     max-width: 100%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0;
+    padding: 20px 16px;
+    background: rgba(250, 248, 245, 0.85); /* Readability protection shield */
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
   }
 
   .hero-title {
-    font-size: 42px; 
+    font-size: 38px; 
   }
 
   .hero-description {
+    font-size: 15px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -218,21 +246,40 @@
   .hero-trust-badges {
     justify-content: center;
     flex-wrap: wrap; 
-    gap: 8px;
+    gap: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 34px; 
+    font-size: 30px; 
+    line-height: 1.2;
   }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
   .hero-actions {
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
-  .btn-buy-now, .btn-donate-help {
+
+  .btn-buy-now, 
+  .btn-donate-help {
     width: 100%;
     justify-content: center;
+    padding: 14px;
+  }
+
+  .hero-trust-badges {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .trust-label {
+    margin-right: 0;
+    margin-bottom: 4px;
   }
 }

@@ -63,7 +63,7 @@ const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
                     type="text"
                     name="fullName"
                     required
-                    placeholder="e.g. Rahul Sharma"
+                    placeholder="e.g. Zuveria Kazi"
                     value={formData.fullName}
                     onChange={handleChange}
                   />
