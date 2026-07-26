@@ -10,7 +10,10 @@ import Ingredients from './components/Ingredients';
 import FeedingGuidelines from './components/FeedingGuidelines';
 import ImpactSection from './components/ImpactSection';
 import Footer from './components/Footer';
-import Donate from './pages/Donate'; // Import your new Donate page
+
+// Pages
+import Donate from './pages/Donate';
+import Cart from './pages/Cart'; // Imported Cart page
 
 import './App.css';
 
@@ -54,8 +57,11 @@ function App() {
         {/* Main single-page landing */}
         <Route path="/" element={<Home />} />
 
-        {/* New Donate Page route */}
+        {/* Donate Page route */}
         <Route path="/donate" element={<Donate />} />
+
+        {/* Cart Page route */}
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </Router>
   );

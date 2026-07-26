@@ -247,10 +247,9 @@
     text-align: center;
   }
 }
-/* --- Brand & Watermark --- */
 .col-brand {
   position: relative;
-  overflow: hidden; /* Ensures image doesn't overflow container boundary */
+  overflow: hidden; 
 }
 
 .footer-brand-title {
@@ -260,14 +259,13 @@
   color: #1a331e;
   margin: 0 0 12px 0;
   position: relative;
-  z-index: 2; /* Keeps title text above the image */
+  z-index: 2; 
 }
 
 .col-brand .footer-col-text {
   position: relative;
-  z-index: 2; /* Keeps description text above the image */
+  z-index: 2;
 }
-
 .horse-silhouette-bg {
   position: absolute;
   right: -10px;
@@ -275,11 +273,41 @@
   width: 180px;
   pointer-events: none;
   z-index: 1;
+  transition: all 0.3s ease-in-out;
 }
+
 .horse-img {
   width: 100%;
-  height: 100%;
+  height: auto; 
   display: block;
   opacity: 0.7;          
   mix-blend-mode: normal; 
+  object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .horse-silhouette-bg {
+    width: 140px;
+    right: 0px;
+    bottom: 8px;
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 768px) {
+  .horse-silhouette-bg {
+    width: 100px;
+    right: 5px;
+    bottom: 5px;
+    opacity: 0.35; 
+  }
+}
+
+@media (max-width: 480px) {
+  .horse-silhouette-bg {
+    width: 75px;
+    right: 0;
+    bottom: 0;
+    opacity: 0.25;
+  }
 }

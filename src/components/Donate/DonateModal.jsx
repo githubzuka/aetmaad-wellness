@@ -129,7 +129,7 @@ const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
               {/* Direct reference to public/images/qr-code.png */}
               <div className="donatemodal-qr-box">
                 <img 
-                  src="/images/qr-code.png" 
+                  src="/images/image.png" 
                   alt="Payment QR Code" 
                   className="donatemodal-qr-image"
                 />

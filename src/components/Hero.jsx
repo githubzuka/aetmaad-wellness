@@ -1,9 +1,15 @@
-// src/components/Hero/Hero.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Hero.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleDonateClick = () => {
+    navigate('/donate');
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="hero-container">
@@ -27,7 +33,7 @@ const Hero = () => {
               <i className="bi bi-cart3 btn-icon"></i>
             </button>
             
-            <button className="btn-donate-help">
+            <button className="btn-donate-help" onClick={handleDonateClick}>
               Donate to Help a Horse 
               <i className="bi bi-heart-fill btn-icon"></i>
             </button>
