@@ -12,6 +12,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 0 60px;
+  box-sizing: border-box;
 }
 
 /* Header Styling - Clean & Balanced */
@@ -19,7 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 48px; /* Slightly more space now that the leaf is gone */
+  margin-bottom: 48px;
   width: 100%;
 }
 
@@ -38,6 +39,7 @@
   color: #1e1d1b;
   letter-spacing: -0.5px;
   white-space: nowrap;
+  text-align: center;
 }
 
 .line-left, .line-right {
@@ -79,6 +81,7 @@
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
               box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
               border-color 0.25s ease;
+  box-sizing: border-box;
 }
 
 /* Sophisticated interactive hovering */
@@ -120,7 +123,10 @@
   max-width: 115px; 
 }
 
-/* Responsive Scaling */
+/* ==========================================
+   Fully Responsive Media Queries
+   ========================================== */
+
 @media (max-width: 1200px) {
   .why-choose-grid {
     grid-template-columns: repeat(4, 1fr);
@@ -130,19 +136,71 @@
 
 @media (max-width: 1024px) {
   .why-choose-container {
-    padding: 0 24px;
+    padding: 0 32px;
   }
   .header-title-text {
     font-size: 23px;
   }
+  .line-left, .line-right {
+    max-width: 150px;
+  }
 }
 
 @media (max-width: 768px) {
+  .why-choose-section {
+    padding: 40px 0 50px 0;
+  }
+  .why-choose-container {
+    padding: 0 20px;
+  }
+  .why-choose-header {
+    margin-bottom: 32px;
+  }
+  .header-divider-wrapper {
+    gap: 12px;
+  }
+  .header-title-text {
+    font-size: 20px;
+  }
+  .line-left, .line-right {
+    max-width: 60px;
+  }
   .why-choose-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
+  .why-choose-card {
+    min-height: 130px;
+    padding: 18px 10px;
+  }
+  .card-icon-box {
+    margin-bottom: 10px;
+    width: 36px;
+    height: 36px;
+  }
+  .card-icon-box svg {
+    width: 24px;
+    height: 24px;
+  }
+  .card-label-text {
+    font-size: 12.5px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .why-choose-container {
+    padding: 0 16px;
+  }
+  .header-title-text {
+    font-size: 18px;
+    white-space: normal; /* Allows title to wrap cleanly on small mobile */
+  }
   .line-left, .line-right {
-    display: none; 
+    display: none; /* Hide accent lines on very narrow screens */
+  }
+  .why-choose-grid {
+    grid-template-columns: repeat(2, 1fr); /* Clean 2-column layout for mobile */
+    gap: 10px;
   }
 }

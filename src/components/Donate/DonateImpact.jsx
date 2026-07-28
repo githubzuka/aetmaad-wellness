@@ -108,23 +108,7 @@ const DonateImpact = () => {
 
         {/* Options Grid */}
         <div className="donateimpact-grid">
-          {impactOptions.map((opt) => {
-            const isSelected = !isCustom && selectedAmount === opt.amount;
-            return (
-              <div
-                key={opt.id}
-                className={`donateimpact-card ${isSelected ? 'selected' : ''}`}
-                onClick={() => handleSelectOption(opt.amount)}
-              >
-                <div className="donateimpact-icon-circle">{opt.iconSvg}</div>
-                <div className="donateimpact-amount">₹{opt.amount.toLocaleString('en-IN')}</div>
-                <h3 className="donateimpact-card-title">{opt.title}</h3>
-                <p className="donateimpact-card-desc">{opt.description}</p>
-              </div>
-            );
-          })}
-
-          {/* Custom Amount Card */}
+          {/* Custom Amount Card (Rendered First) */}
           <div
             className={`donateimpact-card donateimpact-custom-card ${isCustom ? 'selected' : ''}`}
             onClick={handleCustomFocus}
@@ -149,6 +133,23 @@ const DonateImpact = () => {
               />
             </div>
           </div>
+
+          {/* Predefined Options */}
+          {impactOptions.map((opt) => {
+            const isSelected = !isCustom && selectedAmount === opt.amount;
+            return (
+              <div
+                key={opt.id}
+                className={`donateimpact-card ${isSelected ? 'selected' : ''}`}
+                onClick={() => handleSelectOption(opt.amount)}
+              >
+                <div className="donateimpact-icon-circle">{opt.iconSvg}</div>
+                <div className="donateimpact-amount">₹{opt.amount.toLocaleString('en-IN')}</div>
+                <h3 className="donateimpact-card-title">{opt.title}</h3>
+                <p className="donateimpact-card-desc">{opt.description}</p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Actions Section */}

@@ -33,3 +33,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
+html, body, #root, .app-container {
+  overflow-x: clip;
+}
