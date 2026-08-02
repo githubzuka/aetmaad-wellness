@@ -1,8 +1,15 @@
 // src/components/ImpactSection.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ImpactSection.css';
 
 const ImpactSection = () => {
+  const navigate = useNavigate(); // Hook for programmatic navigation
+
+  const handleDonateClick = () => {
+    navigate('/donate'); // Navigates to the /donate page
+  };
+
   const stats = [
     { number: "258", label: "Working Horses Helped" },
     { number: "18,500", label: "Meals Provided" },
@@ -25,7 +32,7 @@ const ImpactSection = () => {
             <p className="impact-text">
               Your support helps provide nutrition, medical care, rescue, shelter and clean water to working horses in need.
             </p>
-            <button className="btn-donate-impact">
+            <button className="btn-donate-impact" onClick={handleDonateClick}>
               Donate Now <span className="heart-icon">♥</span>
             </button>
           </div>
