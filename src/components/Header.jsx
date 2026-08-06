@@ -17,12 +17,12 @@ const Header = () => {
 
   const handleDonateClick = () => {
     closeMobileMenu();
-    navigate('/donate'); // Navigates to the /donate page
+    navigate('/donate'); 
   };
 
   const handleCartClick = () => {
     closeMobileMenu();
-    navigate('/cart'); // Navigates to the /cart page
+    navigate('/cart'); 
   };
 
   return (
@@ -63,7 +63,6 @@ const Header = () => {
             <a href="/#products" onClick={closeMobileMenu}>Products</a>
             <span className="dropdown-arrow">▾</span>
           </div>
-          <a href="/#ingredients" className="nav-item" onClick={closeMobileMenu}>Ingredients</a>
           <a href="/#initiative" className="nav-item" onClick={closeMobileMenu}>Working Horses Initiative</a>
           <a href="/#blog" className="nav-item" onClick={closeMobileMenu}>Blog</a>
           <a href="/#contact" className="nav-item" onClick={closeMobileMenu}>Contact</a>
