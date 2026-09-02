@@ -11,7 +11,7 @@ const DonateFAQ = () => {
   const faqData = [
     {
       question: 'Is my donation tax-deductible under Section 80G?',
-      answer: 'Yes! All donations made to Aetmaad Wellness / Working Horses Initiative are eligible for tax exemption under Section 80G of the Income Tax Act. A formal tax receipt will be sent to your registered email.',
+      answer: 'Yes! All donations made to ASHVA / Working Horses Initiative are eligible for tax exemption under Section 80G of the Income Tax Act. A formal tax receipt will be sent to your registered email.',
     },
     {
       question: 'How do I get my tax receipt after paying via UPI / GPay?',

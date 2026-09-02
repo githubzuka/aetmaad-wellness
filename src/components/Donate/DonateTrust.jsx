@@ -72,7 +72,7 @@ const DonateTrustAndFAQ = ({ selectedAmount, onSelectAmount, onDonateClick }) =>
       {/* --- TAX & TRANSPARENCY BANNER --- */}
       <div className="donate-transparency-banner">
         <div className="transparency-card">
-          <div className="transparency-icon">🛡️</div>
+          <div className="transparency-icon"></div>
           <div className="transparency-content">
             <h3>100% Secure & Tax Deductible</h3>
             <p>

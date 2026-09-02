@@ -98,7 +98,7 @@ const Features = () => {
         <div className="why-choose-header">
           <div className="header-divider-wrapper">
             <span className="line-left"></span>
-            <span className="header-title-text">Why Choose Aetmaad Wellness</span>
+            <span className="header-title-text">Why Choose ASHVA</span>
             <span className="line-right"></span>
           </div>
         </div>

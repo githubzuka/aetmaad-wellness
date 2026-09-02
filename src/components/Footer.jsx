@@ -81,7 +81,7 @@ const Footer = () => {
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                   </svg>
                 </span>
-                <a href="tel:+919876543210">+91 12345 90876</a>
+                <a href="tel:+919876543210">+91 77150 79304</a>
               </li>
               <li>
                 <span className="contact-icon">
@@ -90,7 +90,7 @@ const Footer = () => {
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
                 </span>
-                <a href="mailto:info@aetmaadwellness.com">info@aetmaadwellness.com</a>
+                <a href="mailto:info@ashva.com">info@ashva.com</a>
               </li>
               <li>
                 <span className="contact-icon">
@@ -115,7 +115,7 @@ const Footer = () => {
 
           {/* Column 4: Brand & Horse Watermark */}
           <div className="footer-col col-brand">
-            <h3 className="footer-brand-title">Aetmaad Wellness</h3>
+            <h3 className="footer-brand-title">ASHVA</h3>
             <p className="footer-col-text">
               Dedicated to improving the health and welfare of working horses through natural nutrition and community support.
             </p>
@@ -133,7 +133,7 @@ const Footer = () => {
       <div className="footer-bottom-bar">
         <div className="bottom-bar-container">
           <p className="copyright-text">
-            © 2024 Aetmaad Wellness. All Rights Reserved.
+            © 2024 ASHVA. All Rights Reserved.
           </p>
           <div className="legal-links">
             <a href="#privacy">Privacy Policy</a>

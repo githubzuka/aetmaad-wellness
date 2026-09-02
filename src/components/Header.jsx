@@ -30,8 +30,8 @@ const Header = () => {
       <div className="header-container">
         {/* Brand Logo - click home */}
         <Link to="/" className="logo-area" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <div className="logo-title">AETMAAD</div>
-          <div className="logo-subtitle">— WELLNESS —</div>
+          <div className="logo-title">ASHVA</div>
+          <div className="logo-subtitle"></div>
         </Link>
 
         {/* Mobile Hamburger Button */}

@@ -208,7 +208,7 @@ const CartContent = () => {
           /* Empty Cart State */
           <div className="cart-empty-wrapper">
             <div className="cart-empty-card">
-              <div className="cart-empty-badge">AETMAAD WELLNESS</div>
+              <div className="cart-empty-badge">ASHVA</div>
               
               <div className="cart-empty-icon-container">
                 <div className="cart-empty-icon-glow"></div>
