@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './ChatWindow.css';
@@ -10,11 +10,14 @@ const QUICK_ACTIONS = [
   { label: 'Working Horses', icon: 'bi-heart-fill' },
 ];
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const stripEmoji = (content) => content.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/  +/g, ' ');
+
 const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: 'Welcome to **Aetmaad Wellness**! 🐎\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
+      content: 'Welcome to **Aetmaad Wellness**.\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
     }
   ]);
   const [input, setInput] = useState('');
@@ -37,7 +40,7 @@ const ChatWindow = ({ onClose }) => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages }),
@@ -45,14 +48,15 @@ const ChatWindow = ({ onClose }) => {
 
       const data = await res.json();
       if (res.ok && data.reply) {
-        setMessages((prev) => [...prev, data.reply]);
+        const replyContent = data.reply.content || data.reply;
+        setMessages((prev) => [...prev, { role: 'assistant', content: stripEmoji(replyContent) }]);
       } else {
         throw new Error('Server response failed');
       }
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '⚠️ **Connection Error**: Unable to reach backend server. Please verify port 5000 is active.' }
+        { role: 'assistant', content: '**Connection Error**: Unable to reach backend server. Please verify port 5000 is active.' }
       ]);
     } finally {
       setIsLoading(false);

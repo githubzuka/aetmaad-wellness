@@ -1,5 +1,16 @@
 # React + Vite
 
+## Deploying ASHVA AI
+
+The chatbot needs the Express backend to be deployed separately from the Vite frontend. A phone cannot reach `localhost:5000` on your computer.
+
+1. Deploy the `backend` folder to a Node hosting service and set `GROQ_API_KEY` and `PORT` in that service's environment variables.
+2. Copy the root `.env.example` to `.env` before building the frontend.
+3. Set `VITE_API_URL` to the public backend URL, for example `https://ashva-api.example.com`.
+4. Run `npm run build` and deploy the generated `dist` folder.
+
+For local development, leave `VITE_API_URL` empty, start the backend with `cd backend; npm start`, then run `npm run dev` from the repository root. Vite proxies `/api` to port 5000 locally.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

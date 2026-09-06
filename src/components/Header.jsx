@@ -1,5 +1,5 @@
 // src/components/Header/Header.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Header.css';
 
@@ -23,6 +23,15 @@ const Header = () => {
   const handleCartClick = () => {
     closeMobileMenu();
     navigate('/cart'); 
+  };
+
+  const handleProductsClick = (event) => {
+    event.preventDefault();
+    closeMobileMenu();
+    navigate('/');
+    window.setTimeout(() => {
+      document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
   };
 
   return (
@@ -60,11 +69,10 @@ const Header = () => {
           <a href="/#home" className="nav-item active" onClick={closeMobileMenu}>Home</a>
           <a href="/#about" className="nav-item" onClick={closeMobileMenu}>About Us</a>
           <div className="nav-item dropdown">
-            <a href="/#products" onClick={closeMobileMenu}>Products</a>
+            <a href="/#products" onClick={handleProductsClick}>Products</a>
             <span className="dropdown-arrow">▾</span>
           </div>
           <a href="/#initiative" className="nav-item" onClick={closeMobileMenu}>Working Horses Initiative</a>
-          <a href="/#blog" className="nav-item" onClick={closeMobileMenu}>Blog</a>
           <a href="/#contact" className="nav-item" onClick={closeMobileMenu}>Contact</a>
 
           {/* Mobile Action Buttons */}

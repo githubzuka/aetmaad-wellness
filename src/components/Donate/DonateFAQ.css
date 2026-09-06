@@ -78,4 +78,33 @@
   font-size: 14px;
   color: #555;
   line-height: 1.6;
+  .donate-faq-section {
+    padding: 42px 14px;
+  }
+
+  .section-header {
+    margin-bottom: 24px;
+  }
+
+  .section-header h2 {
+    font-size: 23px;
+  }
+
+  .section-header p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .faq-item {
+    padding: 15px 14px;
+  }
+
+  .faq-question {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .faq-answer p {
+    font-size: 13px;
+  }
 }

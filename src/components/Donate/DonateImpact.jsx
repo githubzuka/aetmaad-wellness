@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './DonateImpact.css';
 import DonateModal from './DonateModal';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const impactOptions = [
   {
@@ -66,6 +67,7 @@ const DonateImpact = () => {
   const [customValue, setCustomValue] = useState('');
   const [isMonthly, setIsMonthly] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAmountAlert, setShowAmountAlert] = useState(false);
 
   const handleSelectOption = (amount) => {
     setSelectedAmount(amount);
@@ -84,7 +86,7 @@ const DonateImpact = () => {
   const handleDonateNow = () => {
     const finalAmount = isCustom ? Number(customValue) || 0 : selectedAmount;
     if (finalAmount <= 0) {
-      alert('Please enter a valid donation amount.');
+      setShowAmountAlert(true);
       return;
     }
     setIsModalOpen(true);
@@ -96,6 +98,20 @@ const DonateImpact = () => {
 
   return (
     <section className="donateimpact-section">
+      {showAmountAlert && (
+        <div className="donate-alert-overlay" onClick={() => setShowAmountAlert(false)}>
+          <div className="donate-alert-card" role="alertdialog" aria-modal="true" aria-labelledby="donate-alert-title" onClick={(event) => event.stopPropagation()}>
+            <div className="donate-alert-icon" aria-hidden="true">
+              <i className="bi bi-info-lg"></i>
+            </div>
+            <h2 id="donate-alert-title">Amount Required</h2>
+            <p>Please enter a custom donation amount or select one of the contribution options before continuing.</p>
+            <button type="button" className="donate-alert-button" onClick={() => setShowAmountAlert(false)}>
+              Choose an Amount
+            </button>
+          </div>
+        </div>
+      )}
       <div className="donateimpact-container">
         <div className="donateimpact-header">
           <div className="donateimpact-title-wrapper">
@@ -172,7 +188,7 @@ const DonateImpact = () => {
           </button>
 
           <div className="donateimpact-security-info">
-            <span>🔒 Secure Donation</span>
+            <span><i className="bi bi-lock-fill" aria-hidden="true"></i> Secure Donation</span>
             <span className="donateimpact-dot">|</span>
             <span>100% Transparent</span>
           </div>

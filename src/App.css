@@ -265,8 +265,8 @@ html, body {
   }
 
   .chat-window-wrapper {
-    width: calc(100vw - 32px) !important;
-    max-height: calc(100vh - 100px) !important;
+    width: min(380px, calc(100vw - 24px)) !important;
+    max-height: calc(100dvh - 92px) !important;
   }
 
   .aesthetic-icon-btn {
