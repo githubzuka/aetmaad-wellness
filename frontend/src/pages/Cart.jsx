@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import orderService from '../services/orderService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import PaymentModal from '../components/cart/PaymentModal';
+import PaymentModal from '../components/Cart/PaymentModal';
 import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, Sparkles, CheckCircle2, AlertCircle, Lock, Truck, CreditCard } from 'lucide-react';
 import './Cart.css';
 
