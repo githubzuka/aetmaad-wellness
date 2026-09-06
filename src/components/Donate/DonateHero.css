@@ -258,11 +258,39 @@
 }
 
 @media (max-width: 480px) {
+  .donate-hero {
+    padding-bottom: 18px;
+  }
+
+  .hero-main-container {
+    padding: 24px 16px 12px;
+  }
+
   .hero-title {
-    font-size: 32px;
+    font-size: clamp(28px, 9vw, 34px);
+    line-height: 1.1;
   }
 
   .hero-description {
     font-size: 13.5px;
+    margin-bottom: 24px;
+  }
+
+  .hero-features {
+    gap: 14px 8px;
+  }
+
+  .feature-label {
+    font-size: 10px;
+  }
+
+  .hero-media-wrapper {
+    height: 260px;
+  }
+
+  .floating-quote-card {
+    width: calc(100% - 32px);
+    padding: 16px 12px;
+    margin-top: 14px;
   }
 }

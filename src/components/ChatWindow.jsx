@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './ChatWindow.css';
@@ -10,11 +10,32 @@ const QUICK_ACTIONS = [
   { label: 'Working Horses', icon: 'bi-heart-fill' },
 ];
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const stripEmoji = (content) => content.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/  +/g, ' ');
+
+const getLocalReply = (question) => {
+  const normalizedQuestion = question.toLowerCase();
+
+  if (normalizedQuestion.includes('feed') || normalizedQuestion.includes('dosage') || normalizedQuestion.includes('how much')) {
+    return '### Daily Feeding Guide\n\n- **Light work:** 1.5-2.0 kg per day\n- **Moderate work:** 2.5-3.5 kg per day\n- **Heavy or performance work:** 4.0-5.0 kg per day\n\nSplit the daily amount across meals and adjust with your veterinarian based on body condition.';
+  }
+
+  if (normalizedQuestion.includes('ingredient')) {
+    return '### Ingredients\n\n- Whole grains\n- Essential amino acids\n- Cold-pressed oils\n- Natural digestive enzymes\n- Trace minerals\n\nThe mix contains no fillers or artificial preservatives.';
+  }
+
+  if (normalizedQuestion.includes('horse') || normalizedQuestion.includes('working')) {
+    return '### Working Horse Initiative\n\nA percentage of every purchase supports rescue, feeding, and medical care for street and working horses.';
+  }
+
+  return 'I can help with **feeding amounts, ingredients, digestive support, hoof health, and working-horse nutrition**. What would you like to know?';
+};
+
 const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: 'Welcome to **ASHVA Wellness**! 🐎\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
+      content: 'Welcome to **ASHVA Wellness**.\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
     }
   ]);
   const [input, setInput] = useState('');
@@ -37,7 +58,7 @@ const ChatWindow = ({ onClose }) => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages }),
@@ -45,14 +66,15 @@ const ChatWindow = ({ onClose }) => {
 
       const data = await res.json();
       if (res.ok && data.reply) {
-        setMessages((prev) => [...prev, data.reply]);
+        const replyContent = data.reply.content || data.reply;
+        setMessages((prev) => [...prev, { role: 'assistant', content: stripEmoji(replyContent) }]);
       } else {
         throw new Error('Server response failed');
       }
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '⚠️ **Connection Error**: Unable to reach backend server. Please verify port 5000 is active.' }
+        { role: 'assistant', content: stripEmoji(getLocalReply(text)) }
       ]);
     } finally {
       setIsLoading(false);
@@ -60,9 +82,9 @@ const ChatWindow = ({ onClose }) => {
   };
 
   return (
-    <div className="ASHV-chat-window">
+    <div className="aetmaad-chat-window">
       {/* Header */}
-      <header className="ASHVA-chat-header">
+      <header className="aetmaad-chat-header">
         <div className="brand-profile">
           <div className="avatar-wrapper">
             <div className="brand-avatar-icon">
@@ -72,8 +94,7 @@ const ChatWindow = ({ onClose }) => {
           </div>
           <div className="brand-details">
             <div className="brand-title">
-              <h3>ASHVA
-         AI</h3>
+                  <h3>ASHVA AI</h3>
               <i className="bi bi-patch-check-fill verified-badge"></i>
             </div>
             <p className="brand-subtitle">Equine Nutrition Specialist</p>
@@ -85,7 +106,7 @@ const ChatWindow = ({ onClose }) => {
       </header>
 
       {/* Message Stream */}
-      <div className="ASHVA-chat-body">
+      <div className="aetmaad-chat-body" aria-live="polite">
         {messages.map((msg, idx) => (
           <div key={idx} className={`chat-message ${msg.role}`}>
             <div className="message-avatar">
@@ -117,7 +138,7 @@ const ChatWindow = ({ onClose }) => {
       </div>
 
       {/* Quick Action Chips */}
-      <div className="ASHVA-quick-chips">
+      <div className="aetmaad-quick-chips">
         <div className="chips-scroll">
           {QUICK_ACTIONS.map((action, i) => (
             <button
@@ -134,12 +155,14 @@ const ChatWindow = ({ onClose }) => {
       </div>
 
       {/* Input Form */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="ASHVA-chat-footer">
+      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="aetmaad-chat-footer">
         <input
           type="text"
           placeholder="Ask about equine nutrition..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          aria-label="Ask the equine nutrition specialist"
+          disabled={isLoading}
         />
         <button type="submit" disabled={isLoading || !input.trim()} className="send-btn">
           <i className="bi bi-send-fill"></i>
