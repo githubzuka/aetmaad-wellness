@@ -14,7 +14,7 @@ const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: 'Welcome to **Aetmaad Wellness**! 🐎\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
+      content: 'Welcome to **ASHVA Wellness**! 🐎\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
     }
   ]);
   const [input, setInput] = useState('');
@@ -60,9 +60,9 @@ const ChatWindow = ({ onClose }) => {
   };
 
   return (
-    <div className="aetmaad-chat-window">
+    <div className="ASHV-chat-window">
       {/* Header */}
-      <header className="aetmaad-chat-header">
+      <header className="ASHVA-chat-header">
         <div className="brand-profile">
           <div className="avatar-wrapper">
             <div className="brand-avatar-icon">
@@ -72,7 +72,8 @@ const ChatWindow = ({ onClose }) => {
           </div>
           <div className="brand-details">
             <div className="brand-title">
-              <h3>Aetmaad AI</h3>
+              <h3>ASHVA
+         AI</h3>
               <i className="bi bi-patch-check-fill verified-badge"></i>
             </div>
             <p className="brand-subtitle">Equine Nutrition Specialist</p>
@@ -84,7 +85,7 @@ const ChatWindow = ({ onClose }) => {
       </header>
 
       {/* Message Stream */}
-      <div className="aetmaad-chat-body">
+      <div className="ASHVA-chat-body">
         {messages.map((msg, idx) => (
           <div key={idx} className={`chat-message ${msg.role}`}>
             <div className="message-avatar">
@@ -116,7 +117,7 @@ const ChatWindow = ({ onClose }) => {
       </div>
 
       {/* Quick Action Chips */}
-      <div className="aetmaad-quick-chips">
+      <div className="ASHVA-quick-chips">
         <div className="chips-scroll">
           {QUICK_ACTIONS.map((action, i) => (
             <button
@@ -133,7 +134,7 @@ const ChatWindow = ({ onClose }) => {
       </div>
 
       {/* Input Form */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="aetmaad-chat-footer">
+      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="ASHVA-chat-footer">
         <input
           type="text"
           placeholder="Ask about equine nutrition..."

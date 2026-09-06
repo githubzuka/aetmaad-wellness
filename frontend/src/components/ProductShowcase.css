@@ -1,0 +1,191 @@
+/* src/components/ProductShowcase.css */
+
+.product-showcase-section {
+  width: 100%;
+  padding: 90px 0;
+  background-color: #fcfbfa;
+}
+
+.product-showcase-container {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* --- Left Column: Studio Card Container --- */
+.showcase-media-side {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.product-image-card {
+  width: 100%;
+  max-width: 540px;
+  background: #f4f0e8; /* Warm studio backdrop tone matching the package style */
+  border: 1px solid #e5dfd5;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(30, 29, 27, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.product-showcase-img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  /* CRITICAL FIX: Stops image cropping completely */
+  object-fit: contain; 
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Right Column: Premium Typography --- */
+.showcase-content-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.showcase-badge {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #1a331e;
+  background-color: #eaf0e9;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.showcase-brand-title {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 700;
+  color: #1e1d1b;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+.showcase-brand-tagline {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: #55514a;
+  margin: 0 0 20px 0;
+}
+
+.showcase-brand-description {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #605c56;
+  margin: 0 0 28px 0;
+}
+
+/* Checkmark List Styling */
+.showcase-benefits-stack {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefit-stack-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.check-icon-circle {
+  width: 18px;
+  height: 18px;
+  background-color: #1a331e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.check-icon-circle svg {
+  width: 9px;
+  height: 9px;
+}
+
+.benefit-item-text {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2b2927;
+}
+
+/* Shop Button */
+.btn-shop-showcase {
+  background-color: #1a331e;
+  color: #ffffff;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-shop-showcase:hover {
+  background-color: #122415;
+  transform: translateY(-1px);
+}
+
+.shop-cart-svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 992px) {
+  .product-showcase-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 24px;
+  }
+  .showcase-content-side {
+    align-items: center;
+    text-align: center;
+  }
+  .showcase-benefits-stack {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .showcase-brand-title {
+    font-size: 30px;
+  }
+  .product-image-card {
+    padding: 12px;
+  }
+  .btn-shop-showcase {
+    width: 100%;
+    justify-content: center;
+  }
+}

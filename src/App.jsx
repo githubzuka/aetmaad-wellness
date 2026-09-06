@@ -1,41 +1,15 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import ProductShowcase from './components/ProductShowcase';
-import FeedingGuidelines from './components/FeedingGuidelines';
-import ImpactSection from './components/ImpactSection';
-import Footer from './components/Footer';
+import AppRoutes from './routes/AppRoutes';
 import ChatWindow from './components/ChatWindow';
-
-import Donate from './pages/Donate';
-import Cart from './pages/Cart';
-
 import './App.css';
-
-const Home = () => (
-  <div className="app-wrapper">
-    <Header />
-    <section id="home"><Hero /></section>
-    <section id="about"><Features /></section>
-    <section id="products"><ProductShowcase /></section>
-    <FeedingGuidelines />
-    <section id="initiative"><ImpactSection /></section>
-    <div id="contact"><Footer /></div>
-  </div>
-);
 
 function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <div className="app-container">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/donate" element={<Donate />} />
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
+      {/* Central Role-Based Router */}
+      <AppRoutes />
 
       {/* Aesthetic Floating Chat Launcher */}
       <div className="chat-launcher-container">

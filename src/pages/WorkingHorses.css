@@ -1,0 +1,116 @@
+.initiative-hero-banner {
+  background: linear-gradient(135deg, #1b4d2e 0%, #0f2d1b 100%);
+  color: #ffffff;
+  padding: 72px 28px;
+  text-align: center;
+}
+
+.initiative-banner-container {
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.initiative-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: #d4af37;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.initiative-banner-container h1 {
+  font-family: Georgia, serif;
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+}
+
+.initiative-banner-container p {
+  font-size: 16.5px;
+  color: #e2e8f0;
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+}
+
+.initiative-cta-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-init-donate {
+  background: #d4af37;
+  color: #0f1712 !important;
+  border-radius: 99px;
+  padding: 14px 28px;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-init-feed {
+  background: transparent;
+  color: #ffffff !important;
+  border: 1.5px solid #ffffff;
+  border-radius: 99px;
+  padding: 14px 28px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pillars-section {
+  background: #faf8f5;
+  padding: 60px 28px;
+}
+
+.pillars-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.pillar-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #e8e3d8;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  text-align: center;
+}
+
+.pillar-icon {
+  width: 60px;
+  height: 60px;
+  background: #fdf8ec;
+  border-radius: 16px;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px auto;
+}
+
+.pillar-card h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 10px 0;
+}
+
+.pillar-card p {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}

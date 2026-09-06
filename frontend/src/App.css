@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+
+/* Prevent horizontal overflow clipping fixed elements */
+html, body {
+  max-width: 100vw;
+  overflow-x: clip;
+}
+
+/* ==========================================
+   Custom Luxury Alert Modal (Global Styles)
+   ========================================== */
+.custom-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 45, 27, 0.45);
+  backdrop-filter: blur(6px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeInBackdrop 0.25s ease-out forwards;
+}
+
+.custom-alert-card {
+  background: #ffffff;
+  border: 1px solid #e9e5df;
+  border-top: 4px solid #d4af37;
+  border-radius: 16px;
+  padding: 32px 28px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  animation: popUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-sizing: border-box;
+}
+
+.custom-alert-badge {
+  width: 52px;
+  height: 52px;
+  background: #fdf8ec;
+  border: 1px solid #f3e5be;
+  border-radius: 50%;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.custom-alert-badge svg {
+  width: 26px;
+  height: 26px;
+}
+
+.custom-alert-card h3 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 22px;
+  color: #1b4d2e;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.custom-alert-card p {
+  font-size: 14.5px;
+  color: #555555;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.custom-alert-card p strong {
+  color: #1b4d2e;
+}
+
+.custom-alert-dismiss-btn {
+  background: linear-gradient(135deg, #1b4d2e 0%, #0f2d1b 100%);
+  color: #ffffff;
+  border: 1px solid #d4af37;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 36px;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-alert-dismiss-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(27, 77, 46, 0.3);
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popUpModal {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==========================================
+   Floating Viewport Anchor Container (Chat)
+   ========================================== */
+.chat-launcher-container {
+  position: fixed !important;
+  bottom: 32px !important;
+  right: 32px !important;
+  z-index: 9999999 !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: auto !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Popup Entrance Wrapper */
+.chat-window-wrapper {
+  position: relative;
+  z-index: 9999999;
+  animation: launcherPopUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: bottom right;
+}
+
+.launcher-button-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Minimalist Outlined Floating Button */
+.aesthetic-icon-btn {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  border-radius: 50% !important;
+  background: #0F2D1B !important; /* Solid Forest Green */
+  border: 1.5px solid #D4AF37 !important; /* Subtle Gold Stroke */
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.25) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  outline: none !important;
+  padding: 0 !important;
+}
+
+.aesthetic-icon-btn:hover {
+  transform: translateY(-3px) scale(1.06) !important;
+  background: #133922 !important;
+  border-color: #f1c40f !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.4) !important;
+}
+
+.aesthetic-icon-btn.is-active {
+  background: #081A10 !important;
+  border-color: rgba(212, 175, 55, 0.8) !important;
+}
+
+/* Unfilled Outlined SVG Icon Styling */
+.icon-badge-stack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.outlined-svg-icon {
+  width: 24px;
+  height: 24px;
+  stroke: #D4AF37; /* Thin Gold Outlines */
+  transition: stroke 0.2s ease, transform 0.2s ease;
+}
+
+.aesthetic-icon-btn:hover .outlined-svg-icon {
+  stroke: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Minimalist Online Status Pulse */
+.live-status-dot {
+  position: absolute;
+  top: -2px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  background-color: #34d399;
+  border: 1.5px solid #0F2D1B;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #34d399;
+}
+
+/* Ambient Gold Halo Glow */
+.launcher-ambient-glow {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, rgba(15, 45, 27, 0) 70%);
+  filter: blur(8px);
+  animation: ambientPulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.96); }
+  50% { opacity: 0.8; transform: scale(1.08); }
+}
+
+@keyframes launcherPopUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================
+   Fully Mobile & Responsive Breakpoints
+   ========================================================== */
+
+/* Tablet & Smaller Laptops */
+@media (max-width: 768px) {
+  .chat-launcher-container {
+    bottom: 24px !important;
+    right: 24px !important;
+  }
+
+  .aesthetic-icon-btn {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+  }
+
+  .outlined-svg-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 480px) {
+  .chat-launcher-container {
+    bottom: 16px !important;
+    right: 16px !important;
+  }
+
+  .chat-window-wrapper {
+    width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 100px) !important;
+  }
+
+  .aesthetic-icon-btn {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+  }
+
+  .outlined-svg-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
