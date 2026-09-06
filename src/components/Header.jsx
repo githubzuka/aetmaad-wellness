@@ -118,7 +118,10 @@ const Header = () => {
           <NavLink to="/" end onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
           <NavLink to="/products" onClick={closeMobileMenu} className="mobile-link">Products Catalog</NavLink>
           <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Working Horses Initiative</NavLink>
-          <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">♥ Donate Now</NavLink>
+          <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">
+            <Heart size={16} aria-hidden="true" />
+            Donate Now
+          </NavLink>
           <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">Contact Us</NavLink>
           <NavLink to="/cart" onClick={closeMobileMenu} className="mobile-link">
             Cart ({totalItemCount} Items)

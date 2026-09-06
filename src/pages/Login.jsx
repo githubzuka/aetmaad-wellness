@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Lock, Mail, ArrowRight, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './Login.css';
 
 const Login = () => {
@@ -17,6 +17,11 @@ const Login = () => {
 
   // Retrieve intended redirect path (e.g., '/cart' or checkout)
   const fromPath = location.state?.from || '/';
+
+  const handleBack = () => {
+    if (window.history.length > 1) navigate(-1);
+    else navigate('/');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +54,15 @@ const Login = () => {
     }
   };
 
+  const needsAccount = error?.toLowerCase().includes('no account found');
+
   return (
     <div className="auth-page-container">
       <div className="auth-card-wrapper">
+        <button type="button" className="auth-back-link" onClick={handleBack}>
+          <ArrowLeft size={15} />
+          Back
+        </button>
         <div className="auth-card-header">
           <Link to="/" className="auth-brand-logo">
             <span className="brand-ashva">ASHVA</span>
@@ -64,7 +75,14 @@ const Login = () => {
         {error && (
           <div className="auth-alert error">
             <AlertCircle size={18} />
-            <span>{error}</span>
+            <div>
+              <span>{error}</span>
+              {needsAccount && (
+                <Link to="/signup" state={{ from: fromPath }} className="auth-alert-action">
+                  Create Account
+                </Link>
+              )}
+            </div>
           </div>
         )}
 
@@ -96,7 +114,7 @@ const Login = () => {
               <Lock size={18} className="input-icon" />
               <input
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

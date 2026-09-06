@@ -232,6 +232,9 @@
   }
 
   .mobile-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 15px;
     font-weight: 700;
     color: #111827 !important;
@@ -240,5 +243,9 @@
 
   .mobile-link.donate {
     color: #b45309 !important;
+  }
+
+  .mobile-link.donate svg {
+    color: #dc2626;
   }
 }

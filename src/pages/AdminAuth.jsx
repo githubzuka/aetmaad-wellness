@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Lock, Mail, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './AdminAuth.css';
 
 const AdminAuth = () => {
@@ -47,6 +47,10 @@ const AdminAuth = () => {
   return (
     <div className="admin-auth-page">
       <div className="admin-auth-card">
+        <Link to="/" className="auth-back-link">
+          <ArrowLeft size={15} />
+          Back to site
+        </Link>
         
         <div className="admin-badge">
           <Shield size={32} />
@@ -93,7 +97,7 @@ const AdminAuth = () => {
               <Lock size={18} className="input-icon" />
               <input
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

@@ -1,116 +1,146 @@
 .initiative-hero-banner {
-  background: linear-gradient(135deg, #1b4d2e 0%, #0f2d1b 100%);
-  color: #ffffff;
-  padding: 72px 28px;
-  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 88% 18%, rgba(212, 175, 55, 0.2), transparent 25%), linear-gradient(135deg, #f4f8f1, #e9f1e8);
+  color: #17251a;
+  padding: 78px 28px 84px;
+  border-bottom: 1px solid #dce7dc;
+}
+
+.initiative-hero-banner::after {
+  content: '';
+  position: absolute;
+  right: -90px;
+  bottom: -150px;
+  width: 430px;
+  height: 430px;
+  border: 1px solid rgba(11, 70, 34, 0.1);
+  border-radius: 50%;
 }
 
 .initiative-banner-container {
-  max-width: 840px;
+  position: relative;
+  z-index: 1;
+  max-width: 1160px;
   margin: 0 auto;
 }
 
 .initiative-tag {
-  font-size: 11px;
-  font-weight: 800;
-  color: #d4af37;
-  letter-spacing: 2px;
   display: block;
   margin-bottom: 12px;
+  color: #a27b18;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 
 .initiative-banner-container h1 {
-  font-family: Georgia, serif;
-  font-size: 42px;
-  font-weight: 800;
-  margin: 0 0 16px 0;
+  max-width: 700px;
+  margin: 0 0 16px;
+  color: #17251a;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.1;
 }
 
 .initiative-banner-container p {
-  font-size: 16.5px;
-  color: #e2e8f0;
-  line-height: 1.6;
-  margin: 0 0 32px 0;
+  max-width: 680px;
+  margin: 0 0 32px;
+  color: #536257;
+  font-size: 15px;
+  line-height: 1.65;
 }
 
 .initiative-cta-row {
   display: flex;
-  justify-content: center;
-  gap: 16px;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.btn-init-donate,
+.btn-init-feed {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-init-donate {
-  background: #d4af37;
-  color: #0f1712 !important;
-  border-radius: 99px;
-  padding: 14px 28px;
-  font-weight: 800;
-  font-size: 15px;
-  text-decoration: none !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  background: #0b4622;
+  color: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(11, 70, 34, 0.18);
 }
+
+.btn-init-donate:hover { background: #072f16; transform: translateY(-2px); }
 
 .btn-init-feed {
-  background: transparent;
-  color: #ffffff !important;
-  border: 1.5px solid #ffffff;
-  border-radius: 99px;
-  padding: 14px 28px;
-  font-weight: 700;
-  font-size: 15px;
-  text-decoration: none !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #b7cbbb;
+  color: #0b4622 !important;
 }
 
+.btn-init-feed:hover { border-color: #0b4622; transform: translateY(-2px); }
+
 .pillars-section {
-  background: #faf8f5;
-  padding: 60px 28px;
+  background: #fcfdfb;
+  padding: 64px 28px;
 }
 
 .pillars-container {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .pillar-card {
+  padding: 30px 26px;
   background: #ffffff;
-  border-radius: 20px;
-  padding: 32px;
-  border: 1px solid #e8e3d8;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  border: 1px solid #dfe8df;
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(18, 52, 28, 0.05);
   text-align: center;
 }
 
 .pillar-icon {
   width: 60px;
   height: 60px;
-  background: #fdf8ec;
-  border-radius: 16px;
-  color: #b45309;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 18px auto;
+  margin: 0 auto 18px;
+  border: 1px solid #ead8a6;
+  border-radius: 50%;
+  background: #fbf7ea;
+  color: #a27b18;
 }
 
 .pillar-card h3 {
-  font-size: 20px;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 0 10px 0;
+  margin: 0 0 10px;
+  color: #17251a;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 21px;
+  font-weight: 700;
 }
 
 .pillar-card p {
-  font-size: 14px;
-  color: #4b5563;
-  line-height: 1.6;
   margin: 0;
+  color: #5d6b60;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+@media (max-width: 700px) {
+  .initiative-hero-banner { padding: 56px 20px 62px; }
+  .initiative-banner-container h1 { font-size: 40px; }
+  .initiative-cta-row { flex-direction: column; align-items: stretch; max-width: 340px; }
+  .btn-init-donate, .btn-init-feed { justify-content: center; }
+  .pillars-section { padding: 48px 20px; }
 }

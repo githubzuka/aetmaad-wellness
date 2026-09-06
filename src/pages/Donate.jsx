@@ -127,7 +127,7 @@ const Donate = () => {
                   className={`freq-btn ${frequency === 'monthly' ? 'active' : ''}`}
                   onClick={() => setFrequency('monthly')}
                 >
-                  Monthly Sustainer ♥
+                        Monthly Sustainer
                 </button>
               </div>
 

@@ -16,7 +16,7 @@ export const registerUser = async (req, res, next) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists with this email' });
+      return res.status(409).json({ message: 'An account already exists with this email. Please sign in instead.' });
     }
 
     const userRole = role && ['admin', 'volunteer', 'customer'].includes(role) ? role : 'customer';
@@ -71,7 +71,11 @@ export const loginUser = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select('+password');
 
-    if (user && (await user.matchPassword(password))) {
+    if (!user) {
+      return res.status(404).json({ message: 'No account found with this email. Please create an account first.' });
+    }
+
+    if (await user.matchPassword(password)) {
       res.json({
         success: true,
         data: {

@@ -1,21 +1,51 @@
 // src/components/ImpactSection.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, Heart, HeartHandshake } from 'lucide-react';
+import axiosClient from '../api/axiosClient';
 import './ImpactSection.css';
 
 const ImpactSection = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
+  const [impactStats, setImpactStats] = useState(null);
+  const [statsStatus, setStatsStatus] = useState('loading');
 
   const handleDonateClick = () => {
     navigate('/donate'); // Navigates to the /donate page
   };
 
-  const stats = [
-    { number: "258", label: "Working Horses Helped" },
-    { number: "18,500", label: "Meals Provided" },
-    { number: "640", label: "Donors" },
-    { number: "22", label: "Villages Covered" }
-  ];
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadImpactStats = async () => {
+      try {
+        const response = await axiosClient.get('/api/impact/stats');
+        if (isMounted && response.data?.success) {
+          setImpactStats(response.data.data);
+          setStatsStatus('live');
+        }
+      } catch (error) {
+        if (isMounted) setStatsStatus('fallback');
+      }
+    };
+
+    loadImpactStats();
+    return () => { isMounted = false; };
+  }, []);
+
+  const stats = impactStats
+    ? [
+        { number: impactStats.volunteers, label: 'Approved Volunteers' },
+        { number: impactStats.shops, label: 'Community Shops' },
+        { number: impactStats.products, label: 'Nutrition Products' },
+        { number: impactStats.orders, label: 'Orders Supported' },
+      ]
+    : [
+        { number: '24', label: 'Approved Volunteers' },
+        { number: '18', label: 'Community Shops' },
+        { number: '6', label: 'Nutrition Products' },
+        { number: '258', label: 'Orders Supported' },
+      ];
 
   return (
     <section className="impact-section">
@@ -33,7 +63,7 @@ const ImpactSection = () => {
               Your support helps provide nutrition, medical care, rescue, shelter and clean water to working horses in need.
             </p>
             <button className="btn-donate-impact" onClick={handleDonateClick}>
-              Donate Now <span className="heart-icon">♥</span>
+              Donate Now <Heart size={15} aria-hidden="true" />
             </button>
           </div>
 
@@ -48,13 +78,33 @@ const ImpactSection = () => {
         </div>
 
         {/* 2x2 Stats Grid */}
-        <div className="impact-stats-grid">
+        <div className="impact-stats-grid" aria-live="polite">
           {stats.map((stat, idx) => (
             <div className="stat-box" key={idx}>
               <h3 className="stat-number">{stat.number}</h3>
               <p className="stat-label">{stat.label}</p>
             </div>
           ))}
+        </div>
+
+        <div className={`impact-data-status ${statsStatus}`}>
+          <span className="impact-status-dot" aria-hidden="true" />
+          {statsStatus === 'live' ? 'Live community impact data' : statsStatus === 'loading' ? 'Loading latest impact data' : 'Impact data will update when the database is available'}
+        </div>
+
+        <div className="volunteer-invite-card">
+          <div className="volunteer-invite-icon">
+            <HeartHandshake size={22} />
+          </div>
+          <div className="volunteer-invite-copy">
+            <span className="volunteer-invite-tag">JOIN THE INITIATIVE</span>
+            <h3>Help your local working horses</h3>
+            <p>Become a volunteer and support nutrition, shop coordination, and care in your city.</p>
+          </div>
+          <Link to="/volunteer" state={{ mode: 'apply' }} className="volunteer-invite-link">
+            Apply Now
+            <ArrowRight size={17} />
+          </Link>
         </div>
 
       </div>

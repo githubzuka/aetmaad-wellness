@@ -20,6 +20,10 @@ const Hero = () => {
     navigate('/donate');
   };
 
+  const handleVolunteerClick = () => {
+    navigate('/volunteer', { state: { mode: 'apply' } });
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="hero-container">
@@ -46,6 +50,22 @@ const Hero = () => {
             <button className="btn-donate-help" onClick={handleDonateClick}>
               Donate to Help a Horse 
               <i className="bi bi-heart-fill btn-icon"></i>
+            </button>
+
+          </div>
+
+          <div className="hero-volunteer-callout">
+            <div className="hero-volunteer-icon" aria-hidden="true">
+              <i className="bi bi-people"></i>
+            </div>
+            <div className="hero-volunteer-copy">
+              <span>COMMUNITY VOLUNTEER PROGRAM</span>
+              <h2>Want to help working horses in your area?</h2>
+              <p>Join local care efforts, coordinate support, and make a practical difference in your city.</p>
+            </div>
+            <button className="btn-volunteer-hero" onClick={handleVolunteerClick} aria-label="Apply to become a volunteer">
+              Apply Now
+              <i className="bi bi-arrow-up-right btn-icon"></i>
             </button>
           </div>
           

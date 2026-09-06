@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Lock, Phone, MapPin, ArrowRight, AlertCircle } from 'lucide-react';
+import { User, Mail, Lock, Phone, MapPin, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
 import './Login.css';
 
 const Signup = () => {
@@ -20,6 +20,11 @@ const Signup = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const fromPath = location.state?.from || '/';
+
+  const handleBack = () => {
+    if (window.history.length > 1) navigate(-1);
+    else navigate('/');
+  };
 
   const handleInputChange = (e) => {
     setFormData((prev) => ({
@@ -46,9 +51,15 @@ const Signup = () => {
     }
   };
 
+  const accountAlreadyExists = error?.toLowerCase().includes('already exists');
+
   return (
     <div className="auth-page-container">
       <div className="auth-card-wrapper">
+        <button type="button" className="auth-back-link" onClick={handleBack}>
+          <ArrowLeft size={15} />
+          Back
+        </button>
         <div className="auth-card-header">
           <Link to="/" className="auth-brand-logo">
             <span className="brand-ashva">ASHVA</span>
@@ -61,7 +72,14 @@ const Signup = () => {
         {error && (
           <div className="auth-alert error">
             <AlertCircle size={18} />
-            <span>{error}</span>
+            <div>
+              <span>{error}</span>
+              {accountAlreadyExists && (
+                <Link to="/login" state={{ from: fromPath }} className="auth-alert-action">
+                  Sign In Instead
+                </Link>
+              )}
+            </div>
           </div>
         )}
 
@@ -103,7 +121,7 @@ const Signup = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="••••••••"
+                placeholder="Create a secure password"
                 value={formData.password}
                 onChange={handleInputChange}
                 minLength={6}
@@ -158,6 +176,10 @@ const Signup = () => {
             <Link to="/login" state={{ from: fromPath }} className="link-switch">
               Sign In Here
             </Link>
+          </p>
+          <p className="auth-admin-link-row">
+            Managing the platform?{' '}
+            <Link to="/admin" className="link-switch">Admin Login</Link>
           </p>
         </div>
       </div>

@@ -10,7 +10,7 @@ const QUICK_ACTIONS = [
   { label: 'Working Horses', icon: 'bi-heart-fill' },
 ];
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 const stripEmoji = (content) => content.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/  +/g, ' ');
 
 const getLocalReply = (question) => {

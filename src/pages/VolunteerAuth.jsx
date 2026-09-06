@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { HeartHandshake, Lock, Mail, User, Phone, MapPin, ArrowRight, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
+import { HeartHandshake, Lock, Mail, User, Phone, MapPin, ArrowRight, ArrowLeft, AlertCircle, CheckCircle2, Clock, FileText, AlertTriangle } from 'lucide-react';
 import './VolunteerAuth.css';
 
 const VolunteerAuth = () => {
-  const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const location = useLocation();
+  const [isRegisterMode, setIsRegisterMode] = useState(location.state?.mode === 'apply');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -81,9 +82,9 @@ const VolunteerAuth = () => {
             Thank you, <strong>{user?.name}</strong>! Your application for the <strong>{user?.city || 'Community'} Zone</strong> volunteer program is currently under review by our Admin desk.
           </p>
           <div className="pending-info-box">
-            <p>📋 <strong>Registered Email:</strong> {user?.email}</p>
-            <p>📞 <strong>Contact:</strong> {user?.contactNumber}</p>
-            <p>📍 <strong>City/Zone:</strong> {user?.city}</p>
+            <p><FileText size={15} aria-hidden="true" /> <strong>Registered Email:</strong> {user?.email}</p>
+            <p><Phone size={15} aria-hidden="true" /> <strong>Contact:</strong> {user?.contactNumber}</p>
+            <p><MapPin size={15} aria-hidden="true" /> <strong>City/Zone:</strong> {user?.city}</p>
           </div>
           <p className="pending-note">
             Once approved, you will gain access to your Zone's shop management portal and bulk ordering desk.
@@ -100,6 +101,10 @@ const VolunteerAuth = () => {
   return (
     <div className="volunteer-auth-page">
       <div className="volunteer-auth-card">
+        <Link to="/" className="auth-back-link">
+          <ArrowLeft size={15} />
+          Back to site
+        </Link>
 
         <div className="volunteer-badge">
           <HeartHandshake size={32} />
@@ -188,7 +193,7 @@ const VolunteerAuth = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
                 minLength={6}
@@ -230,7 +235,7 @@ const VolunteerAuth = () => {
               </div>
 
               <div className="approval-notice-box">
-                <p>⚠️ Applications require Administrator verification before shop editing & ordering permissions are granted.</p>
+                <p><AlertTriangle size={16} aria-hidden="true" /> Applications require Administrator verification before shop editing and ordering permissions are granted.</p>
               </div>
             </>
           )}
