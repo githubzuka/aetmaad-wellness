@@ -4,7 +4,9 @@ import adminService from '../services/adminService';
 import shopService from '../services/shopService';
 import orderService from '../services/orderService';
 import AdminNotifications from '../components/admin/AdminNotifications';
-import { Users, Store, ShoppingBag, DollarSign, CheckCircle, XCircle, ShieldCheck, UserCheck, AlertTriangle, RefreshCw, LogOut } from 'lucide-react';
+import { Users, Store, ShoppingBag, DollarSign, CheckCircle, XCircle, ShieldCheck, UserCheck, AlertTriangle, RefreshCw, LogOut, CalendarDays } from 'lucide-react';
+import AdminEvents from '../components/admin/AdminEvents';
+import AdminDonations from '../components/admin/AdminDonations';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -18,7 +20,7 @@ const AdminDashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [actionMsg, setActionMsg] = useState(null);
-  const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'shops' | 'orders'
+  const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'shops' | 'orders' | 'events' | 'donations'
   const [orderFilter, setOrderFilter] = useState('all'); // 'all' | 'bulk' | 'customer'
 
   const fetchData = async () => {
@@ -131,41 +133,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Overview Analytics Cards */}
-      <div className="admin-stats-grid">
-        <div className="stat-card gold">
-          <div className="stat-icon-wrapper"><DollarSign size={24} /></div>
-          <div className="stat-info">
-            <span className="stat-value">₹{stats?.totalRevenue ? stats.totalRevenue.toLocaleString() : '0'}</span>
-            <span className="stat-label">Total Platform Revenue</span>
-          </div>
-        </div>
-
-        <div className="stat-card green">
-          <div className="stat-icon-wrapper"><Store size={24} /></div>
-          <div className="stat-info">
-            <span className="stat-value">{stats?.totalShops || shops.length}</span>
-            <span className="stat-label">Registered Shops</span>
-          </div>
-        </div>
-
-        <div className="stat-card blue">
-          <div className="stat-icon-wrapper"><UserCheck size={24} /></div>
-          <div className="stat-info">
-            <span className="stat-value">{stats?.totalVolunteers || allVolunteers.length}</span>
-            <span className="stat-label">Total Volunteers</span>
-          </div>
-        </div>
-
-        <div className="stat-card orange">
-          <div className="stat-icon-wrapper"><AlertTriangle size={24} /></div>
-          <div className="stat-info">
-            <span className="stat-value">{stats?.pendingVolunteers || pendingVolunteers.length}</span>
-            <span className="stat-label">Pending Volunteer Applications</span>
-          </div>
-        </div>
-      </div>
-
       {/* Navigation Tabs */}
       <div className="admin-nav-tabs">
         <button 
@@ -194,10 +161,29 @@ const AdminDashboard = () => {
           <ShoppingBag size={18} />
           Platform Orders ({orders.length})
         </button>
+
+        <button
+          className={`tab-btn ${activeTab === 'events' ? 'active' : ''}`}
+          onClick={() => setActiveTab('events')}
+        >
+          <CalendarDays size={18} />
+          Events Desk
+        </button>
+
+        <button
+          className={`tab-btn ${activeTab === 'donations' ? 'active' : ''}`}
+          onClick={() => setActiveTab('donations')}
+        >
+          <DollarSign size={18} />
+          Donations
+        </button>
       </div>
 
       {/* Main Content Area */}
       <div className="admin-content-section">
+
+        {activeTab === 'events' && <AdminEvents onAction={(message) => { setActionMsg(message); setTimeout(() => setActionMsg(null), 4000); }} />}
+        {activeTab === 'donations' && <AdminDonations onAction={(message) => { setActionMsg(message); setTimeout(() => setActionMsg(null), 4000); }} />}
 
         {/* TAB 1: VOLUNTEER APPROVAL DESK */}
         {activeTab === 'volunteers' && (
@@ -225,7 +211,7 @@ const AdminDashboard = () => {
                       </div>
                       <div>
                         <h3>{vol.name}</h3>
-                        <span className="city-pill">📍 {vol.city} Zone</span>
+                        <span className="city-pill">{vol.city} Zone</span>
                       </div>
                     </div>
 
@@ -320,13 +306,13 @@ const AdminDashboard = () => {
                       <td><strong>{s.name}</strong></td>
                       <td>
                         <div className="font-semibold text-stone-900">{s.ownerName || s.owner || 'N/A'}</div>
-                        <div className="sub-text">📞 {s.contactNumber || s.contact || s.phone || 'N/A'}</div>
+                        <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
                       </td>
                       <td>{s.city}</td>
                       <td>{s.address}</td>
                       <td>
                         {s.volunteer ? (
-                          <span className="vol-assigned">👤 {s.volunteer.name}</span>
+                          <span className="vol-assigned">{s.volunteer.name}</span>
                         ) : (
                           <span className="unassigned">Unassigned</span>
                         )}
@@ -385,13 +371,13 @@ const AdminDashboard = () => {
                   className={`filter-tab-btn ${orderFilter === 'bulk' ? 'active' : ''}`}
                   onClick={() => setOrderFilter('bulk')}
                 >
-                  📦 Bulk / Volunteer Orders ({bulkOrdersCount})
+                  Bulk / Volunteer Orders ({bulkOrdersCount})
                 </button>
                 <button
                   className={`filter-tab-btn ${orderFilter === 'customer' ? 'active' : ''}`}
                   onClick={() => setOrderFilter('customer')}
                 >
-                  🛒 Customer Orders ({customerOrdersCount})
+                  Customer Orders ({customerOrdersCount})
                 </button>
               </div>
 
@@ -420,8 +406,8 @@ const AdminDashboard = () => {
                         const isVolunteer = o.placedBy === 'volunteer' || o.customer?.role === 'volunteer';
                         const shopName = o.shop?.name ? `${o.shop.name} (${o.shop.city || 'Zone'})` : 'Direct Storefront';
                         const placedByName = isVolunteer
-                          ? `👤 Volunteer: ${o.customer?.name || 'Volunteer'}`
-                          : `🛒 Customer: ${o.customer?.name || 'Customer'}`;
+                          ? `Volunteer: ${o.customer?.name || 'Volunteer'}`
+                          : `Customer: ${o.customer?.name || 'Customer'}`;
 
                         return (
                           <tr key={o._id}>
@@ -435,12 +421,12 @@ const AdminDashboard = () => {
                                 {placedByName}
                               </div>
                               {o.customer?.contactNumber && (
-                                <div className="sub-text">📞 {o.customer.contactNumber}</div>
+                                <div className="sub-text">{o.customer.contactNumber}</div>
                               )}
                             </td>
                             <td>
                               <span className={`order-type-badge ${o.orderType === 'bulk' ? 'bulk' : 'normal'}`}>
-                                {o.orderType === 'bulk' ? '📦 BULK WHOLESALE' : '🛒 RETAIL ORDER'}
+                                {o.orderType === 'bulk' ? 'BULK WHOLESALE' : 'RETAIL ORDER'}
                               </span>
                             </td>
                             <td><strong>₹{o.totalAmount.toLocaleString()}</strong></td>

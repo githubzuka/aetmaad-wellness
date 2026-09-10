@@ -41,11 +41,13 @@ const Header = () => {
             Products Catalog
           </NavLink>
 
+          <a href="/#events" className="nav-link">Upcoming Events</a>
+
           <NavLink 
             to="/working-horses" 
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
-            Working Horses Initiative
+            Our Mission
           </NavLink>
 
           <NavLink 
@@ -81,17 +83,23 @@ const Header = () => {
             <div className="user-profile-dropdown">
               <span className="user-name-tag">
                 <User size={15} />
-                {user?.name?.split(' ')[0]} ({user?.role})
+                {user?.name?.split(' ')[0]} {user?.role === 'volunteer' && user?.status !== 'approved' ? '(Application Pending)' : `(${user?.role})`}
               </span>
               
               {user?.role === 'admin' && (
                 <Link to="/admin/dashboard" className="dash-link">Admin Desk</Link>
               )}
-              {user?.role === 'volunteer' && (
+              {user?.role === 'volunteer' && user?.status === 'approved' && (
                 <Link to="/volunteer/dashboard" className="dash-link">Volunteer Desk</Link>
               )}
+              {user?.role === 'volunteer' && user?.status !== 'approved' && (
+                <Link to="/volunteer" className="dash-link">Approval Status</Link>
+              )}
               {user?.role === 'customer' && (
-                <Link to="/orders" className="dash-link">My Orders</Link>
+                <>
+                  <Link to="/orders" className="dash-link">My Orders</Link>
+                  <Link to="/volunteer" state={{ mode: 'apply' }} className="dash-link">Apply as Volunteer</Link>
+                </>
               )}
 
               <button className="btn-logout-header" onClick={logout} title="Sign Out">
@@ -118,6 +126,8 @@ const Header = () => {
           <NavLink to="/" end onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
           <NavLink to="/products" onClick={closeMobileMenu} className="mobile-link">Products Catalog</NavLink>
           <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Working Horses Initiative</NavLink>
+          <a href="/#events" onClick={closeMobileMenu} className="mobile-link">Upcoming Events</a>
+          <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Our Mission</NavLink>
           <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">
             <Heart size={16} aria-hidden="true" />
             Donate Now

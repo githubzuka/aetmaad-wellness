@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import Shop from '../models/Shop.js';
 import Order from '../models/Order.js';
+import sendEmail from '../utils/sendEmail.js';
 
 /**
  * @desc    Get list of all volunteers (filter by status)
@@ -47,8 +48,22 @@ export const updateVolunteerStatus = async (req, res, next) => {
       return res.status(404).json({ message: 'Volunteer not found' });
     }
 
+    const previousStatus = volunteer.status;
     volunteer.status = status;
     await volunteer.save();
+
+    if (status === 'approved' && previousStatus !== 'approved') {
+      try {
+        await sendEmail({
+          to: volunteer.email,
+          subject: 'Your ASHVA volunteer application has been approved',
+          text: `Hello ${volunteer.name},\n\nYour ASHVA volunteer application has been approved by the admin team. You can now sign in to access the Volunteer Desk.\n\nRegards,\nASHVA Admin Team`,
+          html: `<p>Hello ${volunteer.name},</p><p>Your ASHVA volunteer application has been approved by the admin team. You can now sign in to access the Volunteer Desk.</p><p>Regards,<br>ASHVA Admin Team</p>`,
+        });
+      } catch (emailError) {
+        console.error('Volunteer approval email failed:', emailError.message);
+      }
+    }
 
     res.json({
       success: true,

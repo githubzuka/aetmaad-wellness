@@ -19,7 +19,7 @@ const notificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['shop_feedback', 'order_status', 'general', 'system'],
+      enum: ['shop_feedback', 'order_status', 'volunteer_application', 'event_proposal', 'event_upcoming', 'general', 'system'],
       default: 'shop_feedback',
     },
     referenceId: {

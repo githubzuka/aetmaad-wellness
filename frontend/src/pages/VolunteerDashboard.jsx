@@ -197,7 +197,7 @@ const VolunteerDashboard = () => {
           </div>
           <div>
             <div className="zone-pill-row">
-              <span className="zone-badge">📍 CITY ZONE: {volunteerCity.toUpperCase()}</span>
+              <span className="zone-badge">CITY ZONE: {volunteerCity.toUpperCase()}</span>
               <span className="status-badge approved">APPROVED VOLUNTEER</span>
             </div>
             <h1>Volunteer Shop Desk</h1>
@@ -432,8 +432,8 @@ const VolunteerDashboard = () => {
 
             <form onSubmit={handlePlaceDirectOrder} className="vol-modal-form">
               <div className="target-shop-summary">
-                <p>📍 <strong>Shop:</strong> {targetShop.name} ({targetShop.city})</p>
-                <p>👤 <strong>Volunteer:</strong> {user?.name}</p>
+                <p><strong>Shop:</strong> {targetShop.name} ({targetShop.city})</p>
+                <p><strong>Volunteer:</strong> {user?.name}</p>
               </div>
 
               <div className="form-group">

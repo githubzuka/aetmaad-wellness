@@ -178,6 +178,8 @@
 }
 
 @media (max-width: 576px) {
+  .product-showcase-section { padding: 58px 0; }
+  .product-showcase-container { padding: 0 18px; gap: 28px; }
   .showcase-brand-title {
     font-size: 30px;
   }

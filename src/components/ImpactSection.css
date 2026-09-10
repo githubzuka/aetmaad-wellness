@@ -2,8 +2,9 @@
 
 .impact-section {
   width: 100%;
-  padding: 60px 0;
+  padding: 84px 0 88px;
   background-color: #fcfbfa;
+  border-bottom: 1px solid #ece8df;
 }
 
 .impact-container {
@@ -266,6 +267,7 @@
 }
 
 @media (max-width: 640px) {
+  .impact-section { padding: 58px 0 64px; }
   .impact-container { padding: 0 20px; }
   .volunteer-invite-card { align-items: flex-start; flex-wrap: wrap; gap: 14px; padding: 24px 22px; }
   .volunteer-invite-copy { flex-basis: calc(100% - 72px); }

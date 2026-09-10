@@ -225,7 +225,7 @@ const AdminDashboard = () => {
                       </div>
                       <div>
                         <h3>{vol.name}</h3>
-                        <span className="city-pill">📍 {vol.city} Zone</span>
+                        <span className="city-pill">{vol.city} Zone</span>
                       </div>
                     </div>
 
@@ -320,13 +320,13 @@ const AdminDashboard = () => {
                       <td><strong>{s.name}</strong></td>
                       <td>
                         <div className="font-semibold text-stone-900">{s.ownerName || s.owner || 'N/A'}</div>
-                        <div className="sub-text">📞 {s.contactNumber || s.contact || s.phone || 'N/A'}</div>
+                        <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
                       </td>
                       <td>{s.city}</td>
                       <td>{s.address}</td>
                       <td>
                         {s.volunteer ? (
-                          <span className="vol-assigned">👤 {s.volunteer.name}</span>
+                          <span className="vol-assigned">{s.volunteer.name}</span>
                         ) : (
                           <span className="unassigned">Unassigned</span>
                         )}
@@ -385,13 +385,13 @@ const AdminDashboard = () => {
                   className={`filter-tab-btn ${orderFilter === 'bulk' ? 'active' : ''}`}
                   onClick={() => setOrderFilter('bulk')}
                 >
-                  📦 Bulk / Volunteer Orders ({bulkOrdersCount})
+                  Bulk / Volunteer Orders ({bulkOrdersCount})
                 </button>
                 <button
                   className={`filter-tab-btn ${orderFilter === 'customer' ? 'active' : ''}`}
                   onClick={() => setOrderFilter('customer')}
                 >
-                  🛒 Customer Orders ({customerOrdersCount})
+                  Customer Orders ({customerOrdersCount})
                 </button>
               </div>
 
@@ -420,8 +420,8 @@ const AdminDashboard = () => {
                         const isVolunteer = o.placedBy === 'volunteer' || o.customer?.role === 'volunteer';
                         const shopName = o.shop?.name ? `${o.shop.name} (${o.shop.city || 'Zone'})` : 'Direct Storefront';
                         const placedByName = isVolunteer
-                          ? `👤 Volunteer: ${o.customer?.name || 'Volunteer'}`
-                          : `🛒 Customer: ${o.customer?.name || 'Customer'}`;
+                          ? `Volunteer: ${o.customer?.name || 'Volunteer'}`
+                          : `Customer: ${o.customer?.name || 'Customer'}`;
 
                         return (
                           <tr key={o._id}>
@@ -435,12 +435,12 @@ const AdminDashboard = () => {
                                 {placedByName}
                               </div>
                               {o.customer?.contactNumber && (
-                                <div className="sub-text">📞 {o.customer.contactNumber}</div>
+                                <div className="sub-text">{o.customer.contactNumber}</div>
                               )}
                             </td>
                             <td>
                               <span className={`order-type-badge ${o.orderType === 'bulk' ? 'bulk' : 'normal'}`}>
-                                {o.orderType === 'bulk' ? '📦 BULK WHOLESALE' : '🛒 RETAIL ORDER'}
+                                {o.orderType === 'bulk' ? 'BULK WHOLESALE' : 'RETAIL ORDER'}
                               </span>
                             </td>
                             <td><strong>₹{o.totalAmount.toLocaleString()}</strong></td>

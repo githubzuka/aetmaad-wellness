@@ -24,11 +24,27 @@ const getLocalReply = (question) => {
     return '### Ingredients\n\n- Whole grains\n- Essential amino acids\n- Cold-pressed oils\n- Natural digestive enzymes\n- Trace minerals\n\nThe mix contains no fillers or artificial preservatives.';
   }
 
+  if (normalizedQuestion.includes('product') || normalizedQuestion.includes('mix') || normalizedQuestion.includes('buy') || normalizedQuestion.includes('order')) {
+    return '### ASHVA Nutrition Mix\n\nASHVA Equine Nutrition Mix supports working and active horses with grains, amino acids, cold-pressed oils, digestive enzymes, and trace minerals. Open the Products Catalog to review the product, add it to your cart, and place an order.';
+  }
+
+  if (normalizedQuestion.includes('event') || normalizedQuestion.includes('upcoming')) {
+    return '### Upcoming Events\n\nApproved ASHVA welfare drives, community gatherings, and working-horse initiatives appear in the Upcoming Events section. You can see the date, time, city, location, description, and host details there.';
+  }
+
+  if (normalizedQuestion.includes('volunteer') || normalizedQuestion.includes('apply')) {
+    return '### Volunteer Application\n\nYou can apply directly through the Volunteer section without creating a customer account. The admin team reviews the application. Approved volunteers receive access to their dashboard and event notifications.';
+  }
+
+  if (normalizedQuestion.includes('donat') || normalizedQuestion.includes('impact') || normalizedQuestion.includes('rescue')) {
+    return '### ASHVA Impact\n\nASHVA supports nutrition, rescue, medical care, and community distribution for working horses. Visit the Donate or Working Horses Initiative page to learn more and contribute.';
+  }
+
   if (normalizedQuestion.includes('horse') || normalizedQuestion.includes('working')) {
     return '### Working Horse Initiative\n\nA percentage of every purchase supports rescue, feeding, and medical care for street and working horses.';
   }
 
-  return 'I can help with **feeding amounts, ingredients, digestive support, hoof health, and working-horse nutrition**. What would you like to know?';
+  return 'I can help with **products, ingredients, feeding amounts, digestive support, horse care, upcoming events, volunteer applications, donations, orders, and the Working Horses Initiative**. Ask a specific question for a detailed answer.';
 };
 
 const ChatWindow = ({ onClose }) => {

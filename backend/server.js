@@ -10,6 +10,8 @@ import orderRoutes from './src/routes/orderRoutes.js';
 import notificationRoutes from './src/routes/notificationRoutes.js';
 import impactRoutes from './src/routes/impactRoutes.js';
 import chatRoutes from './src/routes/chatRoutes.js';
+import eventRoutes from './src/routes/eventRoutes.js';
+import donationRoutes from './src/routes/donationRoutes.js';
 import { notFound, errorHandler } from './src/middleware/errorMiddleware.js';
 import { initCronJobs } from './src/jobs/cronJobs.js';
 
@@ -45,6 +47,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/impact', impactRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/donations', donationRoutes);
 
 // Initialize scheduled background tasks (node-cron)
 initCronJobs();

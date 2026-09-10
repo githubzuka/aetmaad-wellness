@@ -43,7 +43,10 @@ const Signup = () => {
         ...formData,
         role: 'customer',
       });
-      navigate(fromPath, { replace: true });
+      navigate(fromPath, {
+        replace: true,
+        state: location.state?.mode === 'apply' ? { mode: 'apply' } : undefined,
+      });
     } catch (err) {
       setError(err.message || 'Registration failed. Please check your information.');
     } finally {

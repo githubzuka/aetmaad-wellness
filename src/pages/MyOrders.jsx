@@ -102,7 +102,7 @@ const MyOrders = () => {
 
                   <div className="order-header-right">
                     <span className={`order-type-tag ${order.orderType}`}>
-                      {order.orderType === 'bulk' ? '📦 BULK WHOLESALE' : '🛒 RETAIL ORDER'}
+                      {order.orderType === 'bulk' ? 'BULK WHOLESALE' : 'RETAIL ORDER'}
                     </span>
                     <span className={`order-status-badge ${order.status}`}>
                       {order.status?.toUpperCase()}

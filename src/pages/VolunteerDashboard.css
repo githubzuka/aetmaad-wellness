@@ -483,6 +483,12 @@
   box-sizing: border-box;
 }
 
+.event-proposal-card { max-width: 560px; }
+.event-proposal-help { margin: -6px 0 18px; color: #64748b; font-size: 13px; line-height: 1.5; }
+.event-proposal-card .vol-modal-form > input,
+.event-proposal-card .vol-modal-form > textarea { width: 100%; box-sizing: border-box; border: 1px solid #d5ddd3; border-radius: 8px; padding: 11px 12px; font: inherit; color: #24352a; }
+.event-proposal-card .vol-modal-form > textarea { min-height: 86px; resize: vertical; }
+
 .target-shop-summary {
   background: #faf8f5;
   border: 1px solid #e8e3d8;

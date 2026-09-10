@@ -81,9 +81,9 @@ const VolunteerAuth = () => {
             Thank you, <strong>{user?.name}</strong>! Your application for the <strong>{user?.city || 'Community'} Zone</strong> volunteer program is currently under review by our Admin desk.
           </p>
           <div className="pending-info-box">
-            <p>📋 <strong>Registered Email:</strong> {user?.email}</p>
-            <p>📞 <strong>Contact:</strong> {user?.contactNumber}</p>
-            <p>📍 <strong>City/Zone:</strong> {user?.city}</p>
+            <p><strong>Registered Email:</strong> {user?.email}</p>
+            <p><strong>Contact:</strong> {user?.contactNumber}</p>
+            <p><strong>City/Zone:</strong> {user?.city}</p>
           </div>
           <p className="pending-note">
             Once approved, you will gain access to your Zone's shop management portal and bulk ordering desk.

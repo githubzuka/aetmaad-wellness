@@ -61,13 +61,14 @@ const Footer = () => {
           <div className="footer-col col-links">
             <h4 className="footer-col-title">Quick Links</h4>
             <ul className="footer-nav">
+              <li><a href="/#home">Home</a></li>
               <li><a href="#about">About Us</a></li>
-              <li><a href="#products">Our Products</a></li>
-              <li><a href="#ingredients">Ingredients</a></li>
-              <li><a href="#initiative">Working Horses Initiative</a></li>
-              <li><a href="#donate">Donate Now</a></li>
-              <li><a href="#blog">Blog</a></li>
-              <li><a href="#contact">Contact Us</a></li>
+              <li><a href="/#products">Nutrition Mix</a></li>
+              <li><a href="/#events">Upcoming Events</a></li>
+              <li><a href="/#initiative">Our Impact</a></li>
+              <li><a href="/#feeding">Feeding Guide</a></li>
+              <li><a href="/donate">Donate Now</a></li>
+              <li><a href="/contact">Contact Us</a></li>
             </ul>
           </div>
 

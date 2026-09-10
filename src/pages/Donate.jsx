@@ -57,11 +57,7 @@ const Donate = () => {
         timestamp: new Date().toISOString(),
       };
 
-      try {
-        await axiosClient.post('/api/donations', payload);
-      } catch {
-        // Fallback simulate success if backend donation endpoint is mock
-      }
+      await axiosClient.post('/api/donations', payload);
 
       setSuccess(true);
     } catch (err) {

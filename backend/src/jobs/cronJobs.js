@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import Shop from '../models/Shop.js';
 import User from '../models/User.js';
 import Notification from '../models/Notification.js';
+import Event from '../models/Event.js';
 
 /**
  * Check for shops not updated within the last 7 days and notify volunteers
@@ -62,6 +63,46 @@ export const checkStaleShops = async () => {
   }
 };
 
+/** Notify approved volunteers about events happening within the next 7 days. */
+export const checkUpcomingEvents = async () => {
+  try {
+    const now = new Date();
+    const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const [events, volunteers] = await Promise.all([
+      Event.find({ status: 'approved', date: { $gte: now, $lte: sevenDaysFromNow } }),
+      User.find({ role: 'volunteer', status: 'approved' }).select('_id'),
+    ]);
+
+    let notificationsCreated = 0;
+    for (const event of events) {
+      for (const volunteer of volunteers) {
+        const existingNotification = await Notification.findOne({
+          user: volunteer._id,
+          type: 'event_upcoming',
+          referenceId: event._id,
+          createdAt: { $gte: new Date(now.getTime() - 24 * 60 * 60 * 1000) },
+        });
+
+        if (!existingNotification) {
+          await Notification.create({
+            user: volunteer._id,
+            title: 'ASHVA Event Coming Soon',
+            message: `${event.title} is coming up on ${new Date(event.date).toLocaleDateString('en-IN')} at ${event.location}.`,
+            type: 'event_upcoming',
+            referenceId: event._id,
+            metadata: { eventId: event._id, city: event.city },
+          });
+          notificationsCreated++;
+        }
+      }
+    }
+
+    console.log(`[CRON JOB] Created ${notificationsCreated} upcoming event notification(s).`);
+  } catch (error) {
+    console.error('[CRON EVENT ERROR]:', error.message);
+  }
+};
+
 /**
  * Initialize all automated cron jobs
  */
@@ -72,5 +113,10 @@ export const initCronJobs = () => {
     await checkStaleShops();
   });
 
-  console.log('[CRON] Weekly stale shop reminder job initialized (Runs every Sunday at 00:00)');
+  cron.schedule('0 9 * * *', async () => {
+    console.log('[CRON SCHEDULE] Running upcoming event reminder checker...');
+    await checkUpcomingEvents();
+  });
+
+  console.log('[CRON] Reminder jobs initialized: shops weekly, events daily at 09:00');
 };

@@ -93,9 +93,9 @@ const WeeklyFeedbackModal = ({ isOpen, onClose, shop, onSuccess }) => {
               onChange={(e) => setStatus(e.target.value)}
               className="w-full bg-stone-50 border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm font-medium text-stone-800 focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none transition-all"
             >
-              <option value="Active">🟢 Active & Operating</option>
-              <option value="Inventory Low">🟡 Inventory Low</option>
-              <option value="Needs Restock">🔴 Needs Urgent Restock</option>
+              <option value="Active">Active & Operating</option>
+              <option value="Inventory Low">Inventory Low</option>
+              <option value="Needs Restock">Needs Urgent Restock</option>
               <option value="Closed Temporarily">⚪ Closed Temporarily</option>
             </select>
           </div>

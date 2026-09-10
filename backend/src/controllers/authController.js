@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Notification from '../models/Notification.js';
 import generateToken from '../utils/generateToken.js';
 
 /**
@@ -124,6 +125,58 @@ export const getUserProfile = async (req, res, next) => {
     } else {
       res.status(404).json({ message: 'User not found' });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Submit a volunteer application for an existing customer account
+ * @route   POST /api/auth/apply-volunteer
+ * @access  Private
+ */
+export const applyVolunteer = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.role === 'admin' || user.role === 'volunteer') {
+      return res.status(400).json({ message: 'This account has already applied to become a volunteer.' });
+    }
+
+    const { contactNumber, city } = req.body;
+    user.contactNumber = contactNumber || user.contactNumber;
+    user.city = city || user.city;
+    user.role = 'volunteer';
+    user.status = 'pending';
+    await user.save();
+
+    await Notification.create({
+      user: null,
+      title: 'New Volunteer Application',
+      message: `${user.name} submitted a volunteer application for the ${user.city} zone.`,
+      type: 'volunteer_application',
+      referenceId: user._id,
+      metadata: { volunteerId: user._id, city: user.city },
+    });
+
+    res.json({
+      success: true,
+      message: 'Volunteer application submitted and is pending Admin approval.',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        contactNumber: user.contactNumber,
+        address: user.address,
+        city: user.city,
+        role: user.role,
+        status: user.status,
+      },
+    });
   } catch (error) {
     next(error);
   }

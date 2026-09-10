@@ -172,7 +172,7 @@ const DonateImpact = () => {
           </button>
 
           <div className="donateimpact-security-info">
-            <span>🔒 Secure Donation</span>
+            <span>Secure Donation</span>
             <span className="donateimpact-dot">|</span>
             <span>100% Transparent</span>
           </div>

@@ -140,7 +140,7 @@ const ProductOrder = () => {
             {isBulkTier && (
               <div className="savings-alert-banner">
                 <Sparkles size={18} />
-                <span>🎉 <strong>Bulk Discount Unlocked!</strong> You save ₹{savings.toLocaleString()} on this order!</span>
+                <span><strong>Bulk Discount Unlocked!</strong> You save ₹{savings.toLocaleString()} on this order!</span>
               </div>
             )}
 
@@ -177,7 +177,7 @@ const ProductOrder = () => {
               </div>
 
               {quantity < 5 && (
-                <p className="bulk-hint">💡 Add <strong>{5 - quantity} more bag(s)</strong> to unlock ₹{product.bulkPrice}/bag bulk wholesale rate!</p>
+                <p className="bulk-hint">Add <strong>{5 - quantity} more bag(s)</strong> to unlock ₹{product.bulkPrice}/bag bulk wholesale rate!</p>
               )}
             </div>
 

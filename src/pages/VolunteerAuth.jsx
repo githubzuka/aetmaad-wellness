@@ -18,8 +18,9 @@ const VolunteerAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
+  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
 
-  const { login, register, isAuthenticated, user, isVolunteerApproved, logout } = useAuth();
+  const { login, register, applyVolunteer, isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already logged in and approved volunteer
@@ -44,12 +45,19 @@ const VolunteerAuth = () => {
 
     try {
       if (isRegisterMode) {
-        // Register Volunteer
-        const res = await register({
-          ...formData,
-          role: 'volunteer',
-        });
-        setSuccessMsg('Volunteer application submitted! Pending Admin verification.');
+        if (!isAuthenticated) {
+          await register({
+            ...formData,
+            role: 'volunteer',
+          });
+        } else {
+          await applyVolunteer({
+            contactNumber: formData.contactNumber,
+            city: formData.city,
+          });
+        }
+        setApplicationSubmitted(true);
+        setSuccessMsg('Application submitted successfully. Our team will reach you soon.');
       } else {
         // Sign In
         const res = await login(formData.email, formData.password);
@@ -59,6 +67,8 @@ const VolunteerAuth = () => {
         }
         if (res.user.status === 'approved') {
           navigate('/volunteer/dashboard', { replace: true });
+        } else {
+          setSuccessMsg('Your application is under review. The admin team will approve it soon.');
         }
       }
     } catch (err) {
@@ -69,7 +79,7 @@ const VolunteerAuth = () => {
   };
 
   // If user is currently logged in as volunteer but status is 'pending' or 'rejected'
-  if (isAuthenticated && user?.role === 'volunteer' && user?.status !== 'approved') {
+  if (isAuthenticated && user?.role === 'volunteer' && user?.status !== 'approved' && !applicationSubmitted) {
     return (
       <div className="volunteer-auth-page">
         <div className="volunteer-pending-card">
@@ -77,7 +87,7 @@ const VolunteerAuth = () => {
             <Clock size={40} />
           </div>
           <span className="pending-tag">STATUS: {user?.status?.toUpperCase()}</span>
-          <h2>Application Pending Admin Approval</h2>
+          <h2>We Will Approve Your Application Soon</h2>
           <p>
             Thank you, <strong>{user?.name}</strong>! Your application for the <strong>{user?.city || 'Community'} Zone</strong> volunteer program is currently under review by our Admin desk.
           </p>
@@ -87,7 +97,7 @@ const VolunteerAuth = () => {
             <p><MapPin size={15} aria-hidden="true" /> <strong>City/Zone:</strong> {user?.city}</p>
           </div>
           <p className="pending-note">
-            Once approved, you will gain access to your Zone's shop management portal and bulk ordering desk.
+            Please wait for admin approval. Once approved, you will receive an email from the ASHVA Admin Team and gain access to your Zone's shop management portal and bulk ordering desk.
           </p>
           <div className="pending-card-actions">
             <button className="btn-logout-pending" onClick={logout}>Sign Out / Switch Account</button>
@@ -154,7 +164,7 @@ const VolunteerAuth = () => {
 
         <form onSubmit={handleSubmit} className="volunteer-auth-form">
 
-          {isRegisterMode && (
+          {isRegisterMode && !isAuthenticated && (
             <div className="form-group">
               <label>Full Name</label>
               <div className="input-with-icon">
@@ -179,14 +189,15 @@ const VolunteerAuth = () => {
                 type="email"
                 name="email"
                 placeholder="volunteer@example.com"
-                value={formData.email}
+                value={isAuthenticated ? user?.email || '' : formData.email}
                 onChange={handleInputChange}
                 required
               />
             </div>
           </div>
 
-          <div className="form-group">
+          {!isAuthenticated && (
+            <div className="form-group">
             <label>Password</label>
             <div className="input-with-icon">
               <Lock size={18} className="input-icon" />
@@ -197,10 +208,11 @@ const VolunteerAuth = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 minLength={6}
-                required
+                required={!isAuthenticated}
               />
             </div>
-          </div>
+            </div>
+          )}
 
           {isRegisterMode && (
             <>
@@ -212,7 +224,7 @@ const VolunteerAuth = () => {
                     type="tel"
                     name="contactNumber"
                     placeholder="+91 98765 43210"
-                    value={formData.contactNumber}
+                    value={formData.contactNumber || user?.contactNumber || ''}
                     onChange={handleInputChange}
                     required={isRegisterMode}
                   />
@@ -227,7 +239,7 @@ const VolunteerAuth = () => {
                     type="text"
                     name="city"
                     placeholder="e.g. Mumbai / Pune"
-                    value={formData.city}
+                    value={formData.city || user?.city || ''}
                     onChange={handleInputChange}
                     required={isRegisterMode}
                   />

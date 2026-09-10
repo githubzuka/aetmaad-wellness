@@ -200,7 +200,7 @@ const CartContent = () => {
               </button>
 
               <div className="cart-guarantee-note">
-                🔒 256-Bit Encrypted & Secure Checkout
+                256-Bit Encrypted & Secure Checkout
               </div>
             </div>
           </div>

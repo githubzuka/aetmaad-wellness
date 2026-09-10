@@ -5,6 +5,8 @@ import orderService from '../services/orderService';
 import ShopCard from '../components/volunteer/ShopCard';
 import WeeklyFeedbackModal from '../components/volunteer/WeeklyFeedbackModal';
 import VolunteerShopOrders from '../components/volunteer/VolunteerShopOrders';
+import EventProposalForm from '../components/volunteer/EventProposalForm';
+import VolunteerNotifications from '../components/volunteer/VolunteerNotifications';
 import { MapPin, Store, Plus, AlertTriangle, CheckCircle, Clock, LogOut, RefreshCw, X, Package, ShoppingBag } from 'lucide-react';
 import './VolunteerDashboard.css';
 
@@ -197,7 +199,7 @@ const VolunteerDashboard = () => {
           </div>
           <div>
             <div className="zone-pill-row">
-              <span className="zone-badge">📍 CITY ZONE: {volunteerCity.toUpperCase()}</span>
+              <span className="zone-badge">CITY ZONE: {volunteerCity.toUpperCase()}</span>
               <span className="status-badge approved">APPROVED VOLUNTEER</span>
             </div>
             <h1>Volunteer Shop Desk</h1>
@@ -206,10 +208,13 @@ const VolunteerDashboard = () => {
         </div>
 
         <div className="volunteer-header-actions">
+          <VolunteerNotifications />
           <button className="btn-add-shop-main" onClick={openAddShopModal}>
             <Plus size={18} />
             Add New Shop
           </button>
+
+          <EventProposalForm onAction={(message) => { setActionMsg(message); setTimeout(() => setActionMsg(null), 4000); }} />
 
           <button className="btn-logout-vol" onClick={logout}>
             <LogOut size={16} />
@@ -432,8 +437,8 @@ const VolunteerDashboard = () => {
 
             <form onSubmit={handlePlaceDirectOrder} className="vol-modal-form">
               <div className="target-shop-summary">
-                <p>📍 <strong>Shop:</strong> {targetShop.name} ({targetShop.city})</p>
-                <p>👤 <strong>Volunteer:</strong> {user?.name}</p>
+                <p><strong>Shop:</strong> {targetShop.name} ({targetShop.city})</p>
+                <p><strong>Volunteer:</strong> {user?.name}</p>
               </div>
 
               <div className="form-group">

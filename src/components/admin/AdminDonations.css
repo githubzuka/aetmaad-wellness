@@ -1,0 +1,8 @@
+.admin-donations-desk { min-width: 0; }
+.donation-summary-row { display: grid; grid-template-columns: repeat(2, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.donation-summary-row > div { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid #e2e8e0; border-radius: 10px; background: #fbfdf9; color: #1b4d2e; }
+.donation-summary-row span { display: grid; gap: 3px; color: #64748b; font-size: 12px; }
+.donation-summary-row strong { color: #173a24; font-size: 20px; }
+.status-select.received { background: #fffbe6; color: #b45309; border-color: #fde68a; }
+.status-select.verified { background: #dcfce7; color: #15803d; border-color: #86efac; }
+@media (max-width: 600px) { .donation-summary-row { grid-template-columns: 1fr; } }

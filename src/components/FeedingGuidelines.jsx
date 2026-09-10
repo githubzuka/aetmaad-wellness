@@ -84,7 +84,7 @@ const FeedingGuidelines = () => {
   ];
 
   return (
-    <section className="feeding-section">
+    <section className="feeding-section" id="feeding">
       <div className="feeding-container">
         
         {/* Aesthetic Header */}

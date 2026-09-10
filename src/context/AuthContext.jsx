@@ -131,6 +131,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const applyVolunteer = async (applicationData) => {
+    setError(null);
+    try {
+      const res = await authService.applyVolunteer(applicationData);
+      if (res.success && res.data) {
+        localStorage.setItem('user', JSON.stringify(res.data));
+        setUser(res.data);
+        return { success: true, user: res.data };
+      }
+      throw new Error(res.message || 'Volunteer application failed');
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const value = {
     user,
     token,
@@ -144,6 +160,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateProfile,
+    applyVolunteer,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

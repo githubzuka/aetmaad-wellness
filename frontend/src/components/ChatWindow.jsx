@@ -14,7 +14,7 @@ const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: 'Welcome to **ASHVA Wellness**! 🐎\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
+      content: 'Welcome to **ASHVA Wellness**!\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.'
     }
   ]);
   const [input, setInput] = useState('');

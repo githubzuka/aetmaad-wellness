@@ -30,6 +30,11 @@ const authService = {
     return response.data;
   },
 
+  async applyVolunteer(applicationData) {
+    const response = await axiosClient.post('/api/auth/apply-volunteer', applicationData);
+    return response.data;
+  },
+
   /**
    * Update logged-in user profile
    * @param {Object} profileData - { name, contactNumber, address, city, password }

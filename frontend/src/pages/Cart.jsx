@@ -128,7 +128,7 @@ const Cart = () => {
               {qualifiesForBulk && (
                 <div className="bulk-active-banner">
                   <Sparkles size={18} />
-                  <span>🎉 <strong>Wholesale Bulk Discount Active!</strong> Applied on total cart volume ({totalBags} Bags).</span>
+                  <span><strong>Wholesale Bulk Discount Active!</strong> Applied on total cart volume ({totalBags} Bags).</span>
                 </div>
               )}
 
