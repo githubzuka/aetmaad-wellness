@@ -20,22 +20,28 @@ const Hero = () => {
     navigate('/donate');
   };
 
+  const handleVolunteerClick = () => {
+    navigate('/volunteer', { state: { mode: 'apply' } });
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="hero-container">
         
         <div className="hero-content">
-          <h1 className="hero-title">
-            Premium Equine <br />
-            Nutrition Mix for <br />
-            <span className="hero-highlight">Healthy, Strong & <br />High-Performance <br />Horses</span>
-          </h1>
-          
-          <p className="hero-description">
-            Natural daily nutritional support specially formulated to improve stamina, 
-            digestion, immunity, hoof strength, coat health, and overall well-being of 
-            working and performance horses.
-          </p>
+          <div className="hero-header-group">
+            <h1 className="hero-title">
+              Premium Equine <br />
+              Nutrition Mix for <br />
+              <span className="hero-highlight">Healthy, Strong & <br />High-Performance <br />Horses</span>
+            </h1>
+            
+            <p className="hero-description">
+              Natural daily nutritional support specially formulated to improve stamina, 
+              digestion, immunity, hoof strength, coat health, and overall well-being of 
+              working and performance horses.
+            </p>
+          </div>
           
           <div className="hero-actions">
             <button className="btn-buy-now" onClick={handleBuyNowClick}>
@@ -48,7 +54,7 @@ const Hero = () => {
               <i className="bi bi-heart-fill btn-icon"></i>
             </button>
           </div>
-          
+
           <div className="hero-trust-badges">
             <span className="trust-label">Trusted by</span>
             
@@ -73,7 +79,6 @@ const Hero = () => {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

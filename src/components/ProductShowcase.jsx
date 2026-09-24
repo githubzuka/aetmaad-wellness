@@ -32,7 +32,7 @@ const ProductShowcase = () => {
         <div className="showcase-media-side">
           <div className="product-image-card">
             <img 
-              src="/images/enquinemix.png" 
+              src="/images/enquine.png" 
               alt="ASHVA Equine Nutrition Mix" 
               className="product-showcase-img"
             />

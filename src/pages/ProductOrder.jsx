@@ -37,7 +37,7 @@ const ProductOrder = () => {
           description: 'Natural daily nutritional supplement specially formulated to improve stamina, digestion, immunity, hoof strength, and coat health for working and performance horses.',
           retailPrice: 1500,
           bulkPrice: 1200,
-          image: '/images/enquinemix.png',
+          image: '/images/enquine.png',
           stock: 200,
         });
       } finally {
@@ -95,7 +95,7 @@ const ProductOrder = () => {
           <div className="product-media-column">
             <div className="large-image-frame">
               <img
-                src={product.image || '/images/enquinemix.png'}
+                src={product.image || '/images/enquine.png'}
                 alt={product.name}
                 className="main-product-img"
               />

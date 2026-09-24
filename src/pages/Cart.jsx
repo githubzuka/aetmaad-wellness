@@ -142,7 +142,7 @@ const Cart = () => {
                     <div key={item._id} className="cart-item-row">
                       
                       <div className="cart-item-img-box">
-                        <img src={item.image || '/images/enquinemix.png'} alt={item.name} />
+                        <img src={item.image || '/images/enquine.png'} alt={item.name} />
                       </div>
 
                       <div className="cart-item-details">

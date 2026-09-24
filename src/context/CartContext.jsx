@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
             name: product.name,
             retailPrice: product.retailPrice || 1500,
             bulkPrice: product.bulkPrice || 1200,
-            image: product.image || '/images/enquinemix.png',
+            image: product.image || '/images/enquine.png',
             shop: product.shop,
             shopId: extractedShopId,
             quantity: quantity,

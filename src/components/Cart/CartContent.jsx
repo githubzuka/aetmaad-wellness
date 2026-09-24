@@ -15,7 +15,7 @@ const CartContent = () => {
       subtext: 'Daily Vitality Support (5 kg)',
       price: 1850,
       quantity: 1,
-      image: '/images/enquinemix.png',
+      image: '/images/enquine.png',
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ const CartContent = () => {
       subtext: 'Hoof Strength & Joint Care (2 kg)',
       price: 950,
       quantity: 2,
-      image: '/images/enquinemix.png',
+      image: '/images/enquine.png',
     },
   ]);
 
@@ -44,21 +44,21 @@ const CartContent = () => {
       name: 'Vitality Equine Formula',
       subtext: 'Daily Balanced Nutrition (5 kg)',
       price: 1850,
-      image: '/images/enquinemix.png',
+      image: '/images/enquine.png',
     },
     {
       id: 102,
       name: 'Hoof & Joint Care Mineral',
       subtext: 'Targeted Strength Support (2 kg)',
       price: 950,
-      image: '/images/enquinemix.png',
+      image: '/images/enquine.png',
     },
     {
       id: 103,
       name: 'Working Horse Recovery Mix',
       subtext: 'Electrolytes & Muscle Support (3 kg)',
       price: 1400,
-      image: '/images/enquinemix.png',
+      image: '/images/enquine.png',
     },
   ];
 
@@ -223,7 +223,7 @@ const CartContent = () => {
                         alt={item.name}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = '/images/enquinemix.png';
+                          e.target.src = '/images/enquine.png';
                         }}
                       />
                     </div>
@@ -415,7 +415,7 @@ const CartContent = () => {
                         alt={prod.name}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = '/images/enquinemix.png';
+                          e.target.src = '/images/enquine.png';
                         }}
                       />
                     </div>
