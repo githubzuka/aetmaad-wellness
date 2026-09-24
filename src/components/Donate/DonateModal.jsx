@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axiosClient from '../../api/axiosClient';
 import './DonateModal.css';
 
 const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
@@ -11,6 +12,8 @@ const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
 
   const [showQRView, setShowQRView] = useState(false);
   const [paymentSubmitted, setPaymentSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   if (!isOpen) return null;
 
@@ -27,12 +30,38 @@ const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
 
   const handleProceedToQR = (e) => {
     e.preventDefault();
+    setError('');
     setShowQRView(true);
+  };
+
+  const handlePaymentComplete = async () => {
+    setError('');
+    setIsSubmitting(true);
+
+    try {
+      await axiosClient.post('/api/donations', {
+        amount: Number(selectedAmount),
+        frequency: isMonthly ? 'monthly' : 'one-time',
+        donor: {
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          panNumber: formData.panNumber,
+        },
+      });
+      setPaymentSubmitted(true);
+    } catch (submissionError) {
+      setError(submissionError.message || 'Unable to record your contribution. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResetModal = () => {
     setShowQRView(false);
     setPaymentSubmitted(false);
+    setIsSubmitting(false);
+    setError('');
     onClose();
   };
 
@@ -141,10 +170,12 @@ const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
                 type="button"
                 className="donatemodal-pay-btn"
                 style={{ marginTop: '14px' }}
-                onClick={() => setPaymentSubmitted(true)}
+                onClick={handlePaymentComplete}
+                disabled={isSubmitting}
               >
-                I Have Completed the Payment
+                {isSubmitting ? 'Recording Contribution...' : 'I Have Completed the Payment'}
               </button>
+              {error && <p className="donatemodal-error" role="alert">{error}</p>}
             </div>
           )
         ) : (
@@ -154,7 +185,13 @@ const DonateModal = ({ isOpen, onClose, selectedAmount, isMonthly }) => {
             <h2>Thank You for Your Support!</h2>
             <p>Your contribution of <strong>₹{Number(selectedAmount).toLocaleString('en-IN')}</strong> has been recorded.</p>
             <p className="donatemodal-receipt-note">A receipt confirmation will be sent to <u>{formData.email}</u>.</p>
-            <button className="donatemodal-pay-btn" onClick={handleResetModal}>
+            <button
+              className="donatemodal-pay-btn"
+              onClick={() => {
+                window.alert('Thank you for your support!');
+                handleResetModal();
+              }}
+            >
               Done
             </button>
           </div>

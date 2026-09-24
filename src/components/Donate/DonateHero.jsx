@@ -7,7 +7,7 @@ const DonateHero = () => {
       {/* Background Media with Soft Blend */}
       <div className="hero-media-wrapper">
         <img 
-          src="/images/impact.png" 
+          src="/images/impacts.png"
           alt="Working Horse and Caregiver" 
           className="hero-media-image"
         />
