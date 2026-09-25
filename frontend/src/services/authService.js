@@ -40,8 +40,7 @@ const authService = {
   },
 };
 
-export default authService;
-// Example: src/services/authService.js or src/components/UserProfile.jsx
+export default authService;// Example: src/services/authService.js or src/components/UserProfile.jsx
 import axiosClient from '../api/axiosClient';
 
 // Fetching protected user data
