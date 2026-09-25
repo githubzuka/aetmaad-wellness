@@ -4,7 +4,18 @@ import adminService from '../services/adminService';
 import shopService from '../services/shopService';
 import orderService from '../services/orderService';
 import AdminNotifications from '../components/admin/AdminNotifications';
-import { Users, Store, ShoppingBag, DollarSign, CheckCircle, XCircle, ShieldCheck, UserCheck, AlertTriangle, RefreshCw, LogOut } from 'lucide-react';
+import { 
+  Store, 
+  ShoppingBag, 
+  DollarSign, 
+  CheckCircle, 
+  XCircle, 
+  ShieldCheck, 
+  UserCheck, 
+  AlertTriangle, 
+  RefreshCw, 
+  LogOut 
+} from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -32,19 +43,19 @@ const AdminDashboard = () => {
         adminService.getAllOrders(),
       ]);
 
-      if (statsRes.status === 'fulfilled' && statsRes.value.success) {
+      if (statsRes.status === 'fulfilled' && statsRes.value?.success) {
         setStats(statsRes.value.data);
       }
-      if (pendingRes.status === 'fulfilled' && pendingRes.value.success) {
+      if (pendingRes.status === 'fulfilled' && pendingRes.value?.success) {
         setPendingVolunteers(pendingRes.value.data || []);
       }
-      if (allVolRes.status === 'fulfilled' && allVolRes.value.success) {
+      if (allVolRes.status === 'fulfilled' && allVolRes.value?.success) {
         setAllVolunteers(allVolRes.value.data || []);
       }
-      if (shopsRes.status === 'fulfilled' && shopsRes.value.success) {
+      if (shopsRes.status === 'fulfilled' && shopsRes.value?.success) {
         setShops(shopsRes.value.data || []);
       }
-      if (ordersRes.status === 'fulfilled' && ordersRes.value.success) {
+      if (ordersRes.status === 'fulfilled' && ordersRes.value?.success) {
         setOrders(ordersRes.value.data || []);
       }
     } catch (err) {
@@ -69,10 +80,9 @@ const AdminDashboard = () => {
     setTimeout(() => setActionMsg(null), 4000);
   };
 
-  // Volunteer Approval / Rejection Action Handler
   const handleVolunteerAction = async (id, status) => {
     try {
-      const res = await adminService.updateVolunteerStatus(id, status);
+      await adminService.updateVolunteerStatus(id, status);
       setActionMsg({ type: 'success', text: `Volunteer status updated to ${status.toUpperCase()}` });
       fetchData();
     } catch (err) {
@@ -81,7 +91,6 @@ const AdminDashboard = () => {
     setTimeout(() => setActionMsg(null), 4000);
   };
 
-  // Reassign Shop Volunteer
   const handleAssignVolunteer = async (shopId, volunteerId) => {
     try {
       await adminService.assignShopVolunteer(shopId, volunteerId || null);
@@ -100,26 +109,25 @@ const AdminDashboard = () => {
       <header className="admin-dash-header">
         <div className="admin-header-brand">
           <div className="admin-logo-badge">
-            <ShieldCheck size={28} />
+            <ShieldCheck size={26} />
           </div>
-          <div>
+          <div className="admin-header-title">
             <h1>Master Admin Console</h1>
-            <p>Welcome back, <strong>{user?.name}</strong> • Platform System Records & Approval Desk</p>
+            <p>Welcome back, <strong>{user?.name || 'Admin'}</strong> • System Records & Approvals</p>
           </div>
         </div>
 
         <div className="admin-header-actions">
-          {/* Admin Weekly Feedback & System Notifications Component */}
           <AdminNotifications />
 
           <button className="btn-refresh" onClick={fetchData} title="Refresh Data">
             <RefreshCw size={16} />
-            Sync Data
+            <span>Sync Data</span>
           </button>
 
-          <button className="btn-logout-admin" onClick={logout}>
+          <button className="btn-logout-admin" onClick={logout} title="Sign Out">
             <LogOut size={16} />
-            Sign Out
+            <span>Sign Out</span>
           </button>
         </div>
       </header>
@@ -134,7 +142,7 @@ const AdminDashboard = () => {
       {/* Overview Analytics Cards */}
       <div className="admin-stats-grid">
         <div className="stat-card gold">
-          <div className="stat-icon-wrapper"><DollarSign size={24} /></div>
+          <div className="stat-icon-wrapper"><DollarSign size={22} /></div>
           <div className="stat-info">
             <span className="stat-value">₹{stats?.totalRevenue ? stats.totalRevenue.toLocaleString() : '0'}</span>
             <span className="stat-label">Total Platform Revenue</span>
@@ -142,7 +150,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card green">
-          <div className="stat-icon-wrapper"><Store size={24} /></div>
+          <div className="stat-icon-wrapper"><Store size={22} /></div>
           <div className="stat-info">
             <span className="stat-value">{stats?.totalShops || shops.length}</span>
             <span className="stat-label">Registered Shops</span>
@@ -150,7 +158,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card blue">
-          <div className="stat-icon-wrapper"><UserCheck size={24} /></div>
+          <div className="stat-icon-wrapper"><UserCheck size={22} /></div>
           <div className="stat-info">
             <span className="stat-value">{stats?.totalVolunteers || allVolunteers.length}</span>
             <span className="stat-label">Total Volunteers</span>
@@ -158,22 +166,22 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card orange">
-          <div className="stat-icon-wrapper"><AlertTriangle size={24} /></div>
+          <div className="stat-icon-wrapper"><AlertTriangle size={22} /></div>
           <div className="stat-info">
             <span className="stat-value">{stats?.pendingVolunteers || pendingVolunteers.length}</span>
-            <span className="stat-label">Pending Volunteer Applications</span>
+            <span className="stat-label">Pending Applications</span>
           </div>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="admin-nav-tabs">
+      <nav className="admin-nav-tabs" aria-label="Dashboard views">
         <button 
           className={`tab-btn ${activeTab === 'volunteers' ? 'active' : ''}`}
           onClick={() => setActiveTab('volunteers')}
         >
           <UserCheck size={18} />
-          Volunteer Approval Desk
+          <span>Volunteer Desk</span>
           {pendingVolunteers.length > 0 && (
             <span className="tab-badge">{pendingVolunteers.length}</span>
           )}
@@ -184,7 +192,7 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('shops')}
         >
           <Store size={18} />
-          Platform Shops ({shops.length})
+          <span>Shops ({shops.length})</span>
         </button>
 
         <button 
@@ -192,19 +200,19 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('orders')}
         >
           <ShoppingBag size={18} />
-          Platform Orders ({orders.length})
+          <span>Orders ({orders.length})</span>
         </button>
-      </div>
+      </nav>
 
       {/* Main Content Area */}
-      <div className="admin-content-section">
+      <main className="admin-content-section">
 
         {/* TAB 1: VOLUNTEER APPROVAL DESK */}
         {activeTab === 'volunteers' && (
           <div className="approval-desk-wrapper">
             <div className="desk-header">
-              <h2>Pending Volunteer Applications ({pendingVolunteers.length})</h2>
-              <p>Review candidate applications and approve or reject access to zone shop management.</p>
+              <h2>Pending Applications ({pendingVolunteers.length})</h2>
+              <p>Review candidate applications and approve access to zone shop management.</p>
             </div>
 
             {loading ? (
@@ -221,17 +229,17 @@ const AdminDashboard = () => {
                   <div key={vol._id} className="applicant-card">
                     <div className="applicant-top">
                       <div className="applicant-avatar">
-                        {vol.name.charAt(0).toUpperCase()}
+                        {vol.name ? vol.name.charAt(0).toUpperCase() : 'V'}
                       </div>
                       <div>
                         <h3>{vol.name}</h3>
-                        <span className="city-pill">{vol.city} Zone</span>
+                        <span className="city-pill">{vol.city || 'General'} Zone</span>
                       </div>
                     </div>
 
                     <div className="applicant-details">
                       <p><strong>Email:</strong> {vol.email}</p>
-                      <p><strong>Contact:</strong> {vol.contactNumber}</p>
+                      <p><strong>Contact:</strong> {vol.contactNumber || 'N/A'}</p>
                       <p><strong>Applied Date:</strong> {new Date(vol.createdAt).toLocaleDateString()}</p>
                     </div>
 
@@ -241,7 +249,7 @@ const AdminDashboard = () => {
                         onClick={() => handleVolunteerAction(vol._id, 'approved')}
                       >
                         <CheckCircle size={16} />
-                        Approve Application
+                        Approve
                       </button>
                       
                       <button 
@@ -258,8 +266,8 @@ const AdminDashboard = () => {
             )}
 
             {/* Approved Volunteers Table */}
-            <div className="desk-header" style={{ marginTop: '40px' }}>
-              <h2>Active / All Volunteers List ({allVolunteers.length})</h2>
+            <div className="desk-header section-divider">
+              <h2>Active / All Volunteers ({allVolunteers.length})</h2>
             </div>
 
             <div className="admin-table-wrapper">
@@ -275,18 +283,26 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allVolunteers.map((v) => (
-                    <tr key={v._id}>
-                      <td><strong>{v.name}</strong></td>
-                      <td>{v.email}</td>
-                      <td>{v.contactNumber}</td>
-                      <td>{v.city}</td>
-                      <td>
-                        <span className={`status-pill ${v.status}`}>{v.status.toUpperCase()}</span>
-                      </td>
-                      <td>{new Date(v.createdAt).toLocaleDateString()}</td>
+                  {allVolunteers.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="table-empty">No volunteers registered yet.</td>
                     </tr>
-                  ))}
+                  ) : (
+                    allVolunteers.map((v) => (
+                      <tr key={v._id}>
+                        <td><strong>{v.name}</strong></td>
+                        <td>{v.email}</td>
+                        <td>{v.contactNumber || 'N/A'}</td>
+                        <td>{v.city || 'N/A'}</td>
+                        <td>
+                          <span className={`status-pill ${v.status?.toLowerCase()}`}>
+                            {(v.status || 'PENDING').toUpperCase()}
+                          </span>
+                        </td>
+                        <td>{new Date(v.createdAt).toLocaleDateString()}</td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -315,39 +331,45 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {shops.map((s) => (
-                    <tr key={s._id}>
-                      <td><strong>{s.name}</strong></td>
-                      <td>
-                        <div className="font-semibold text-stone-900">{s.ownerName || s.owner || 'N/A'}</div>
-                        <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
-                      </td>
-                      <td>{s.city}</td>
-                      <td>{s.address}</td>
-                      <td>
-                        {s.volunteer ? (
-                          <span className="vol-assigned">{s.volunteer.name}</span>
-                        ) : (
-                          <span className="unassigned">Unassigned</span>
-                        )}
-                      </td>
-                      <td>{s.lastUpdated ? new Date(s.lastUpdated).toLocaleDateString() : 'N/A'}</td>
-                      <td>
-                        <select 
-                          className="assign-select"
-                          value={s.volunteer?._id || ''}
-                          onChange={(e) => handleAssignVolunteer(s._id, e.target.value)}
-                        >
-                          <option value="">-- Assign Volunteer --</option>
-                          {allVolunteers.filter(v => v.status === 'approved').map((vol) => (
-                            <option key={vol._id} value={vol._id}>
-                              {vol.name} ({vol.city})
-                            </option>
-                          ))}
-                        </select>
-                      </td>
+                  {shops.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" className="table-empty">No registered shops found.</td>
                     </tr>
-                  ))}
+                  ) : (
+                    shops.map((s) => (
+                      <tr key={s._id}>
+                        <td><strong>{s.name}</strong></td>
+                        <td>
+                          <div className="owner-title">{s.ownerName || s.owner || 'N/A'}</div>
+                          <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
+                        </td>
+                        <td>{s.city || 'N/A'}</td>
+                        <td className="cell-address">{s.address || 'N/A'}</td>
+                        <td>
+                          {s.volunteer ? (
+                            <span className="vol-assigned">{s.volunteer.name}</span>
+                          ) : (
+                            <span className="unassigned">Unassigned</span>
+                          )}
+                        </td>
+                        <td>{s.lastUpdated ? new Date(s.lastUpdated).toLocaleDateString() : 'N/A'}</td>
+                        <td>
+                          <select 
+                            className="assign-select"
+                            value={s.volunteer?._id || ''}
+                            onChange={(e) => handleAssignVolunteer(s._id, e.target.value)}
+                          >
+                            <option value="">-- Assign Volunteer --</option>
+                            {allVolunteers.filter(v => v.status === 'approved').map((vol) => (
+                              <option key={vol._id} value={vol._id}>
+                                {vol.name} ({vol.city || 'Zone'})
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -385,7 +407,7 @@ const AdminDashboard = () => {
                   className={`filter-tab-btn ${orderFilter === 'bulk' ? 'active' : ''}`}
                   onClick={() => setOrderFilter('bulk')}
                 >
-                  Bulk / Volunteer Orders ({bulkOrdersCount})
+                  Bulk / Volunteer ({bulkOrdersCount})
                 </button>
                 <button
                   className={`filter-tab-btn ${orderFilter === 'customer' ? 'active' : ''}`}
@@ -411,7 +433,7 @@ const AdminDashboard = () => {
                   <tbody>
                     {displayOrders.length === 0 ? (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center', padding: '30px' }}>
+                        <td colSpan="7" className="table-empty">
                           No orders match the selected filter criterion.
                         </td>
                       </tr>
@@ -425,7 +447,7 @@ const AdminDashboard = () => {
 
                         return (
                           <tr key={o._id}>
-                            <td><code>#{o._id.slice(-6).toUpperCase()}</code></td>
+                            <td><code>#{o._id ? o._id.slice(-6).toUpperCase() : '------'}</code></td>
                             <td>
                               <strong>{shopName}</strong>
                               {o.shop?.address && <div className="sub-text">{o.shop.address}</div>}
@@ -443,10 +465,10 @@ const AdminDashboard = () => {
                                 {o.orderType === 'bulk' ? 'BULK WHOLESALE' : 'RETAIL ORDER'}
                               </span>
                             </td>
-                            <td><strong>₹{o.totalAmount.toLocaleString()}</strong></td>
+                            <td><strong>₹{o.totalAmount ? o.totalAmount.toLocaleString() : '0'}</strong></td>
                             <td>
                               <select
-                                className={`status-select ${o.status}`}
+                                className={`status-select ${o.status || 'pending'}`}
                                 value={o.status || 'pending'}
                                 onChange={(e) => handleUpdateOrderStatus(o._id, e.target.value)}
                               >
@@ -458,7 +480,7 @@ const AdminDashboard = () => {
                                 <option value="cancelled">CANCELLED</option>
                               </select>
                             </td>
-                            <td>{new Date(o.createdAt).toLocaleString()}</td>
+                            <td>{o.createdAt ? new Date(o.createdAt).toLocaleString() : 'N/A'}</td>
                           </tr>
                         );
                       })
@@ -470,7 +492,7 @@ const AdminDashboard = () => {
           );
         })()}
 
-      </div>
+      </main>
 
     </div>
   );
