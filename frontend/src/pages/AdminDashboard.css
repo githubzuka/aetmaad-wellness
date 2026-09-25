@@ -7,6 +7,11 @@
   min-height: 100vh;
   background-color: #f8fafa;
   padding: 24px 32px;
+  /* Safe area padding for notch devices */
+  padding-top: max(24px, env(safe-area-inset-top));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  padding-left: max(32px, env(safe-area-inset-left));
+  padding-right: max(32px, env(safe-area-inset-right));
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
   color: #1e293b;
   box-sizing: border-box;
@@ -71,16 +76,20 @@
 .btn-refresh, 
 .btn-logout-admin {
   border: 1px solid #cbd5e1;
-  padding: 9px 16px;
+  padding: 10px 18px;
+  min-height: 44px; /* Touch target standard */
   border-radius: 99px;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   transition: all 0.2s ease;
   white-space: nowrap;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-refresh {
@@ -88,7 +97,8 @@
   color: #334155;
 }
 
-.btn-refresh:hover {
+.btn-refresh:hover,
+.btn-refresh:active {
   background: #e2e8f0;
   border-color: #94a3b8;
 }
@@ -99,7 +109,8 @@
   border-color: #fca5a5;
 }
 
-.btn-logout-admin:hover {
+.btn-logout-admin:hover,
+.btn-logout-admin:active {
   background: #fecaca;
   border-color: #f87171;
 }
@@ -188,38 +199,36 @@
   gap: 10px;
   margin-bottom: 20px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none; /* Clean native feel */
 }
 
 .admin-nav-tabs::-webkit-scrollbar {
-  height: 4px;
-}
-
-.admin-nav-tabs::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  display: none;
 }
 
 .tab-btn {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   padding: 10px 18px;
+  min-height: 44px;
   border-radius: 12px;
   font-size: 13.5px;
   font-weight: 700;
   color: #475569;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.tab-btn:hover {
+.tab-btn:hover,
+.tab-btn:active {
   background: #f8fafc;
   border-color: #94a3b8;
 }
@@ -368,16 +377,18 @@
 .btn-approve, 
 .btn-reject {
   flex: 1;
-  padding: 9px;
+  padding: 10px;
+  min-height: 44px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 12.5px;
+  font-size: 13px;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   transition: opacity 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-approve {
@@ -386,7 +397,8 @@
   border: none;
 }
 
-.btn-approve:hover {
+.btn-approve:hover,
+.btn-approve:active {
   background: #15803d;
 }
 
@@ -396,7 +408,8 @@
   border: 1px solid #fca5a5;
 }
 
-.btn-reject:hover {
+.btn-reject:hover,
+.btn-reject:active {
   background: #fee2e2;
 }
 
@@ -413,7 +426,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  min-width: 650px; /* Ensures table stays legible and triggers horizontal scroll when needed */
+  min-width: 650px;
 }
 
 .admin-data-table th {
@@ -484,10 +497,10 @@
 }
 
 .assign-select {
-  padding: 6px 10px;
+  padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid #cbd5e1;
-  font-size: 12px;
+  font-size: 13px; /* Prevents auto-zoom on iOS */
   outline: none;
   background: #ffffff;
   max-width: 100%;
@@ -499,22 +512,34 @@
   display: flex;
   gap: 8px;
   margin-bottom: 18px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.order-filter-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-tab-btn {
   background: #f8fafc;
   border: 1px solid #cbd5e1;
-  padding: 7px 14px;
+  padding: 8px 16px;
+  min-height: 40px;
   border-radius: 99px;
   font-size: 12.5px;
   font-weight: 700;
   color: #475569;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.filter-tab-btn:hover {
+.filter-tab-btn:hover,
+.filter-tab-btn:active {
   background: #e2e8f0;
 }
 
@@ -568,13 +593,14 @@
 }
 
 .status-select {
-  padding: 5px 8px;
+  padding: 8px 10px;
   border-radius: 8px;
-  font-size: 11.5px;
-  font-weight: 800;
+  font-size: 13px; /* Prevents auto-zoom on iOS */
+  font-weight: 700;
   border: 1px solid #cbd5e1;
   outline: none;
   cursor: pointer;
+  background-color: #ffffff;
 }
 
 .status-select.pending { background: #fffbe6; color: #b45309; border-color: #fde68a; }
@@ -598,6 +624,8 @@
 @media (max-width: 1024px) {
   .admin-dashboard-container {
     padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 
   .admin-dash-header {
@@ -612,7 +640,11 @@
 /* Mobile Devices (Under 768px) */
 @media (max-width: 768px) {
   .admin-dashboard-container {
-    padding: 14px 12px;
+    padding: 12px;
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
   }
 
   .admin-dash-header {
@@ -650,9 +682,6 @@
   .btn-refresh, 
   .btn-logout-admin {
     flex: 1;
-    justify-content: center;
-    padding: 8px 12px;
-    font-size: 12px;
   }
 
   .admin-stats-grid {
@@ -688,11 +717,8 @@
     grid-template-columns: 1fr;
   }
 
-  .filter-tab-btn {
-    flex: 1;
-    text-align: center;
-    padding: 6px 10px;
-    font-size: 11.5px;
+  .cell-address {
+    max-width: 130px;
   }
 }
 
@@ -713,12 +739,12 @@
 
   .admin-data-table th, 
   .admin-data-table td {
-    padding: 10px 10px;
+    padding: 10px 8px;
     font-size: 12px;
   }
 }
 
-/* Smooth Fade In Animation */
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
