@@ -41,3 +41,17 @@ const authService = {
 };
 
 export default authService;
+// Example: src/services/authService.js or src/components/UserProfile.jsx
+import axiosClient from '../api/axiosClient';
+
+// Fetching protected user data
+export const getUserProfile = async () => {
+  const response = await axiosClient.get('/user/profile');
+  return response.data;
+};
+
+// Creating a new community order
+export const createOrder = async (orderData) => {
+  const response = await axiosClient.post('/orders', orderData);
+  return response.data;
+};
