@@ -56,5 +56,10 @@ const adminService = {
     return response.data;
   },
 };
+// In src/services/adminService.js
+export const getCustomers = async () => {
+  const response = await api.get('/admin/customers');
+  return response.data;
+};
 
 export default adminService;

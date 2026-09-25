@@ -14,7 +14,8 @@ import {
   UserCheck, 
   AlertTriangle, 
   RefreshCw, 
-  LogOut 
+  LogOut,
+  Users
 } from 'lucide-react';
 import './AdminDashboard.css';
 
@@ -24,21 +25,23 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [pendingVolunteers, setPendingVolunteers] = useState([]);
   const [allVolunteers, setAllVolunteers] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [shops, setShops] = useState([]);
   const [orders, setOrders] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [actionMsg, setActionMsg] = useState(null);
-  const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'shops' | 'orders'
+  const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'customers' | 'shops' | 'orders'
   const [orderFilter, setOrderFilter] = useState('all'); // 'all' | 'bulk' | 'customer'
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [statsRes, pendingRes, allVolRes, shopsRes, ordersRes] = await Promise.allSettled([
+      const [statsRes, pendingRes, allVolRes, customersRes, shopsRes, ordersRes] = await Promise.allSettled([
         adminService.getPlatformStats(),
         adminService.getPendingVolunteers(),
         adminService.getVolunteers(),
+        adminService.getCustomers(),
         shopService.getShops(),
         adminService.getAllOrders(),
       ]);
@@ -51,6 +54,9 @@ const AdminDashboard = () => {
       }
       if (allVolRes.status === 'fulfilled' && allVolRes.value?.success) {
         setAllVolunteers(allVolRes.value.data || []);
+      }
+      if (customersRes.status === 'fulfilled' && customersRes.value?.success) {
+        setCustomers(customersRes.value.data || []);
       }
       if (shopsRes.status === 'fulfilled' && shopsRes.value?.success) {
         setShops(shopsRes.value.data || []);
@@ -149,6 +155,14 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        <div className="stat-card purple">
+          <div className="stat-icon-wrapper"><Users size={22} /></div>
+          <div className="stat-info">
+            <span className="stat-value">{stats?.totalCustomers || customers.length}</span>
+            <span className="stat-label">Registered Customers</span>
+          </div>
+        </div>
+
         <div className="stat-card green">
           <div className="stat-icon-wrapper"><Store size={22} /></div>
           <div className="stat-info">
@@ -185,6 +199,14 @@ const AdminDashboard = () => {
           {pendingVolunteers.length > 0 && (
             <span className="tab-badge">{pendingVolunteers.length}</span>
           )}
+        </button>
+
+        <button 
+          className={`tab-btn ${activeTab === 'customers' ? 'active' : ''}`}
+          onClick={() => setActiveTab('customers')}
+        >
+          <Users size={18} />
+          <span>Customers ({customers.length})</span>
         </button>
 
         <button 
@@ -309,7 +331,48 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* TAB 2: PLATFORM SHOPS */}
+        {/* TAB 2: REGISTERED CUSTOMERS */}
+        {activeTab === 'customers' && (
+          <div className="customers-desk-wrapper">
+            <div className="desk-header">
+              <h2>Registered Customers ({customers.length})</h2>
+              <p>Overview of all customer accounts signed up on the platform.</p>
+            </div>
+
+            <div className="admin-table-wrapper">
+              <table className="admin-data-table">
+                <thead>
+                  <tr>
+                    <th>Customer Name</th>
+                    <th>Email Address</th>
+                    <th>Contact Number</th>
+                    <th>City / Zone</th>
+                    <th>Registered Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customers.length === 0 ? (
+                    <tr>
+                      <td colSpan="5" className="table-empty">No registered customers found.</td>
+                    </tr>
+                  ) : (
+                    customers.map((c) => (
+                      <tr key={c._id}>
+                        <td><strong>{c.name}</strong></td>
+                        <td>{c.email}</td>
+                        <td>{c.contactNumber || 'N/A'}</td>
+                        <td>{c.city || 'N/A'}</td>
+                        <td>{c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'N/A'}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: PLATFORM SHOPS */}
         {activeTab === 'shops' && (
           <div className="shops-desk-wrapper">
             <div className="desk-header">
@@ -376,7 +439,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* TAB 3: PLATFORM ORDERS */}
+        {/* TAB 4: PLATFORM ORDERS */}
         {activeTab === 'orders' && (() => {
           const bulkOrdersCount = orders.filter((o) => o.orderType === 'bulk' || o.placedBy === 'volunteer').length;
           const customerOrdersCount = orders.filter((o) => o.orderType !== 'bulk' && o.placedBy !== 'volunteer').length;
