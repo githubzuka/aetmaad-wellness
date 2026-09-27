@@ -38,7 +38,7 @@ const ImpactSection = () => {
           </div>
 
           {/* Right Image Block with Feathered Left Edge */}
-          <div className="impact-image-block">
+          <div className="impacts-image-block">
             <img 
               src="/images/impactre.png" 
               alt="Help a Working Horse" 
