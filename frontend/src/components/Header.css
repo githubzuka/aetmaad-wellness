@@ -1,4 +1,6 @@
-/* Modern MPA Header Styling */
+/* ==========================================================================
+   Modern MPA Header Styling & Responsive Layout
+   ========================================================================== */
 
 .main-header {
   width: 100%;
@@ -11,6 +13,7 @@
   z-index: 1000;
   padding: 14px 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  transition: padding 0.2s ease;
 }
 
 .header-container {
@@ -20,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 /* Brand Logo */
@@ -28,6 +32,7 @@
   flex-direction: column;
   text-decoration: none;
   color: #0f1712 !important;
+  flex-shrink: 0;
 }
 
 .logo-title {
@@ -65,6 +70,7 @@
   padding: 6px 4px;
   position: relative;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -133,6 +139,7 @@
   font-weight: 700;
   position: relative;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .cart-capsule-btn:hover {
@@ -148,6 +155,7 @@
   font-weight: 800;
   padding: 2px 7px;
   border-radius: 99px;
+  line-height: 1;
 }
 
 /* Sign In button */
@@ -161,6 +169,7 @@
   font-weight: 700;
   text-decoration: none !important;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-signin-nav:hover {
@@ -168,7 +177,7 @@
   color: #ffffff !important;
 }
 
-/* User profile */
+/* User profile dropdown pill */
 .user-profile-dropdown {
   display: flex;
   align-items: center;
@@ -177,6 +186,7 @@
   padding: 6px 12px;
   border-radius: 99px;
   border: 1px solid #c8e6c9;
+  white-space: nowrap;
 }
 
 .user-name-tag {
@@ -203,42 +213,214 @@
   padding: 4px;
   display: flex;
   align-items: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
-/* Mobile */
+.btn-logout-header:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+}
+
+/* Mobile Toggle Hamburger Button */
 .mobile-toggle-btn {
   display: none;
   background: none;
   border: none;
   color: #111827;
   cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
 }
 
-@media (max-width: 900px) {
+.mobile-toggle-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints & Mobile Drawer
+   ========================================================================== */
+
+/* Laptop / Medium Desktop Screen adjusting gaps */
+@media (max-width: 1100px) {
+  .nav-menu-desktop {
+    gap: 18px;
+  }
+  .nav-link {
+    font-size: 13px;
+  }
+}
+
+/* Tablet & Mobile Breakpoint (<= 960px) */
+@media (max-width: 960px) {
   .nav-menu-desktop {
     display: none;
   }
+
   .mobile-toggle-btn {
     display: flex;
   }
 
+  /* Overlay drawer positioning */
   .mobile-drawer-menu {
     display: flex;
     flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     background: #ffffff;
-    padding: 20px;
+    padding: 16px 20px;
     border-bottom: 1px solid #e8e3d8;
-    gap: 14px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    gap: 8px;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    animation: drawerSlideDown 0.25s ease-out forwards;
+    z-index: 999;
+  }
+
+  @keyframes drawerSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .mobile-link {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600;
     color: #111827 !important;
     text-decoration: none !important;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mobile-link:hover,
+  .mobile-link:focus {
+    background-color: #f7f5f0;
+    color: #1b4d2e !important;
+  }
+
+  .mobile-link.active {
+    background-color: #f1f8f3;
+    color: #1b4d2e !important;
+    font-weight: 700;
+    border-left: 3px solid #1b4d2e;
   }
 
   .mobile-link.donate {
     color: #b45309 !important;
+    font-weight: 700;
+    background-color: #fffbeb;
+  }
+
+  .mobile-link.donate:hover {
+    background-color: #fef3c7;
+  }
+
+  .mobile-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .mobile-logout-btn:hover {
+    background-color: #fee2e2;
+  }
+
+  .mobile-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background-color: #1b4d2e;
+    color: #ffffff !important;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none !important;
+    margin-top: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .mobile-signin-btn:hover {
+    background-color: #143d24;
+  }
+}
+
+/* Tablet / Mobile Top Bar Optimization (<= 768px) */
+@media (max-width: 768px) {
+  /* Hide desktop user profile pill on smaller top bars so items fit in 1 row */
+  .header-right-actions .user-profile-dropdown {
+    display: none;
+  }
+
+  /* Hide desktop signin button on small header bar (accessible via mobile drawer) */
+  .header-right-actions .btn-signin-nav {
+    display: none;
+  }
+}
+
+/* Small Mobile Phones (<= 480px) */
+@media (max-width: 480px) {
+  .main-header {
+    padding: 10px 0;
+  }
+
+  .header-container {
+    padding: 0 16px;
+  }
+
+  .logo-title {
+    font-size: 20px;
+    letter-spacing: 1.5px;
+  }
+
+  .logo-subtitle {
+    font-size: 7px;
+    letter-spacing: 2px;
+  }
+
+  .header-right-actions {
+    gap: 10px;
+  }
+
+  .cart-capsule-btn {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+
+  /* Hide "Cart" text label on extra small screens to save space */
+  .cart-text {
+    display: none;
+  }
+
+  .cart-count-badge {
+    padding: 2px 6px;
+    font-size: 10.5px;
   }
 }

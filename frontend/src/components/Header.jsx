@@ -115,19 +115,78 @@ const Header = () => {
       {/* Mobile Drawer Navigation */}
       {isMobileMenuOpen && (
         <div className="mobile-drawer-menu">
-          <NavLink to="/" end onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
-          <NavLink to="/products" onClick={closeMobileMenu} className="mobile-link">Products Catalog</NavLink>
-          <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Working Horses Initiative</NavLink>
-          <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">♥ Donate Now</NavLink>
-          <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">Contact Us</NavLink>
-          <NavLink to="/cart" onClick={closeMobileMenu} className="mobile-link">
+          <NavLink 
+            to="/" 
+            end 
+            onClick={closeMobileMenu} 
+            className={({ isActive }) => (isActive ? 'mobile-link active' : 'mobile-link')}
+          >
+            Home
+          </NavLink>
+
+          <NavLink 
+            to="/products" 
+            onClick={closeMobileMenu} 
+            className={({ isActive }) => (isActive ? 'mobile-link active' : 'mobile-link')}
+          >
+            Products Catalog
+          </NavLink>
+
+          <NavLink 
+            to="/working-horses" 
+            onClick={closeMobileMenu} 
+            className={({ isActive }) => (isActive ? 'mobile-link active' : 'mobile-link')}
+          >
+            Working Horses Initiative
+          </NavLink>
+
+          <NavLink 
+            to="/donate" 
+            onClick={closeMobileMenu} 
+            className={({ isActive }) => (isActive ? 'mobile-link active donate' : 'mobile-link donate')}
+          >
+            ♥ Donate Now
+          </NavLink>
+
+          <NavLink 
+            to="/contact" 
+            onClick={closeMobileMenu} 
+            className={({ isActive }) => (isActive ? 'mobile-link active' : 'mobile-link')}
+          >
+            Contact Us
+          </NavLink>
+
+          <NavLink 
+            to="/cart" 
+            onClick={closeMobileMenu} 
+            className={({ isActive }) => (isActive ? 'mobile-link active' : 'mobile-link')}
+          >
             Cart ({totalItemCount} Items)
           </NavLink>
 
+          {/* User Mobile Quick Links */}
           {isAuthenticated ? (
-            <button className="mobile-logout-btn" onClick={() => { logout(); closeMobileMenu(); }}>
-              Sign Out ({user?.name})
-            </button>
+            <>
+              {user?.role === 'admin' && (
+                <Link to="/admin/dashboard" onClick={closeMobileMenu} className="mobile-link">
+                  Admin Desk
+                </Link>
+              )}
+              {user?.role === 'volunteer' && (
+                <Link to="/volunteer/dashboard" onClick={closeMobileMenu} className="mobile-link">
+                  Volunteer Desk
+                </Link>
+              )}
+              {user?.role === 'customer' && (
+                <Link to="/orders" onClick={closeMobileMenu} className="mobile-link">
+                  My Orders
+                </Link>
+              )}
+
+              <button className="mobile-logout-btn" onClick={() => { logout(); closeMobileMenu(); }}>
+                Sign Out ({user?.name})
+              </button>
+            </>
           ) : (
             <Link to="/login" onClick={closeMobileMenu} className="mobile-signin-btn">
               Sign In / Register

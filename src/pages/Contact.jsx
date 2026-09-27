@@ -105,8 +105,7 @@ const Contact = () => {
               <div className="info-icon"><Mail size={22} /></div>
               <div>
                 <h3>Support & Order Inquiries</h3>
-                <p>support@aetmaad-wellness.org</p>
-                <p>orders@aetmaad-wellness.org</p>
+                <p>enquinemix@gmail.com</p>
               </div>
             </div>
 
@@ -114,7 +113,7 @@ const Contact = () => {
               <div className="info-icon"><Phone size={22} /></div>
               <div>
                 <h3>Helpline & Volunteer Desk</h3>
-                <p>+91 (022) 2890-4321</p>
+                <p>+91 84220 60195</p>
                 <p>Mon - Sat: 9:00 AM - 7:00 PM IST</p>
               </div>
             </div>
@@ -124,7 +123,6 @@ const Contact = () => {
               <div>
                 <h3>Headquarters & Research Unit</h3>
                 <p>ASHVA Equine Wellness Initiative</p>
-                <p>Community Distribution Center, Zone 4, India</p>
               </div>
             </div>
 
