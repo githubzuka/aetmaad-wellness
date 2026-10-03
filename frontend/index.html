@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aetmaad Wellness - Equine Nutrition & Volunteer Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              emerald: {
-                950: '#062c19',
-              }
-            }
-          }
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#064e3b" />
+  
+  <!-- SEO Title & Description -->
+  <title>Aetmaad Wellness | Holistic Health & Community Care</title>
+  <meta name="description" content="Empowering communities through accessible healthcare, wellness services, and active volunteer initiatives." />
+  
+  <!-- OpenGraph Social Preview -->
+  <meta property="og:title" content="Aetmaad Wellness | Holistic Health & Community Care" />
+  <meta property="og:description" content="Join our wellness movement. Empowering health and community care." />
+  <meta property="og:image" content="/og-preview.jpg" />
+  <meta property="og:url" content="https://aetmaadwellness.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <!-- Vite Entry Point (Required to render React) -->
+  <script type="module" src="/src/main.jsx"></script>
+</body>
 </html>

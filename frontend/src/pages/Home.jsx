@@ -6,6 +6,7 @@ import Features from '../components/Features';
 import ProductShowcase from '../components/ProductShowcase';
 import FeedingGuidelines from '../components/FeedingGuidelines';
 import ImpactSection from '../components/ImpactSection';
+import UpcomingEvents from '../components/UpcomingEvents';
 import Footer from '../components/Footer';
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
       <section id="products"><ProductShowcase /></section>
       <FeedingGuidelines />
       <section id="initiative"><ImpactSection /></section>
+      <section id="events"><UpcomingEvents /></section>
       <div id="contact"><Footer /></div>
     </div>
   );

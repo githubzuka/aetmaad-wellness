@@ -58,6 +58,17 @@ const adminService = {
     const response = await axiosClient.get('/api/admin/orders');
     return response.data;
   },
+
+  /**
+   * Get all registered customers (role: 'customer') from MongoDB
+   * @param {string} [search] - Search query
+   */
+  async getCustomers(search = '') {
+    const response = await axiosClient.get('/api/admin/customers', {
+      params: { search },
+    });
+    return response.data;
+  },
 };
 
 export const getCustomers = adminService.getCustomers;

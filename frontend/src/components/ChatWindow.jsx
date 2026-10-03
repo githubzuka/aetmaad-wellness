@@ -37,7 +37,7 @@ const ChatWindow = ({ onClose }) => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages }),
@@ -52,7 +52,7 @@ const ChatWindow = ({ onClose }) => {
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '⚠️ **Connection Error**: Unable to reach backend server. Please verify port 5000 is active.' }
+        { role: 'assistant', content: '⚠️ **Connection Error**: Unable to reach backend server. Please verify your backend server on port 5001 is active.' }
       ]);
     } finally {
       setIsLoading(false);
@@ -72,8 +72,7 @@ const ChatWindow = ({ onClose }) => {
           </div>
           <div className="brand-details">
             <div className="brand-title">
-              <h3>ASHVA
-         AI</h3>
+              <h3>ASHVA AI</h3>
               <i className="bi bi-patch-check-fill verified-badge"></i>
             </div>
             <p className="brand-subtitle">Equine Nutrition Specialist</p>

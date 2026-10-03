@@ -15,8 +15,10 @@ import {
   AlertTriangle, 
   RefreshCw, 
   LogOut,
-  Users
+  Users,
+  CalendarDays
 } from 'lucide-react';
+import AdminEvents from '../components/admin/AdminEvents';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -56,7 +58,7 @@ const AdminDashboard = () => {
         setAllVolunteers(allVolRes.value.data || []);
       }
       if (customersRes.status === 'fulfilled' && customersRes.value?.success) {
-        setCustomers(customersRes.value.data || []);
+        setCustomers(customersRes.value.customers || customersRes.value.data || []);
       }
       if (shopsRes.status === 'fulfilled' && shopsRes.value?.success) {
         setShops(shopsRes.value.data || []);
@@ -224,10 +226,23 @@ const AdminDashboard = () => {
           <ShoppingBag size={18} />
           <span>Orders ({orders.length})</span>
         </button>
+
+        <button 
+          className={`tab-btn ${activeTab === 'events' ? 'active' : ''}`}
+          onClick={() => setActiveTab('events')}
+        >
+          <CalendarDays size={18} />
+          <span>Events Desk</span>
+        </button>
       </nav>
 
       {/* Main Content Area */}
       <main className="admin-content-section">
+
+        {/* TAB: EVENTS DESK */}
+        {activeTab === 'events' && (
+          <AdminEvents onAction={(msg) => { setActionMsg(msg); setTimeout(() => setActionMsg(null), 4000); }} />
+        )}
 
         {/* TAB 1: VOLUNTEER APPROVAL DESK */}
         {activeTab === 'volunteers' && (
