@@ -16,6 +16,7 @@ import {
 } from '../controllers/eventController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 import { getAdminDonations, updateDonationStatus } from '../controllers/donationController.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -27,6 +28,37 @@ router.put('/volunteers/:id/status', updateVolunteerStatus);
 router.put('/shops/:id/assign', assignShopVolunteer);
 router.get('/stats', getAdminStats);
 router.get('/orders', getAllOrders);
+
+// Customer management — only fetch users with role 'customer'
+router.get('/customers', async (req, res) => {
+  try {
+    const { search = '' } = req.query;
+
+    const baseFilter = { role: 'customer' };
+
+    const query = search
+      ? {
+          ...baseFilter,
+          $or: [
+            { name: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { contactNumber: { $regex: search, $options: 'i' } },
+            { city: { $regex: search, $options: 'i' } },
+          ],
+        }
+      : baseFilter;
+
+    const customers = await User.find(query)
+      .select('-password')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json({ success: true, count: customers.length, customers, data: customers });
+  } catch (error) {
+    console.error('Error fetching customers:', error);
+    res.status(500).json({ success: false, message: 'Error fetching customer data' });
+  }
+});
 
 // Event management and volunteer proposal approval
 router.get('/events', getAdminEvents);

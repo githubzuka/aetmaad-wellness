@@ -55,6 +55,17 @@ const adminService = {
     const response = await axiosClient.get('/api/admin/orders');
     return response.data;
   },
+
+  /**
+   * Get all registered customers (role: 'customer') with optional search
+   * @param {string} [search] - Search query for name, email, contactNumber, city
+   */
+  async getCustomers(search = '') {
+    const response = await axiosClient.get('/api/admin/customers', {
+      params: { search },
+    });
+    return response.data;
+  },
 };
 
 export default adminService;

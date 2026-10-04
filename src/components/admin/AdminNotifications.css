@@ -1,0 +1,355 @@
+/* ==========================================
+   Modern, Eye-Catching & Responsive Styles
+   ========================================== */
+
+/* Outer Container */
+.admin-notif-wrapper {
+  position: relative;
+  display: inline-block;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* ------------------------------------------
+   Trigger Button
+   ------------------------------------------ */
+.admin-notif-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.65rem 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  border-radius: 0.875rem;
+  color: #1f2937;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.admin-notif-trigger:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+  border-color: #10b981;
+  color: #065f46;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.admin-notif-trigger:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.admin-notif-trigger:active {
+  transform: scale(0.97) translateY(0);
+}
+
+/* Badge Glow & Pulse Animation */
+.admin-notif-badge {
+  position: absolute;
+  top: -0.375rem;
+  right: -0.375rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  animation: badge-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    transform: scale(1.05);
+  }
+}
+
+/* ------------------------------------------
+   Dropdown Panel
+   ------------------------------------------ */
+.admin-notif-dropdown {
+  position: absolute;
+  right: 0;
+  margin-top: 0.75rem;
+  width: 24rem;
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.12), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  z-index: 50;
+  animation: dropdown-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
+}
+
+@keyframes dropdown-slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.admin-notif-header {
+  padding: 1rem 1.25rem;
+  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Scrollable List */
+.admin-notif-list {
+  max-height: 24rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-notif-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-notif-list::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+
+.admin-notif-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 99px;
+}
+
+.admin-notif-list::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Notification Item */
+.admin-notif-item {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+}
+
+.admin-notif-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3.5px;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.admin-notif-item.unread {
+  background: linear-gradient(90deg, rgba(236, 253, 245, 0.6) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.admin-notif-item.unread::before {
+  background-color: #10b981;
+}
+
+.admin-notif-item:hover {
+  background-color: #f9fafb;
+}
+
+.admin-notif-item:active {
+  background-color: #f3f4f6;
+}
+
+/* Icon Buttons */
+.admin-icon-btn {
+  padding: 0.5rem;
+  border-radius: 0.625rem;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.admin-icon-btn:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+  transform: scale(1.05);
+}
+
+.admin-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* Mark as Read Action Button */
+.admin-link-btn {
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 600;
+  background: #ecfdf5;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.admin-link-btn:hover {
+  background-color: #10b981;
+  color: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+/* ------------------------------------------
+   Modal Window
+   ------------------------------------------ */
+.admin-notif-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+  animation: overlay-fade-in 0.2s ease-out;
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.admin-notif-modal {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  max-width: 28rem;
+  width: 100%;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modal-pop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.admin-modal-close-btn {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+
+.admin-modal-close-btn:hover {
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.admin-modal-close-btn:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* ------------------------------------------
+   Mobile Responsiveness (Max Width: 640px)
+   ------------------------------------------ */
+@media (max-width: 640px) {
+  /* Dropdown turns into a Bottom Drawer on Mobile */
+  .admin-notif-dropdown {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    width: 100vw;
+    max-height: 80vh;
+    border-radius: 1.5rem 1.5rem 0 0;
+    box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.2);
+    animation: mobile-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes mobile-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .admin-notif-list {
+    max-height: calc(80vh - 4rem);
+  }
+
+  /* Modal becomes a Bottom Sheet on Mobile */
+  .admin-notif-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .admin-notif-modal {
+    max-width: 100vw;
+    border-radius: 1.5rem 1.5rem 0 0;
+    padding: 1.25rem;
+    max-height: 85vh;
+  }
+
+  .admin-icon-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .admin-notif-trigger {
+    padding: 0.55rem 0.85rem;
+  }
+}

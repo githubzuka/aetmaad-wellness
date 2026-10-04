@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Bell, Check, RefreshCw, X, MessageSquare, Store, User, Calendar, FileText } from 'lucide-react';
 import notificationService from '../../services/notificationService';
+import './AdminNotifications.css';
 
 const AdminNotifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -57,51 +58,64 @@ const AdminNotifications = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="admin-notif-wrapper">
       
-      {/* Bell Button Trigger */}
+      {/* Trigger Button */}
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2.5 rounded-xl bg-white border border-neutral-200/80 text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 transition-all shadow-sm cursor-pointer flex items-center gap-2 active:scale-95"
+        className="admin-notif-trigger"
         title="Admin Notifications & Feedback Reports"
+        aria-expanded={isOpen}
       >
-        <Bell size={18} className="text-neutral-700" />
-        <span className="text-xs font-semibold text-neutral-800 hidden sm:inline">Notifications</span>
+        <Bell size={18} className="text-neutral-700 shrink-0" />
+        <span className="hidden sm:inline">Notifications</span>
         
         {unreadCount > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shadow-xs border-2 border-white animate-pulse">
+          <span className="admin-notif-badge">
             {unreadCount}
           </span>
         )}
       </button>
 
-      {/* Notifications Dropdown Panel */}
+      {/* Backdrop overlay for mobile drawer dismiss */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl border border-neutral-200 shadow-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div 
+          className="fixed inset-0 z-40 bg-black/20 sm:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Notifications Dropdown Panel / Mobile Drawer */}
+      {isOpen && (
+        <div className="admin-notif-dropdown">
           
           {/* Header */}
-          <div className="px-5 py-4 border-b border-neutral-100 flex items-center justify-between font-bold text-neutral-900">
+          <div className="admin-notif-header">
             <div className="flex items-center gap-2">
               <Bell size={16} className="text-emerald-600" />
               <h3 className="text-sm font-bold text-neutral-900">Notifications</h3>
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 text-xs bg-emerald-100 text-emerald-800 rounded-full font-semibold">
+                <span className="px-2 py-0.5 text-[11px] bg-emerald-100 text-emerald-800 rounded-full font-bold">
                   {unreadCount} Unread
                 </span>
               )}
             </div>
             
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1">
               <button
+                type="button"
                 onClick={() => fetchNotifications(false)}
-                className="p-1 hover:bg-neutral-100 rounded-lg text-neutral-500 transition-colors"
+                className="admin-icon-btn"
                 title="Refresh Notifications"
               >
                 <RefreshCw size={14} />
               </button>
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-neutral-100 rounded-lg text-neutral-500 transition-colors"
+                className="admin-icon-btn"
+                title="Close"
               >
                 <X size={16} />
               </button>
@@ -109,11 +123,11 @@ const AdminNotifications = () => {
           </div>
 
           {/* List of Notifications */}
-          <div className="max-h-96 overflow-y-auto divide-y divide-neutral-100">
+          <div className="admin-notif-list">
             {loading ? (
-              <div className="py-8 text-center text-xs text-neutral-400 font-medium">Loading notifications...</div>
+              <div className="py-10 text-center text-xs text-neutral-400 font-medium">Loading notifications...</div>
             ) : notifications.length === 0 ? (
-              <div className="py-8 text-center text-xs text-neutral-400 font-medium">No notifications available</div>
+              <div className="py-10 text-center text-xs text-neutral-400 font-medium">No notifications available</div>
             ) : (
               notifications.map((n) => {
                 const isUnread = !n.read && !n.isRead;
@@ -123,17 +137,18 @@ const AdminNotifications = () => {
                   <div
                     key={n._id}
                     onClick={() => handleNotificationClick(n)}
-                    className={`p-4 border-b border-neutral-100 last:border-0 transition-colors flex gap-3.5 items-start cursor-pointer ${
-                      isUnread ? 'bg-emerald-50/30 hover:bg-neutral-50' : 'bg-white hover:bg-neutral-50/70'
-                    }`}
+                    className={`admin-notif-item ${isUnread ? 'unread' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && handleNotificationClick(n)}
                   >
-                    <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                       <MessageSquare size={16} />
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1">
-                        <h4 className="text-sm font-semibold text-neutral-900 truncate">
+                        <h4 className="text-xs sm:text-sm font-bold text-neutral-900 truncate">
                           {n.title}
                         </h4>
                         {isUnread && (
@@ -145,16 +160,17 @@ const AdminNotifications = () => {
                         {n.message}
                       </p>
 
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-[10px] text-neutral-400">{formattedTime}</span>
+                      <div className="flex items-center justify-between mt-2 pt-1">
+                        <span className="text-[10px] text-neutral-400 font-medium">{formattedTime}</span>
                         
                         {isUnread && (
                           <button
+                            type="button"
                             onClick={(e) => handleMarkAsRead(n._id, e)}
-                            className="text-xs text-emerald-700 hover:underline font-medium flex items-center gap-1 cursor-pointer"
+                            className="admin-link-btn"
                           >
                             <Check size={12} />
-                            <span>Mark as Read</span>
+                            <span>Mark Read</span>
                           </button>
                         )}
                       </div>
@@ -170,12 +186,12 @@ const AdminNotifications = () => {
 
       {/* Detail Modal for Feedback Notification Reports */}
       {selectedFeedback && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-neutral-200 animate-in fade-in zoom-in-95 duration-200">
+        <div className="admin-notif-overlay">
+          <div className="admin-notif-modal">
             
             <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
                   <FileText size={20} />
                 </div>
                 <div>
@@ -185,26 +201,27 @@ const AdminNotifications = () => {
               </div>
 
               <button
+                type="button"
                 onClick={() => setSelectedFeedback(null)}
-                className="p-1.5 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+                className="admin-icon-btn"
               >
                 <X size={18} />
               </button>
             </div>
 
-            {/* Notification message details */}
+            {/* Modal details body */}
             <div className="space-y-3.5 text-xs text-neutral-800">
               
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-100 space-y-2">
+              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-100 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-500 font-medium flex items-center gap-1">
+                  <span className="text-neutral-500 font-medium flex items-center gap-1.5">
                     <Store size={14} className="text-neutral-400" /> Shop Name:
                   </span>
                   <strong className="text-neutral-900 font-bold">{selectedFeedback.metadata?.shopName || 'Registered Shop'}</strong>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-500 font-medium flex items-center gap-1">
+                  <span className="text-neutral-500 font-medium flex items-center gap-1.5">
                     <User size={14} className="text-neutral-400" /> Submitted By:
                   </span>
                   <strong className="text-neutral-900 font-bold">{selectedFeedback.metadata?.volunteerName || 'Volunteer'}</strong>
@@ -212,13 +229,13 @@ const AdminNotifications = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-500 font-medium">Operating Status:</span>
-                  <span className="px-2 py-0.5 text-[11px] bg-emerald-100 text-emerald-800 rounded-full font-bold">
+                  <span className="px-2.5 py-0.5 text-[11px] bg-emerald-100 text-emerald-800 rounded-full font-bold">
                     {selectedFeedback.metadata?.status || 'Active'}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-500 font-medium flex items-center gap-1">
+                  <span className="text-neutral-500 font-medium flex items-center gap-1.5">
                     <Calendar size={14} className="text-neutral-400" /> Date & Time:
                   </span>
                   <span className="text-neutral-700 font-semibold">
@@ -232,7 +249,7 @@ const AdminNotifications = () => {
                   <h4 className="font-bold text-neutral-700 uppercase tracking-wider text-[10px] mb-1">
                     Feed & Supplies Notes:
                   </h4>
-                  <p className="bg-neutral-50 p-3 rounded-xl border border-neutral-200 font-medium text-neutral-800">
+                  <p className="bg-neutral-50 p-3 rounded-xl border border-neutral-200 font-medium text-neutral-800 leading-relaxed">
                     {selectedFeedback.metadata.suppliesNote}
                   </p>
                 </div>
@@ -243,7 +260,7 @@ const AdminNotifications = () => {
                   <h4 className="font-bold text-neutral-700 uppercase tracking-wider text-[10px] mb-1">
                     General Observations & Issues:
                   </h4>
-                  <p className="bg-neutral-50 p-3 rounded-xl border border-neutral-200 font-medium text-neutral-800">
+                  <p className="bg-neutral-50 p-3 rounded-xl border border-neutral-200 font-medium text-neutral-800 leading-relaxed">
                     {selectedFeedback.metadata.notes}
                   </p>
                 </div>
@@ -253,8 +270,9 @@ const AdminNotifications = () => {
 
             <div className="mt-5 pt-4 border-t border-neutral-100 flex justify-end">
               <button
+                type="button"
                 onClick={() => setSelectedFeedback(null)}
-                className="bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors cursor-pointer"
+                className="admin-modal-close-btn"
               >
                 Close Report
               </button>

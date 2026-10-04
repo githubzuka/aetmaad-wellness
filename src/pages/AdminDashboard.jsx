@@ -4,49 +4,71 @@ import adminService from '../services/adminService';
 import shopService from '../services/shopService';
 import orderService from '../services/orderService';
 import AdminNotifications from '../components/admin/AdminNotifications';
-import { Users, Store, ShoppingBag, DollarSign, CheckCircle, XCircle, ShieldCheck, UserCheck, AlertTriangle, RefreshCw, LogOut, CalendarDays } from 'lucide-react';
 import AdminEvents from '../components/admin/AdminEvents';
 import AdminDonations from '../components/admin/AdminDonations';
+import { 
+  Users, 
+  Store, 
+  ShoppingBag, 
+  DollarSign, 
+  CheckCircle, 
+  XCircle, 
+  ShieldCheck, 
+  UserCheck, 
+  AlertTriangle, 
+  RefreshCw, 
+  LogOut, 
+  CalendarDays 
+} from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
   
+  // Data State
   const [stats, setStats] = useState(null);
   const [pendingVolunteers, setPendingVolunteers] = useState([]);
   const [allVolunteers, setAllVolunteers] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [shops, setShops] = useState([]);
   const [orders, setOrders] = useState([]);
 
+  // UI & Filter State
   const [loading, setLoading] = useState(true);
   const [actionMsg, setActionMsg] = useState(null);
-  const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'shops' | 'orders' | 'events' | 'donations'
+  const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'customers' | 'shops' | 'orders' | 'events' | 'donations'
   const [orderFilter, setOrderFilter] = useState('all'); // 'all' | 'bulk' | 'customer'
+  const [customerSearch, setCustomerSearch] = useState('');
 
+  // Primary Data Fetcher
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [statsRes, pendingRes, allVolRes, shopsRes, ordersRes] = await Promise.allSettled([
+      const [statsRes, pendingRes, allVolRes, customersRes, shopsRes, ordersRes] = await Promise.allSettled([
         adminService.getPlatformStats(),
         adminService.getPendingVolunteers(),
         adminService.getVolunteers(),
+        adminService.getCustomers(),
         shopService.getShops(),
         adminService.getAllOrders(),
       ]);
 
-      if (statsRes.status === 'fulfilled' && statsRes.value.success) {
+      if (statsRes.status === 'fulfilled' && statsRes.value?.success) {
         setStats(statsRes.value.data);
       }
-      if (pendingRes.status === 'fulfilled' && pendingRes.value.success) {
+      if (pendingRes.status === 'fulfilled' && pendingRes.value?.success) {
         setPendingVolunteers(pendingRes.value.data || []);
       }
-      if (allVolRes.status === 'fulfilled' && allVolRes.value.success) {
+      if (allVolRes.status === 'fulfilled' && allVolRes.value?.success) {
         setAllVolunteers(allVolRes.value.data || []);
       }
-      if (shopsRes.status === 'fulfilled' && shopsRes.value.success) {
+      if (customersRes.status === 'fulfilled' && customersRes.value?.success) {
+        setCustomers(customersRes.value.customers || customersRes.value.data || []);
+      }
+      if (shopsRes.status === 'fulfilled' && shopsRes.value?.success) {
         setShops(shopsRes.value.data || []);
       }
-      if (ordersRes.status === 'fulfilled' && ordersRes.value.success) {
+      if (ordersRes.status === 'fulfilled' && ordersRes.value?.success) {
         setOrders(ordersRes.value.data || []);
       }
     } catch (err) {
@@ -56,72 +78,87 @@ const AdminDashboard = () => {
     }
   };
 
+  // Dedicated Search Fetcher for Customers
+  const fetchCustomers = async (search = '') => {
+    try {
+      const res = await adminService.getCustomers(search);
+      if (res.success) {
+        setCustomers(res.customers || res.data || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch customers:', err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Helper function to show temporary alert banners
+  const triggerAlert = (type, text) => {
+    setActionMsg({ type, text });
+    setTimeout(() => setActionMsg(null), 4000);
+  };
+
+  // Order Status Handler
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
       await orderService.updateOrderStatus(orderId, newStatus);
-      setActionMsg({ type: 'success', text: `Order status updated to ${newStatus.toUpperCase()}` });
+      triggerAlert('success', `Order status updated to ${newStatus.toUpperCase()}`);
       fetchData();
     } catch (err) {
-      setActionMsg({ type: 'error', text: err.message || 'Failed to update order status' });
+      triggerAlert('error', err.message || 'Failed to update order status');
     }
-    setTimeout(() => setActionMsg(null), 4000);
   };
 
   // Volunteer Approval / Rejection Action Handler
   const handleVolunteerAction = async (id, status) => {
     try {
-      const res = await adminService.updateVolunteerStatus(id, status);
-      setActionMsg({ type: 'success', text: `Volunteer status updated to ${status.toUpperCase()}` });
+      await adminService.updateVolunteerStatus(id, status);
+      triggerAlert('success', `Volunteer status updated to ${status.toUpperCase()}`);
       fetchData();
     } catch (err) {
-      setActionMsg({ type: 'error', text: err.message || 'Failed to update volunteer status' });
+      triggerAlert('error', err.message || 'Failed to update volunteer status');
     }
-    setTimeout(() => setActionMsg(null), 4000);
   };
 
   // Reassign Shop Volunteer
   const handleAssignVolunteer = async (shopId, volunteerId) => {
     try {
       await adminService.assignShopVolunteer(shopId, volunteerId || null);
-      setActionMsg({ type: 'success', text: 'Shop volunteer assignment updated!' });
+      triggerAlert('success', 'Shop volunteer assignment updated!');
       fetchData();
     } catch (err) {
-      setActionMsg({ type: 'error', text: err.message || 'Assignment failed' });
+      triggerAlert('error', err.message || 'Assignment failed');
     }
-    setTimeout(() => setActionMsg(null), 4000);
   };
 
   return (
     <div className="admin-dashboard-container">
       
-      {/* Top Admin Header */}
+      {/* Header */}
       <header className="admin-dash-header">
         <div className="admin-header-brand">
           <div className="admin-logo-badge">
             <ShieldCheck size={28} />
           </div>
-          <div>
+          <div className="admin-header-title">
             <h1>Master Admin Console</h1>
-            <p>Welcome back, <strong>{user?.name}</strong> • Platform System Records & Approval Desk</p>
+            <p>Welcome back, <strong>{user?.name || 'Admin'}</strong> • Platform System Records & Approval Desk</p>
           </div>
         </div>
 
         <div className="admin-header-actions">
-          {/* Admin Weekly Feedback & System Notifications Component */}
           <AdminNotifications />
 
           <button className="btn-refresh" onClick={fetchData} title="Refresh Data">
             <RefreshCw size={16} />
-            Sync Data
+            <span>Sync Data</span>
           </button>
 
-          <button className="btn-logout-admin" onClick={logout}>
+          <button className="btn-logout-admin" onClick={logout} title="Sign Out">
             <LogOut size={16} />
-            Sign Out
+            <span>Sign Out</span>
           </button>
         </div>
       </header>
@@ -133,17 +170,68 @@ const AdminDashboard = () => {
         </div>
       )}
 
+      {/* Overview Analytics Cards */}
+      <div className="admin-stats-grid">
+        <div className="stat-card gold">
+          <div className="stat-icon-wrapper"><DollarSign size={22} /></div>
+          <div className="stat-info">
+            <span className="stat-value">₹{stats?.totalRevenue ? stats.totalRevenue.toLocaleString() : '0'}</span>
+            <span className="stat-label">Total Platform Revenue</span>
+          </div>
+        </div>
+
+        <div className="stat-card purple">
+          <div className="stat-icon-wrapper"><Users size={22} /></div>
+          <div className="stat-info">
+            <span className="stat-value">{stats?.totalCustomers ?? customers.length}</span>
+            <span className="stat-label">Registered Customers</span>
+          </div>
+        </div>
+
+        <div className="stat-card green">
+          <div className="stat-icon-wrapper"><Store size={22} /></div>
+          <div className="stat-info">
+            <span className="stat-value">{stats?.totalShops ?? shops.length}</span>
+            <span className="stat-label">Registered Shops</span>
+          </div>
+        </div>
+
+        <div className="stat-card blue">
+          <div className="stat-icon-wrapper"><UserCheck size={22} /></div>
+          <div className="stat-info">
+            <span className="stat-value">{stats?.totalVolunteers ?? allVolunteers.length}</span>
+            <span className="stat-label">Total Volunteers</span>
+          </div>
+        </div>
+
+        <div className="stat-card orange">
+          <div className="stat-icon-wrapper"><AlertTriangle size={22} /></div>
+          <div className="stat-info">
+            <span className="stat-value">{stats?.pendingVolunteers ?? pendingVolunteers.length}</span>
+            <span className="stat-label">Pending Applications</span>
+          </div>
+        </div>
+      </div>
+
       {/* Navigation Tabs */}
-      <div className="admin-nav-tabs">
+      <nav className="admin-nav-tabs" aria-label="Dashboard views">
         <button 
           className={`tab-btn ${activeTab === 'volunteers' ? 'active' : ''}`}
           onClick={() => setActiveTab('volunteers')}
         >
           <UserCheck size={18} />
-          Volunteer Approval Desk
+          <span>Volunteer Desk</span>
           {pendingVolunteers.length > 0 && (
             <span className="tab-badge">{pendingVolunteers.length}</span>
           )}
+        </button>
+
+        <button 
+          className={`tab-btn ${activeTab === 'customers' ? 'active' : ''}`}
+          onClick={() => setActiveTab('customers')}
+        >
+          <Users size={18} />
+          <span>Customers ({customers.length})</span>
         </button>
 
         <button 
@@ -151,7 +239,7 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('shops')}
         >
           <Store size={18} />
-          Platform Shops ({shops.length})
+          <span>Shops ({shops.length})</span>
         </button>
 
         <button 
@@ -159,15 +247,15 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('orders')}
         >
           <ShoppingBag size={18} />
-          Platform Orders ({orders.length})
+          <span>Orders ({orders.length})</span>
         </button>
 
-        <button
+        <button 
           className={`tab-btn ${activeTab === 'events' ? 'active' : ''}`}
           onClick={() => setActiveTab('events')}
         >
           <CalendarDays size={18} />
-          Events Desk
+          <span>Events Desk</span>
         </button>
 
         <button
@@ -175,15 +263,12 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('donations')}
         >
           <DollarSign size={18} />
-          Donations
+          <span>Donations</span>
         </button>
-      </div>
+      </nav>
 
       {/* Main Content Area */}
-      <div className="admin-content-section">
-
-        {activeTab === 'events' && <AdminEvents onAction={(message) => { setActionMsg(message); setTimeout(() => setActionMsg(null), 4000); }} />}
-        {activeTab === 'donations' && <AdminDonations onAction={(message) => { setActionMsg(message); setTimeout(() => setActionMsg(null), 4000); }} />}
+      <main className="admin-content-section">
 
         {/* TAB 1: VOLUNTEER APPROVAL DESK */}
         {activeTab === 'volunteers' && (
@@ -207,18 +292,18 @@ const AdminDashboard = () => {
                   <div key={vol._id} className="applicant-card">
                     <div className="applicant-top">
                       <div className="applicant-avatar">
-                        {vol.name.charAt(0).toUpperCase()}
+                        {vol.name ? vol.name.charAt(0).toUpperCase() : 'V'}
                       </div>
                       <div>
                         <h3>{vol.name}</h3>
-                        <span className="city-pill">{vol.city} Zone</span>
+                        <span className="city-pill">{vol.city || 'General'} Zone</span>
                       </div>
                     </div>
 
                     <div className="applicant-details">
                       <p><strong>Email:</strong> {vol.email}</p>
-                      <p><strong>Contact:</strong> {vol.contactNumber}</p>
-                      <p><strong>Applied Date:</strong> {new Date(vol.createdAt).toLocaleDateString()}</p>
+                      <p><strong>Contact:</strong> {vol.contactNumber || 'N/A'}</p>
+                      <p><strong>Applied Date:</strong> {vol.createdAt ? new Date(vol.createdAt).toLocaleDateString() : 'N/A'}</p>
                     </div>
 
                     <div className="applicant-actions">
@@ -261,25 +346,115 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allVolunteers.map((v) => (
-                    <tr key={v._id}>
-                      <td><strong>{v.name}</strong></td>
-                      <td>{v.email}</td>
-                      <td>{v.contactNumber}</td>
-                      <td>{v.city}</td>
-                      <td>
-                        <span className={`status-pill ${v.status}`}>{v.status.toUpperCase()}</span>
+                  {allVolunteers.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#94a3b8' }}>
+                        No volunteer records found.
                       </td>
-                      <td>{new Date(v.createdAt).toLocaleDateString()}</td>
                     </tr>
-                  ))}
+                  ) : (
+                    allVolunteers.map((v) => (
+                      <tr key={v._id}>
+                        <td><strong>{v.name}</strong></td>
+                        <td>{v.email}</td>
+                        <td>{v.contactNumber || '—'}</td>
+                        <td>{v.city || '—'}</td>
+                        <td>
+                          <span className={`status-pill ${v.status || 'pending'}`}>
+                            {(v.status || 'pending').toUpperCase()}
+                          </span>
+                        </td>
+                        <td>{v.createdAt ? new Date(v.createdAt).toLocaleDateString() : '—'}</td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
         )}
 
-        {/* TAB 2: PLATFORM SHOPS */}
+        {/* TAB 2: REGISTERED CUSTOMERS */}
+        {activeTab === 'customers' && (
+          <div className="customers-desk-wrapper">
+            <div className="desk-header">
+              <h2>Registered Customers ({customers.length})</h2>
+              <p>View all customer accounts fetched from database. Use search to filter by name, email, phone, or city.</p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="customers-search-bar">
+              <input
+                type="text"
+                placeholder="Search by name, email, contact or city..."
+                value={customerSearch}
+                onChange={(e) => {
+                  setCustomerSearch(e.target.value);
+                  fetchCustomers(e.target.value);
+                }}
+                className="customers-search-input"
+              />
+              <span className="customers-count-badge">{customers.length} found</span>
+            </div>
+
+            <div className="admin-table-wrapper">
+              <table className="admin-data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Customer Name</th>
+                    <th>Email Address</th>
+                    <th>Contact Number</th>
+                    <th>City / Zone</th>
+                    <th>Address</th>
+                    <th>Registered On</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan="8" style={{ textAlign: 'center', padding: '30px', color: '#64748b' }}>
+                        Loading customers from database...
+                      </td>
+                    </tr>
+                  ) : customers.length === 0 ? (
+                    <tr>
+                      <td colSpan="8" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8' }}>
+                        No customer records found{customerSearch ? ` matching "${customerSearch}"` : ''}.
+                      </td>
+                    </tr>
+                  ) : (
+                    customers.map((cust, idx) => (
+                      <tr key={cust._id}>
+                        <td style={{ color: '#94a3b8', fontWeight: 600 }}>{idx + 1}</td>
+                        <td><strong>{cust.name}</strong></td>
+                        <td>{cust.email}</td>
+                        <td>{cust.contactNumber || '—'}</td>
+                        <td>{cust.city || '—'}</td>
+                        <td style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {cust.address || '—'}
+                        </td>
+                        <td>
+                          {cust.createdAt 
+                            ? new Date(cust.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+                            : '—'}
+                        </td>
+                        <td>
+                          <span className={`status-pill ${cust.status || 'approved'}`}>
+                            {(cust.status || 'approved').toUpperCase()}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: PLATFORM SHOPS */}
         {activeTab === 'shops' && (
           <div className="shops-desk-wrapper">
             <div className="desk-header">
@@ -301,46 +476,56 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {shops.map((s) => (
-                    <tr key={s._id}>
-                      <td><strong>{s.name}</strong></td>
-                      <td>
-                        <div className="font-semibold text-stone-900">{s.ownerName || s.owner || 'N/A'}</div>
-                        <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
-                      </td>
-                      <td>{s.city}</td>
-                      <td>{s.address}</td>
-                      <td>
-                        {s.volunteer ? (
-                          <span className="vol-assigned">{s.volunteer.name}</span>
-                        ) : (
-                          <span className="unassigned">Unassigned</span>
-                        )}
-                      </td>
-                      <td>{s.lastUpdated ? new Date(s.lastUpdated).toLocaleDateString() : 'N/A'}</td>
-                      <td>
-                        <select 
-                          className="assign-select"
-                          value={s.volunteer?._id || ''}
-                          onChange={(e) => handleAssignVolunteer(s._id, e.target.value)}
-                        >
-                          <option value="">-- Assign Volunteer --</option>
-                          {allVolunteers.filter(v => v.status === 'approved').map((vol) => (
-                            <option key={vol._id} value={vol._id}>
-                              {vol.name} ({vol.city})
-                            </option>
-                          ))}
-                        </select>
+                  {shops.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8' }}>
+                        No registered shops found.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    shops.map((s) => (
+                      <tr key={s._id}>
+                        <td><strong>{s.name}</strong></td>
+                        <td>
+                          <div className="font-semibold text-stone-900">{s.ownerName || s.owner || 'N/A'}</div>
+                          <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
+                        </td>
+                        <td>{s.city || '—'}</td>
+                        <td>{s.address || '—'}</td>
+                        <td>
+                          {s.volunteer ? (
+                            <span className="vol-assigned">{s.volunteer.name}</span>
+                          ) : (
+                            <span className="unassigned">Unassigned</span>
+                          )}
+                        </td>
+                        <td>{s.lastUpdated ? new Date(s.lastUpdated).toLocaleDateString() : 'N/A'}</td>
+                        <td>
+                          <select 
+                            className="assign-select"
+                            value={s.volunteer?._id || ''}
+                            onChange={(e) => handleAssignVolunteer(s._id, e.target.value)}
+                          >
+                            <option value="">-- Assign Volunteer --</option>
+                            {allVolunteers
+                              .filter(v => v.status === 'approved')
+                              .map((vol) => (
+                                <option key={vol._id} value={vol._id}>
+                                  {vol.name} ({vol.city || 'Zone'})
+                                </option>
+                              ))}
+                          </select>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
         )}
 
-        {/* TAB 3: PLATFORM ORDERS */}
+        {/* TAB 4: PLATFORM ORDERS */}
         {activeTab === 'orders' && (() => {
           const bulkOrdersCount = orders.filter((o) => o.orderType === 'bulk' || o.placedBy === 'volunteer').length;
           const customerOrdersCount = orders.filter((o) => o.orderType !== 'bulk' && o.placedBy !== 'volunteer').length;
@@ -429,10 +614,10 @@ const AdminDashboard = () => {
                                 {o.orderType === 'bulk' ? 'BULK WHOLESALE' : 'RETAIL ORDER'}
                               </span>
                             </td>
-                            <td><strong>₹{o.totalAmount.toLocaleString()}</strong></td>
+                            <td><strong>₹{o.totalAmount ? o.totalAmount.toLocaleString() : '0'}</strong></td>
                             <td>
                               <select
-                                className={`status-select ${o.status}`}
+                                className={`status-select ${o.status || 'pending'}`}
                                 value={o.status || 'pending'}
                                 onChange={(e) => handleUpdateOrderStatus(o._id, e.target.value)}
                               >
@@ -444,7 +629,7 @@ const AdminDashboard = () => {
                                 <option value="cancelled">CANCELLED</option>
                               </select>
                             </td>
-                            <td>{new Date(o.createdAt).toLocaleString()}</td>
+                            <td>{o.createdAt ? new Date(o.createdAt).toLocaleString() : '—'}</td>
                           </tr>
                         );
                       })
@@ -456,7 +641,17 @@ const AdminDashboard = () => {
           );
         })()}
 
-      </div>
+        {/* TAB 5: EVENTS DESK */}
+        {activeTab === 'events' && (
+          <AdminEvents onAction={(msg) => triggerAlert(msg.type, msg.text)} />
+        )}
+
+        {/* TAB 6: DONATIONS DESK */}
+        {activeTab === 'donations' && (
+          <AdminDonations onAction={(msg) => triggerAlert(msg.type, msg.text)} />
+        )}
+
+      </main>
 
     </div>
   );

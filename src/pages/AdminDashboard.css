@@ -35,6 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .admin-header-brand h1 {
@@ -42,6 +43,7 @@
   font-weight: 800;
   color: #0f1712;
   margin: 0 0 4px 0;
+  line-height: 1.2;
 }
 
 .admin-header-brand p {
@@ -66,7 +68,9 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  white-space: nowrap;
 }
 
 .btn-logout-admin {
@@ -80,27 +84,90 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  white-space: nowrap;
 }
 
+/* ============================================================
+   Notification / Action Alert Banner
+   ============================================================ */
 .admin-action-alert {
   padding: 14px 20px;
-  border-radius: 12px;
+  border-radius: 14px;
   margin-bottom: 24px;
   font-size: 14px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  word-break: break-word;
+  box-sizing: border-box;
+  width: 100%;
+  animation: alertSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes alertSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .admin-action-alert.success {
-  background: #dcfce7;
+  background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
   border: 1px solid #86efac;
   color: #15803d;
 }
 
 .admin-action-alert.error {
-  background: #fee2e2;
+  background: linear-gradient(135deg, #fee2e2 0%, #fff5f5 100%);
   border: 1px solid #fca5a5;
   color: #b91c1c;
+}
+
+/* ============================================================
+   Customers Tab — Search Bar & Table
+   ============================================================ */
+.customers-desk-wrapper {
+  width: 100%;
+}
+
+.customers-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.customers-search-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 11px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  background: #f8fafc;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.customers-search-input:focus {
+  border-color: #1b4d2e;
+  background: #ffffff;
+}
+
+.customers-count-badge {
+  font-size: 12px;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #166534;
+  padding: 6px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
+  border: 1px solid #86efac;
 }
 
 .admin-stats-grid {
@@ -128,6 +195,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .stat-card.gold .stat-icon-wrapper { background: #fef3c7; color: #b45309; }
@@ -140,6 +208,7 @@
   font-weight: 800;
   display: block;
   color: #0f1712;
+  line-height: 1.2;
 }
 
 .stat-label {
@@ -172,34 +241,29 @@
 .bar-chart {
   height: 230px;
   display: grid;
-  grid-template-columns: repeat(6, minmax(55px, 1fr));
+  grid-template-columns: repeat(6, minmax(40px, 1fr));
   align-items: end;
   gap: 18px;
   padding: 0 8px;
   border-bottom: 1px solid #cbd5e1;
+  overflow-x: auto;
 }
 
 .bar-chart-item { height: 100%; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
 .bar-chart-value { min-height: 18px; margin-bottom: 6px; color: #334155; font-size: 11px; font-weight: 800; }
-.bar-chart-track { width: min(54px, 72%); height: 170px; display: flex; align-items: flex-end; background: #f1f5f9; border-radius: 7px 7px 0 0; overflow: hidden; }
+.bar-chart-track { width: min(54px, 100%); height: 170px; display: flex; align-items: flex-end; background: #f1f5f9; border-radius: 7px 7px 0 0; overflow: hidden; }
 .bar-chart-bar { width: 100%; min-height: 0; border-radius: 7px 7px 0 0; transition: height .35s ease; }
 .bar-chart-label { max-width: 100%; margin-top: 9px; overflow: hidden; color: #64748b; font-size: 11px; font-weight: 700; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
-
-@media (max-width: 700px) {
-  .admin-dashboard-container { padding: 18px; }
-  .admin-analytics-panel { padding: 20px 14px 24px; }
-  .analytics-heading { display: block; }
-  .analytics-total { display: inline-block; margin-top: 10px; }
-  .bar-chart { gap: 8px; padding: 0 2px; }
-  .bar-chart-track { width: 68%; }
-  .bar-chart-label { font-size: 9px; }
-}
 
 /* Tabs */
 .admin-nav-tabs {
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tab-btn {
@@ -215,6 +279,7 @@
   align-items: center;
   gap: 8px;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .tab-btn.active {
@@ -260,7 +325,7 @@
 
 .applications-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -292,6 +357,7 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  flex-shrink: 0;
 }
 
 .applicant-top h3 {
@@ -311,6 +377,7 @@
   font-size: 13px;
   margin: 6px 0;
   color: #475569;
+  word-break: break-word;
 }
 
 .applicant-actions {
@@ -352,13 +419,16 @@
 
 /* Tables */
 .admin-table-wrapper {
+  width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .admin-data-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13.5px;
+  white-space: nowrap;
 }
 
 .admin-data-table th {
@@ -379,6 +449,7 @@
   font-weight: 800;
   padding: 4px 10px;
   border-radius: 99px;
+  display: inline-block;
 }
 
 .status-pill.approved { background: #dcfce7; color: #15803d; }
@@ -391,6 +462,7 @@
   border: 1px solid #cbd5e1;
   font-size: 12.5px;
   outline: none;
+  max-width: 100%;
 }
 
 /* Platform Orders Filter & Badges */
@@ -398,7 +470,10 @@
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .filter-tab-btn {
@@ -411,6 +486,7 @@
   color: #475569;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .filter-tab-btn.active {
@@ -469,6 +545,7 @@
   border: 1px solid #cbd5e1;
   outline: none;
   cursor: pointer;
+  max-width: 100%;
 }
 
 .status-select.pending { background: #fffbe6; color: #b45309; border-color: #fde68a; }
@@ -481,4 +558,182 @@
   font-size: 11px;
   color: #64748b;
   margin-top: 2px;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding: 16px;
+  }
+
+  /* Header adjustments */
+  .admin-dash-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+
+  .admin-header-brand h1 {
+    font-size: 19px;
+  }
+
+  .admin-header-brand p {
+    font-size: 12.5px;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-refresh,
+  .btn-logout-admin {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 12.5px;
+  }
+
+  /* Notifications / Action Alert Responsive Adjustments */
+  .admin-action-alert {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+  }
+
+  /* Stats Grid */
+  .admin-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    padding: 16px;
+    border-radius: 14px;
+    gap: 12px;
+  }
+
+  .stat-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11.5px;
+  }
+
+  /* Analytics Panel */
+  .admin-analytics-panel {
+    padding: 18px 14px 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+
+  .analytics-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .analytics-heading h2 {
+    font-size: 17px;
+  }
+
+  .analytics-heading p {
+    font-size: 12px;
+  }
+
+  .bar-chart {
+    gap: 10px;
+    padding: 0 4px;
+  }
+
+  .bar-chart-track {
+    width: 100%;
+  }
+
+  .bar-chart-label {
+    font-size: 9.5px;
+  }
+
+  /* Content Section */
+  .admin-content-section {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .desk-header h2 {
+    font-size: 18px;
+  }
+
+  .desk-header p {
+    font-size: 12.5px;
+  }
+
+  .applications-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .applicant-card {
+    padding: 16px;
+  }
+
+  .applicant-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-approve,
+  .btn-reject {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-dashboard-container {
+    padding: 12px;
+  }
+
+  .admin-logo-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .tab-btn {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .admin-action-alert {
+    font-size: 12.5px;
+    padding: 10px 14px;
+  }
 }

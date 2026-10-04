@@ -561,3 +561,199 @@
   font-weight: 700;
   cursor: pointer;
 }
+/* ============================================================
+   📱 MOBILE RESPONSIVE — Volunteer Dashboard
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .volunteer-dashboard-container {
+    padding: 14px;
+  }
+
+  /* Header: Stack vertically on mobile */
+  .volunteer-dash-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 18px 16px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+
+  .volunteer-header-info {
+    align-items: flex-start;
+  }
+
+  .volunteer-header-info h1 {
+    font-size: 18px;
+  }
+
+  .volunteer-header-info p {
+    font-size: 12.5px;
+  }
+
+  /* Header actions: wrap and stretch buttons */
+  .volunteer-header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .btn-add-shop-main,
+  .btn-logout-vol {
+    justify-content: center;
+    font-size: 12.5px;
+    padding: 9px 12px;
+  }
+
+  /* Zone pill row */
+  .zone-pill-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Action alerts */
+  .volunteer-action-alert {
+    font-size: 13px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+
+  /* Weekly alert banner: Stack on mobile */
+  .weekly-update-alert-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+  }
+
+  .banner-left {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .banner-left h3 {
+    font-size: 14px;
+  }
+
+  .banner-left p {
+    font-size: 12.5px;
+  }
+
+  .stale-shops-quick-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn-quick-update-shop {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+
+  /* Metrics: 1 column on mobile */
+  .volunteer-metrics-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .metric-box {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+
+  .metric-num {
+    font-size: 20px;
+  }
+
+  /* Tab navigation */
+  .inline-flex {
+    display: flex !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    gap: 6px;
+    margin-bottom: 20px !important;
+  }
+
+  /* Shop section header */
+  .shops-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .shops-section-header h2 {
+    font-size: 17px;
+  }
+
+  .btn-add-shop-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Shop cards: 1 per row */
+  .shops-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Modal: Full-screen on mobile */
+  .vol-modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .vol-modal-card {
+    border-radius: 20px 20px 0 0;
+    max-width: 100%;
+    width: 100%;
+    padding: 24px 20px;
+    max-height: 90dvh;
+    overflow-y: auto;
+  }
+
+  .vol-modal-header h3 {
+    font-size: 16px;
+  }
+
+  /* Modal actions: Stack on mobile */
+  .vol-modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-cancel,
+  .btn-save-shop,
+  .btn-submit-order {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .volunteer-dashboard-container {
+    padding: 10px;
+  }
+
+  .volunteer-avatar-badge {
+    width: 44px;
+    height: 44px;
+  }
+
+  .volunteer-header-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-add-shop-main,
+  .btn-logout-vol {
+    width: 100%;
+  }
+}

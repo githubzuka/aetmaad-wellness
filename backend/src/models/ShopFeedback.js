@@ -5,27 +5,26 @@ const shopFeedbackSchema = new mongoose.Schema(
     shop: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Shop',
-      required: [true, 'Shop reference is required'],
+      required: true,
+      index: true,
     },
     volunteer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Volunteer reference is required'],
+      required: true,
+      index: true,
     },
     status: {
       type: String,
-      enum: ['Active', 'Inventory Low', 'Closed Temporarily', 'Needs Restock'],
+      required: true,
       default: 'Active',
-      required: [true, 'Shop status is required'],
     },
     suppliesNote: {
       type: String,
-      trim: true,
       default: '',
     },
     notes: {
       type: String,
-      trim: true,
       default: '',
     },
     submittedAt: {
@@ -38,5 +37,6 @@ const shopFeedbackSchema = new mongoose.Schema(
   }
 );
 
-const ShopFeedback = mongoose.model('ShopFeedback', shopFeedbackSchema);
+const ShopFeedback = mongoose.models.ShopFeedback || mongoose.model('ShopFeedback', shopFeedbackSchema);
+
 export default ShopFeedback;

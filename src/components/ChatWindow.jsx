@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './ChatWindow.css';
@@ -11,7 +11,9 @@ const QUICK_ACTIONS = [
 ];
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-const stripEmoji = (content) => content.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/  +/g, ' ');
+
+const stripEmoji = (content) =>
+  content.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/  +/g, ' ');
 
 const getLocalReply = (question) => {
   const normalizedQuestion = question.toLowerCase();
@@ -49,10 +51,10 @@ const getLocalReply = (question) => {
 
 const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
-    { 
-      role: 'assistant', 
-      content: 'Welcome to **ASHVA Wellness**.\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.' 
-    }
+    {
+      role: 'assistant',
+      content: 'Welcome to **ASHVA Wellness**.\n\nI am your Equine Nutrition Specialist. Select a topic below or ask any question regarding dosage, ingredients, and feed routines.',
+    },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +92,7 @@ const ChatWindow = ({ onClose }) => {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: stripEmoji(getLocalReply(text)) }
+        { role: 'assistant', content: stripEmoji(getLocalReply(text)) },
       ]);
     } finally {
       setIsLoading(false);
@@ -110,7 +112,7 @@ const ChatWindow = ({ onClose }) => {
           </div>
           <div className="brand-details">
             <div className="brand-title">
-                  <h3>ASHVA AI</h3>
+              <h3>ASHVA AI</h3>
               <i className="bi bi-patch-check-fill verified-badge"></i>
             </div>
             <p className="brand-subtitle">Equine Nutrition Specialist</p>
@@ -171,7 +173,13 @@ const ChatWindow = ({ onClose }) => {
       </div>
 
       {/* Input Form */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="aetmaad-chat-footer">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSend();
+        }}
+        className="aetmaad-chat-footer"
+      >
         <input
           type="text"
           placeholder="Ask about equine nutrition..."
@@ -186,6 +194,7 @@ const ChatWindow = ({ onClose }) => {
       </form>
     </div>
   );
+  
 };
 
 export default ChatWindow;
