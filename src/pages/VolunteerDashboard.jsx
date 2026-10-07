@@ -286,28 +286,20 @@ const VolunteerDashboard = () => {
       </div>
 
       {/* Main Segmented Tab Navigation Control */}
-      <div className="inline-flex p-1 bg-neutral-100 rounded-xl border border-neutral-200/60 mb-6 gap-1">
+      <div className="vol-tab-switch">
         <button
           onClick={() => setActiveTab('shops')}
-          className={`flex items-center gap-2 px-4 py-2 text-sm rounded-lg transition-all cursor-pointer ${
-            activeTab === 'shops'
-              ? 'bg-white text-neutral-900 font-semibold shadow-xs'
-              : 'text-neutral-500 hover:text-neutral-800 font-medium transition-colors'
-          }`}
+          className={`vol-tab-btn ${activeTab === 'shops' ? 'active' : ''}`}
         >
-          <Store size={16} className={activeTab === 'shops' ? 'text-emerald-700' : 'text-neutral-400'} />
+          <Store size={16} />
           <span>Assigned City Shops ({shops.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab('orders')}
-          className={`flex items-center gap-2 px-4 py-2 text-sm rounded-lg transition-all cursor-pointer ${
-            activeTab === 'orders'
-              ? 'bg-white text-neutral-900 font-semibold shadow-xs'
-              : 'text-neutral-500 hover:text-neutral-800 font-medium transition-colors'
-          }`}
+          className={`vol-tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
         >
-          <ShoppingBag size={16} className={activeTab === 'orders' ? 'text-emerald-700' : 'text-neutral-400'} />
+          <ShoppingBag size={16} />
           <span>Shop Orders History</span>
         </button>
       </div>
@@ -332,7 +324,7 @@ const VolunteerDashboard = () => {
               <p>Click "Add New Shop" above to register your first local shop distribution point.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="shops-cards-grid">
               {shops.map((shop) => (
                 <ShopCard
                   key={shop._id}

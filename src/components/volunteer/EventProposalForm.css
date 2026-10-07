@@ -1,0 +1,260 @@
+/* ==========================================================================
+   Trigger Button
+   ========================================================================== */
+.btn-add-shop-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #ffffff;
+  color: #2b3674;
+  border: 1.5px solid #e0e5f2;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-add-shop-secondary:hover {
+  background-color: #f4f7fe;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.btn-add-shop-secondary:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Modal Overlay
+   ========================================================================== */
+.vol-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px; /* Prevents modal touch on screen edges on small screens */
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* ==========================================================================
+   Modal Card
+   ========================================================================== */
+.vol-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh; /* Limits height on landscape screens */
+  overflow-y: auto; /* Adds scrollbar if screen height is small */
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+/* Header */
+.vol-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.vol-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-close-modal:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.event-proposal-help {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.45;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   Form Controls
+   ========================================================================== */
+.vol-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.input-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vol-modal-form input,
+.vol-modal-form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px; /* 16px prevents automatic zoom on iOS browsers */
+  color: #0f172a;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  outline: none;
+}
+
+.vol-modal-form input::placeholder,
+.vol-modal-form textarea::placeholder {
+  color: #94a3b8;
+}
+
+.vol-modal-form input:focus,
+.vol-modal-form textarea:focus {
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.vol-modal-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Action Buttons */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #475569;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.btn-add-shop-main {
+  padding: 10px 18px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-add-shop-main:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-add-shop-main:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   Responsive / Mobile Styles
+   ========================================================================== */
+@media (max-width: 580px) {
+  .vol-modal-card {
+    padding: 18px 16px;
+    border-radius: 12px;
+  }
+
+  /* Stack inputs vertically on mobile */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Full width buttons on mobile screens */
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .btn-cancel,
+  .btn-add-shop-main {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+}

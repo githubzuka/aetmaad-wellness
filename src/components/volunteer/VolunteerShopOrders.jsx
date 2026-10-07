@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ShoppingBag, RefreshCw, AlertCircle, Clock, MapPin } from 'lucide-react';
+import { ShoppingBag, RefreshCw, AlertCircle, Clock, MapPin, Package } from 'lucide-react';
 import orderService from '../../services/orderService';
+import './VolunteerShopOrders.css'; // Standard CSS Import
 
 const VolunteerShopOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -43,157 +44,173 @@ const VolunteerShopOrders = () => {
 
   const getStatusBadge = (status) => {
     const s = (status || 'pending').toLowerCase();
-    switch (s) {
-      case 'pending':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-            Pending
-          </span>
-        );
-      case 'processing':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 border border-sky-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span>
-            Processing
-          </span>
-        );
-      case 'dispatched':
-      case 'shipped':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 border border-indigo-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-            Dispatched
-          </span>
-        );
-      case 'delivered':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            Delivered
-          </span>
-        );
-      case 'cancelled':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-            Cancelled
-          </span>
-        );
-      default:
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-neutral-100 text-neutral-700 border border-neutral-200">
-            {s.toUpperCase()}
-          </span>
-        );
-    }
+    const classMap = {
+      pending: 'badge-pending',
+      processing: 'badge-processing',
+      dispatched: 'badge-dispatched',
+      shipped: 'badge-dispatched',
+      delivered: 'badge-delivered',
+      cancelled: 'badge-cancelled'
+    };
+    
+    const badgeClass = classMap[s] || 'badge-pending';
+
+    return (
+      <span className={`badge ${badgeClass}`}>
+        <span className="badge-dot"></span>
+        {s.charAt(0).toUpperCase() + s.slice(1)}
+      </span>
+    );
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-neutral-200/80 p-6 shadow-sm">
-      
+  <div className="volunteer-management-container">
+
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-neutral-100">
+      <div className="shop-orders-header">
         <div>
-          <h2 className="text-xl font-bold text-neutral-900 tracking-tight flex items-center gap-2">
-            <ShoppingBag className="text-emerald-700" size={22} />
+          <h2 className="shop-orders-title">
+            <ShoppingBag style={{ color: '#047857' }} size={22} />
             <span>Shop Orders History</span>
           </h2>
-          <p className="text-xs text-neutral-500 font-medium mt-0.5">
+          <p className="shop-orders-subtitle">
             Tracking bulk nutrition and supply orders placed by you for registered shops.
           </p>
         </div>
 
-        <button
-          onClick={() => fetchVolunteerOrders(false)}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-700 font-medium text-xs transition-colors cursor-pointer self-start sm:self-auto"
-        >
-          <RefreshCw size={13} />
+        <button onClick={() => fetchVolunteerOrders(false)} className="btn-refresh">
+                          <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
           <span>Refresh List</span>
         </button>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
+        <div className="error-alert-box">
           <AlertCircle size={16} />
           <span>{error}</span>
         </div>
       )}
 
       {loading ? (
-        <div className="py-12 text-center text-sm font-medium text-neutral-500 animate-pulse">
+        <div className="loading-state">
           Loading shop order records...
         </div>
       ) : orders.length === 0 ? (
-        <div className="py-12 text-center bg-neutral-50/70 rounded-2xl border border-dashed border-neutral-200 p-8">
-          <ShoppingBag size={40} className="mx-auto text-neutral-300 mb-3" />
-          <h3 className="text-base font-bold text-neutral-800">No Bulk Orders Placed Yet</h3>
-          <p className="text-xs text-neutral-500 max-w-md mx-auto mt-1">
+        <div className="empty-state-box">
+          <ShoppingBag size={40} className="empty-icon" />
+          <h3>No Bulk Orders Placed Yet</h3>
+          <p>
             Click "Order for Shop Directly" on any assigned shop card to place wholesale feed orders.
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-neutral-200/80">
-          <table className="w-full text-left text-xs text-neutral-700">
-            <thead className="bg-neutral-50/90 text-neutral-900 font-bold uppercase text-[11px] tracking-wider border-b border-neutral-200">
-              <tr>
-                <th className="py-3.5 px-4">Order ID</th>
-                <th className="py-3.5 px-4">Shop & Location</th>
-                <th className="py-3.5 px-4">Order Date</th>
-                <th className="py-3.5 px-4">Item Summary</th>
-                <th className="py-3.5 px-4">Total Amount</th>
-                <th className="py-3.5 px-4 text-right">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {orders.map((order) => {
-                const shopName = order.shop?.name || 'Assigned Shop';
-                const shopCity = order.shop?.city || '';
-                const orderDate = new Date(order.createdAt).toLocaleString();
+        <>
+          {/* Mobile Card List (Visible below 768px via CSS) */}
+          <div className="mobile-orders-list">
+            {orders.map((order) => {
+              const shopName = order.shop?.name || 'Assigned Shop';
+              const shopCity = order.shop?.city || '';
+              const orderDate = new Date(order.createdAt).toLocaleString();
 
-                return (
-                  <tr key={order._id} className="hover:bg-neutral-50/80 transition-colors">
-                    <td className="py-4 px-4 font-mono font-bold text-neutral-900">
-                      #{order._id.slice(-6).toUpperCase()}
-                    </td>
-                    <td className="py-4 px-4">
-                      <div className="font-bold text-neutral-900">{shopName}</div>
+              return (
+                <div key={order._id} className="order-card-mobile">
+                  <div className="order-card-header">
+                    <span className="order-id">#{order._id.slice(-6).toUpperCase()}</span>
+                    {getStatusBadge(order.status)}
+                  </div>
+
+                  <div>
+                    <div className="mobile-shop-name">{shopName}</div>
+                    <div className="mobile-shop-meta">
                       {shopCity && (
-                        <div className="text-[11px] text-neutral-500 flex items-center gap-1 mt-0.5">
-                          <MapPin size={11} className="text-rose-500" />
-                          {shopCity}
-                        </div>
+                        <span className="meta-item">
+                          <MapPin size={12} style={{ color: '#f43f5e' }} /> {shopCity}
+                        </span>
                       )}
-                    </td>
-                    <td className="py-4 px-4 text-neutral-500 font-medium">
-                      <div className="flex items-center gap-1">
-                        <Clock size={12} className="text-neutral-400" />
-                        <span>{orderDate}</span>
+                      <span className="meta-item">
+                        <Clock size={12} /> {orderDate}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="order-items-box">
+                    <div className="items-box-label">
+                      <Package size={12} /> ITEMS
+                    </div>
+                    {order.items?.map((item, idx) => (
+                      <div key={idx} className="item-row">
+                        <span>{item.name || 'ASHVA Equine Mix'}</span>
+                        <span className="item-qty">x {item.quantity}</span>
                       </div>
-                    </td>
-                    <td className="py-4 px-4">
-                      <div className="space-y-1">
+                    ))}
+                  </div>
+
+                  <div className="mobile-card-footer">
+                    <span>Total Amount</span>
+                    <span className="amount-text">₹{order.totalAmount?.toLocaleString()}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop Table View (Visible 768px and above via CSS) */}
+          <div className="desktop-orders-table">
+            <table className="orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Shop & Location</th>
+                  <th>Order Date</th>
+                  <th>Item Summary</th>
+                  <th>Total Amount</th>
+                  <th style={{ textAlign: 'right' }}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => {
+                  const shopName = order.shop?.name || 'Assigned Shop';
+                  const shopCity = order.shop?.city || '';
+                  const orderDate = new Date(order.createdAt).toLocaleString();
+
+                  return (
+                    <tr key={order._id}>
+                      <td className="order-id-cell">
+                        #{order._id.slice(-6).toUpperCase()}
+                      </td>
+                      <td>
+                        <div className="table-shop-name">{shopName}</div>
+                        {shopCity && (
+                          <div className="table-subtext">
+                            <MapPin size={11} style={{ color: '#f43f5e' }} /> {shopCity}
+                          </div>
+                        )}
+                      </td>
+                      <td className="table-date-cell">
+                        <div className="table-subtext">
+                          <Clock size={12} /> {orderDate}
+                        </div>
+                      </td>
+                      <td>
                         {order.items?.map((item, idx) => (
-                          <div key={idx} className="font-medium text-neutral-800">
-                            {item.name || 'ASHVA Equine Mix'} <span className="text-neutral-500 font-normal">x {item.quantity}</span>
+                          <div key={idx} className="table-item-row">
+                            {item.name || 'ASHVA Equine Mix'} <span className="table-item-qty">x {item.quantity}</span>
                           </div>
                         ))}
-                      </div>
-                    </td>
-                    <td className="py-4 px-4">
-                      <span className="font-extrabold text-sm text-emerald-900">
-                        ₹{order.totalAmount?.toLocaleString()}
-                      </span>
-                    </td>
-                    <td className="py-4 px-4 text-right">
-                      {getStatusBadge(order.status)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                      </td>
+                      <td>
+                        <span className="amount-text">₹{order.totalAmount?.toLocaleString()}</span>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        {getStatusBadge(order.status)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
     </div>
