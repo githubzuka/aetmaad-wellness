@@ -50,21 +50,40 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2. CORS Configuration (Allows Vite Frontend on port 3000 & 5173)
-const allowedOrigins = [
+// 2. CORS Configuration
+// Production frontends are supplied via CORS_ORIGINS (comma-separated).
+// Local dev origins are always allowed so development keeps working.
+const defaultOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
 ];
 
+const configuredOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const allowedOrigins = [...defaultOrigins, ...configuredOrigins];
+
+// Allow any *.vercel.app preview/production deployment automatically
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true; // same-origin / server-to-server / curl
+  if (allowedOrigins.includes(origin)) return true;
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) return true;
+  if (/^https:\/\/[a-z0-9-]+\.onrender\.com$/i.test(origin)) return true;
+  return false;
+};
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
       } else {
-        callback(null, true);
+        // Reject unknown origins rather than silently allowing them
+        callback(new Error(`Origin not allowed by CORS: ${origin}`));
       }
     },
     credentials: true,

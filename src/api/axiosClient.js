@@ -4,12 +4,22 @@ import axios from 'axios';
  * Centralized Axios Instance for Hyper-Local Community Ordering Backend (Vite)
  */
 const getBaseURL = () => {
+  // Vite (preferred): VITE_API_URL is baked in at build time
   if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
+  // CRA-style fallback
   if (typeof process !== 'undefined' && process.env && process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;
   }
+
+  // Production safety net: never ship a build that points at localhost.
+  // If the env var was missing at build time we still aim at the deployed API
+  // so the live site works instead of failing every request.
+  if (import.meta?.env?.PROD) {
+    return 'https://ashva-backend.onrender.com';
+  }
+
   return 'http://localhost:5000';
 };
 
