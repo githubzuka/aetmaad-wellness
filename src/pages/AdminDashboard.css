@@ -566,84 +566,103 @@
 
 @media (max-width: 768px) {
   .admin-dashboard-container {
-    padding: 16px;
+    padding: 14px;
   }
 
-  /* Header adjustments */
+  /* ---------- Header ---------- */
   .admin-dash-header {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
-    padding: 18px 20px;
+    gap: 14px;
+    padding: 18px 16px;
     border-radius: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+  }
+
+  .admin-header-brand {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-logo-badge {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+  }
+
+  .admin-header-title {
+    min-width: 0;
   }
 
   .admin-header-brand h1 {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .admin-header-brand p {
-    font-size: 12.5px;
+    font-size: 12px;
   }
 
+  /* Header actions: stack cleanly, full-width tap targets */
   .admin-header-actions {
     width: 100%;
-    display: flex;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .admin-header-actions > * {
+    width: 100%;
+    min-width: 0;
   }
 
   .btn-refresh,
   .btn-logout-admin {
-    flex: 1;
-    padding: 10px 14px;
+    justify-content: center;
+    padding: 10px 12px;
     font-size: 12.5px;
+    width: 100%;
   }
 
-  /* Notifications / Action Alert Responsive Adjustments */
   .admin-action-alert {
-    padding: 12px 16px;
+    padding: 12px 14px;
     font-size: 13px;
     border-radius: 10px;
-    margin-bottom: 18px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    line-height: 1.4;
+    margin-bottom: 16px;
+    word-break: break-word;
   }
 
-  /* Stats Grid */
+  /* ---------- Stats ---------- */
   .admin-stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 18px;
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 14px;
     border-radius: 14px;
     gap: 12px;
   }
 
   .stat-icon-wrapper {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
   }
 
   .stat-value {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   .stat-label {
     font-size: 11.5px;
   }
 
-  /* Analytics Panel */
+  /* ---------- Analytics ---------- */
   .admin-analytics-panel {
     padding: 18px 14px 20px;
     border-radius: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .analytics-heading {
@@ -653,48 +672,65 @@
     margin-bottom: 16px;
   }
 
-  .analytics-heading h2 {
-    font-size: 17px;
+  .analytics-heading h2 { font-size: 17px; }
+  .analytics-heading p { font-size: 12px; }
+
+  .bar-chart { gap: 10px; padding: 0 4px; }
+  .bar-chart-track { width: 100%; }
+  .bar-chart-label { font-size: 9.5px; }
+
+  /* ---------- Tabs: horizontal scroll instead of wrapping ---------- */
+  .admin-nav-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 5px;
+    gap: 4px;
+    margin-bottom: 18px;
+    border-radius: 12px;
   }
 
-  .analytics-heading p {
-    font-size: 12px;
+  .admin-nav-tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex: 0 0 auto;
+    padding: 9px 14px;
+    font-size: 12.5px;
+    gap: 7px;
+    white-space: nowrap;
   }
 
-  .bar-chart {
-    gap: 10px;
-    padding: 0 4px;
-  }
-
-  .bar-chart-track {
-    width: 100%;
-  }
-
-  .bar-chart-label {
-    font-size: 9.5px;
-  }
-
-  /* Content Section */
+  /* ---------- Content ---------- */
   .admin-content-section {
-    padding: 18px;
+    padding: 16px 14px;
     border-radius: 16px;
   }
 
-  .desk-header h2 {
-    font-size: 18px;
+  .desk-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 
-  .desk-header p {
-    font-size: 12.5px;
-  }
+  .desk-header h2 { font-size: 17px; }
+  .desk-header p { font-size: 12.5px; }
 
+  /* ---------- Volunteer approval cards ---------- */
   .applications-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
   }
 
   .applicant-card {
     padding: 16px;
+    border-radius: 16px;
+  }
+
+  .applicant-top {
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .applicant-actions {
@@ -705,18 +741,46 @@
   .btn-approve,
   .btn-reject {
     width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* ---------- Customers search ---------- */
+  .customers-search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px;
+    width: 100%;
+  }
+
+  .customers-search-input {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .customers-count-badge {
+    align-self: flex-start;
   }
 }
 
 @media (max-width: 480px) {
   .admin-dashboard-container {
-    padding: 12px;
+    padding: 10px;
   }
 
   .admin-logo-badge {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: 12px;
+  }
+
+  .admin-header-brand h1 {
+    font-size: 16px;
+  }
+
+  .admin-header-actions {
+    grid-template-columns: 1fr;
   }
 
   .admin-stats-grid {
@@ -724,16 +788,230 @@
   }
 
   .stat-card {
-    padding: 14px;
+    padding: 13px;
   }
 
   .tab-btn {
-    padding: 10px 14px;
-    font-size: 13px;
+    padding: 9px 12px;
+    font-size: 12px;
   }
 
   .admin-action-alert {
     font-size: 12.5px;
-    padding: 10px 14px;
+    padding: 10px 12px;
+  }
+
+  .admin-content-section {
+    padding: 14px 12px;
+  }
+}
+/* ==========================================================================
+   RESPONSIVE DATA TABLES
+   On small screens every .admin-data-table row becomes a stacked card so the
+   tables stay readable without horizontal scrolling. Each <td> shows its
+   column name via the data-label attribute set in AdminDashboard.jsx.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .admin-table-wrapper {
+    border: none;
+    border-radius: 0;
+    overflow-x: visible;
+    background: transparent;
+  }
+
+  .admin-data-table,
+  .admin-data-table tbody,
+  .admin-data-table tr,
+  .admin-data-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Hide the header row — labels come from data-label instead */
+  .admin-data-table thead {
+    display: none;
+  }
+
+  .admin-data-table tbody tr {
+    margin-bottom: 12px;
+    padding: 14px 14px 6px;
+    border: 1px solid #e8e3d8;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(15, 45, 27, 0.04);
+  }
+
+  .admin-data-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .admin-data-table tbody td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid #f4f2ed;
+    font-size: 13px;
+    text-align: right;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+
+  .admin-data-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  /* Column label, pulled from the data-label attribute */
+  .admin-data-table tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    max-width: 45%;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  /* Cell content aligns right and wraps */
+  .admin-data-table tbody td > * {
+    min-width: 0;
+    text-align: right;
+  }
+
+  /* Full-width cells (e.g. an empty-state message spanning all columns) */
+  .admin-data-table tbody td[colspan] {
+    display: block;
+    text-align: center;
+    padding: 20px 8px;
+  }
+
+  .admin-data-table tbody td[colspan]::before {
+    display: none;
+  }
+
+  /* Inputs and selects inside tables should fill the row */
+  .admin-data-table .assign-select,
+  .admin-data-table .status-select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 12.5px;
+  }
+
+  .admin-data-table .placed-by-badge,
+  .admin-data-table .order-type-badge,
+  .admin-data-table .status-pill,
+  .admin-data-table .vol-assigned,
+  .admin-data-table .unassigned {
+    display: inline-flex;
+    align-self: flex-end;
+    white-space: normal;
+    text-align: right;
+  }
+
+  .admin-data-table code {
+    word-break: break-all;
+    text-align: right;
+  }
+
+  .admin-data-table .sub-text {
+    display: block;
+    margin-top: 2px;
+    text-align: right;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-data-table tbody td {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    text-align: left;
+  }
+
+  .admin-data-table tbody td::before {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .admin-data-table tbody td > *,
+  .admin-data-table tbody td {
+    text-align: left;
+  }
+
+  .admin-data-table code,
+  .admin-data-table .sub-text {
+    text-align: left;
+  }
+
+  .admin-data-table .placed-by-badge,
+  .admin-data-table .order-type-badge,
+  .admin-data-table .status-pill,
+  .admin-data-table .vol-assigned,
+  .admin-data-table .unassigned {
+    align-self: flex-start;
+    text-align: left;
+  }
+}
+
+/* ==========================================================================
+   ADMIN FORMS (event creation etc.) — stack cleanly on mobile
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .event-admin-form {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .event-form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .event-admin-form input,
+  .event-admin-form textarea,
+  .event-admin-form select {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 13.5px;
+  }
+
+  .admin-events-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-event-primary {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .admin-event-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-event-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .event-icon-btn {
+    min-width: 44px;
+    min-height: 44px;
   }
 }

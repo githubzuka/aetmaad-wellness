@@ -47,7 +47,14 @@ axiosClient.interceptors.response.use(
         error.response.data && error.response.data.message
           ? error.response.data.message
           : `Request failed with status ${error.response.status}`;
-      return Promise.reject(new Error(message));
+
+      // Preserve any machine-readable code (e.g. PASSWORD_LOCKED, ROLE_MISMATCH)
+      // so the UI can distinguish these from an ordinary failure.
+      const wrapped = new Error(message);
+      if (error.response.data && error.response.data.code) {
+        wrapped.code = error.response.data.code;
+      }
+      return Promise.reject(wrapped);
     } else if (error.request) {
       return Promise.reject(new Error('Network error. Unable to connect to backend server.'));
     } else {

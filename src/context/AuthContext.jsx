@@ -65,10 +65,12 @@ export const AuthProvider = ({ children }) => {
   /**
    * User login action
    */
-  const login = async (email, password) => {
+  const login = async (email, password, options = {}) => {
     setError(null);
     try {
-      const res = await authService.login({ email, password });
+      // options.expectedRole lets a portal enforce role isolation — the customer
+      // login page passes 'customer' so administrator accounts are rejected.
+      const res = await authService.login({ email, password, ...options });
       if (res.success && res.data) {
         const { token: userToken, ...userData } = res.data;
         localStorage.setItem('token', userToken);

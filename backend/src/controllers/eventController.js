@@ -1,6 +1,7 @@
 import Event from '../models/Event.js';
 import Notification from '../models/Notification.js';
 import User from '../models/User.js';
+import { createNotificationDeduped } from './notificationController.js';
 
 const eventFields = 'title description date time location city organizer volunteerHostName status source volunteerResponse createdBy createdAt';
 
@@ -64,7 +65,7 @@ export const proposeVolunteerEvent = async (req, res, next) => {
       organizer: req.user.name,
     });
 
-    await Notification.create({
+    await createNotificationDeduped({
       user: null,
       title: 'New Event Proposal',
       message: `${req.user.name} proposed the event “${event.title}” for admin approval.`,

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import orderService from '../services/orderService';
 import { ShoppingBag, Clock, CheckCircle2, Truck, AlertCircle, ArrowLeft, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BackToHome from '../components/common/BackToHome';
 import './MyOrders.css';
 
 const MyOrders = () => {

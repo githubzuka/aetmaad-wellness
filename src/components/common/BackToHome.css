@@ -1,0 +1,124 @@
+/* ============================================================
+   Back-to-Home navigation bar — used on every page
+   ============================================================ */
+
+.back-home-bar {
+  width: 100%;
+  border-bottom: 1px solid #ece8df;
+  background: #fcfbfa;
+}
+
+.back-home-bar.dark {
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.back-home-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 12px 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Ghost = plain "Back" */
+.back-home-btn.ghost {
+  background: transparent;
+  border-color: #d8d3c6;
+  color: #55604f;
+}
+
+.back-home-btn.ghost:hover {
+  background: #f1f5f0;
+  color: #1b4d2e;
+  border-color: #b9c6b6;
+}
+
+/* Primary = "Back to Home" */
+.back-home-btn.primary {
+  background: #1b4d2e;
+  border-color: #1b4d2e;
+  color: #ffffff;
+  margin-left: auto;
+  box-shadow: 0 3px 10px rgba(27, 77, 46, 0.2);
+}
+
+.back-home-btn.primary:hover {
+  background: #133922;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(27, 77, 46, 0.28);
+}
+
+.back-home-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f1712;
+  letter-spacing: 0.01em;
+}
+
+.back-home-bar.dark .back-home-title {
+  color: #ffffff;
+}
+
+.back-home-bar.dark .back-home-btn.ghost {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #dbe7dd;
+}
+
+.back-home-bar.dark .back-home-btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.back-home-bar.dark .back-home-btn.primary {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #1b4d2e;
+}
+
+.back-home-bar.dark .back-home-btn.primary:hover {
+  background: #f3f0e8;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .back-home-inner {
+    padding: 10px 16px;
+    gap: 8px;
+  }
+
+  .back-home-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .back-home-title {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .back-home-btn span {
+    display: none;
+  }
+
+  .back-home-btn {
+    padding: 9px 11px;
+  }
+}

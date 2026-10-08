@@ -2,6 +2,7 @@ import ShopFeedback from '../models/ShopFeedback.js';
 import Shop from '../models/Shop.js';
 import Notification from '../models/Notification.js';
 import User from '../models/User.js';
+import { createNotificationDeduped } from './notificationController.js';
 
 /**
  * @desc    Submit weekly feedback for a shop
@@ -36,7 +37,8 @@ export const submitShopFeedback = async (req, res, next) => {
     shop.lastUpdated = new Date();
     await shop.save();
 
-    // Create Admin Notification(s)
+    // Create Admin Notification(s) — identical repeats collapse into one.
+    // A volunteer re-submitting the same feedback does not flood the feed.
     const adminUsers = await User.find({ role: 'admin' }).select('_id');
     const volunteerName = req.user.name || 'Volunteer';
     const notificationMessage = `Volunteer ${volunteerName} submitted weekly feedback for shop ${shop.name}.`;
@@ -46,6 +48,7 @@ export const submitShopFeedback = async (req, res, next) => {
       shopId: shop._id,
       shopName: shop.name,
       volunteerName,
+      volunteerId: req.user._id,
       status,
       suppliesNote: suppliesNote || '',
       notes: notes || '',
@@ -53,26 +56,21 @@ export const submitShopFeedback = async (req, res, next) => {
     };
 
     if (adminUsers.length > 0) {
-      const notifications = adminUsers.map((admin) => ({
+      await Promise.all(adminUsers.map((admin) => createNotificationDeduped({
         user: admin._id,
         title: 'New Weekly Feedback Submitted',
         message: notificationMessage,
         type: 'shop_feedback',
         referenceId: feedback._id,
-        read: false,
-        isRead: false,
         metadata,
-      }));
-      await Notification.insertMany(notifications);
+      })));
     } else {
-      await Notification.create({
+      await createNotificationDeduped({
         user: null,
         title: 'New Weekly Feedback Submitted',
         message: notificationMessage,
         type: 'shop_feedback',
         referenceId: feedback._id,
-        read: false,
-        isRead: false,
         metadata,
       });
     }

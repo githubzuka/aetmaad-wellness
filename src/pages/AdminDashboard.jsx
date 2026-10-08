@@ -6,25 +6,30 @@ import orderService from '../services/orderService';
 import AdminNotifications from '../components/admin/AdminNotifications';
 import AdminEvents from '../components/admin/AdminEvents';
 import AdminDonations from '../components/admin/AdminDonations';
-import { 
-  Users, 
-  Store, 
-  ShoppingBag, 
-  DollarSign, 
-  CheckCircle, 
-  XCircle, 
-  ShieldCheck, 
-  UserCheck, 
-  AlertTriangle, 
-  RefreshCw, 
-  LogOut, 
-  CalendarDays 
+import AdminContacts from '../components/admin/AdminContacts';
+import AdminSecurity from '../components/admin/AdminSecurity';
+import BackToHome from '../components/common/BackToHome';
+import {
+  Users,
+  Store,
+  ShoppingBag,
+  DollarSign,
+  CheckCircle,
+  XCircle,
+  ShieldCheck,
+  UserCheck,
+  AlertTriangle,
+  RefreshCw,
+  LogOut,
+  CalendarDays,
+  Inbox,
+  ShieldAlert
 } from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
-  
+
   // Data State
   const [stats, setStats] = useState(null);
   const [pendingVolunteers, setPendingVolunteers] = useState([]);
@@ -135,7 +140,8 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard-container">
-      
+      <BackToHome title="Admin Console" />
+
       {/* Header */}
       <header className="admin-dash-header">
         <div className="admin-header-brand">
@@ -215,7 +221,7 @@ const AdminDashboard = () => {
 
       {/* Navigation Tabs */}
       <nav className="admin-nav-tabs" aria-label="Dashboard views">
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'volunteers' ? 'active' : ''}`}
           onClick={() => setActiveTab('volunteers')}
         >
@@ -226,7 +232,7 @@ const AdminDashboard = () => {
           )}
         </button>
 
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'customers' ? 'active' : ''}`}
           onClick={() => setActiveTab('customers')}
         >
@@ -234,7 +240,7 @@ const AdminDashboard = () => {
           <span>Customers ({customers.length})</span>
         </button>
 
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'shops' ? 'active' : ''}`}
           onClick={() => setActiveTab('shops')}
         >
@@ -242,7 +248,7 @@ const AdminDashboard = () => {
           <span>Shops ({shops.length})</span>
         </button>
 
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
           onClick={() => setActiveTab('orders')}
         >
@@ -250,7 +256,7 @@ const AdminDashboard = () => {
           <span>Orders ({orders.length})</span>
         </button>
 
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'events' ? 'active' : ''}`}
           onClick={() => setActiveTab('events')}
         >
@@ -264,6 +270,22 @@ const AdminDashboard = () => {
         >
           <DollarSign size={18} />
           <span>Donations</span>
+        </button>
+
+        <button
+          className={`tab-btn ${activeTab === 'contacts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('contacts')}
+        >
+          <Inbox size={18} />
+          <span>Contact Enquiries</span>
+        </button>
+
+        <button
+          className={`tab-btn ${activeTab === 'security' ? 'active' : ''}`}
+          onClick={() => setActiveTab('security')}
+        >
+          <ShieldAlert size={18} />
+          <span>Security Alerts</span>
         </button>
       </nav>
 
@@ -307,15 +329,15 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="applicant-actions">
-                      <button 
+                      <button
                         className="btn-approve"
                         onClick={() => handleVolunteerAction(vol._id, 'approved')}
                       >
                         <CheckCircle size={16} />
                         Approve Application
                       </button>
-                      
-                      <button 
+
+                      <button
                         className="btn-reject"
                         onClick={() => handleVolunteerAction(vol._id, 'rejected')}
                       >
@@ -355,16 +377,16 @@ const AdminDashboard = () => {
                   ) : (
                     allVolunteers.map((v) => (
                       <tr key={v._id}>
-                        <td><strong>{v.name}</strong></td>
-                        <td>{v.email}</td>
-                        <td>{v.contactNumber || '—'}</td>
-                        <td>{v.city || '—'}</td>
-                        <td>
+                        <td data-label="Name"><strong>{v.name}</strong></td>
+                        <td data-label="Email">{v.email}</td>
+                        <td data-label="Contact">{v.contactNumber || '—'}</td>
+                        <td data-label="City / Zone">{v.city || '—'}</td>
+                        <td data-label="Status">
                           <span className={`status-pill ${v.status || 'pending'}`}>
                             {(v.status || 'pending').toUpperCase()}
                           </span>
                         </td>
-                        <td>{v.createdAt ? new Date(v.createdAt).toLocaleDateString() : '—'}</td>
+                        <td data-label="Joined">{v.createdAt ? new Date(v.createdAt).toLocaleDateString() : '—'}</td>
                       </tr>
                     ))
                   )}
@@ -427,20 +449,18 @@ const AdminDashboard = () => {
                   ) : (
                     customers.map((cust, idx) => (
                       <tr key={cust._id}>
-                        <td style={{ color: '#94a3b8', fontWeight: 600 }}>{idx + 1}</td>
-                        <td><strong>{cust.name}</strong></td>
-                        <td>{cust.email}</td>
-                        <td>{cust.contactNumber || '—'}</td>
-                        <td>{cust.city || '—'}</td>
-                        <td style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                          {cust.address || '—'}
-                        </td>
-                        <td>
-                          {cust.createdAt 
+                        <td data-label="#" style={{ color: '#94a3b8', fontWeight: 600 }}>{idx + 1}</td>
+                        <td data-label="Customer Name"><strong>{cust.name}</strong></td>
+                        <td data-label="Email Address">{cust.email}</td>
+                        <td data-label="Contact Number">{cust.contactNumber || '—'}</td>
+                        <td data-label="City / Zone">{cust.city || '—'}</td>
+                        <td data-label="Address">{cust.address || '—'}</td>
+                        <td data-label="Registered On">
+                          {cust.createdAt
                             ? new Date(cust.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
                             : '—'}
                         </td>
-                        <td>
+                        <td data-label="Status">
                           <span className={`status-pill ${cust.status || 'approved'}`}>
                             {(cust.status || 'approved').toUpperCase()}
                           </span>
@@ -485,23 +505,23 @@ const AdminDashboard = () => {
                   ) : (
                     shops.map((s) => (
                       <tr key={s._id}>
-                        <td><strong>{s.name}</strong></td>
-                        <td>
+                        <td data-label="Shop Name"><strong>{s.name}</strong></td>
+                        <td data-label="Owner / Contact">
                           <div className="font-semibold text-stone-900">{s.ownerName || s.owner || 'N/A'}</div>
                           <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
                         </td>
-                        <td>{s.city || '—'}</td>
-                        <td>{s.address || '—'}</td>
-                        <td>
+                        <td data-label="City / Zone">{s.city || '—'}</td>
+                        <td data-label="Address">{s.address || '—'}</td>
+                        <td data-label="Assigned Volunteer">
                           {s.volunteer ? (
                             <span className="vol-assigned">{s.volunteer.name}</span>
                           ) : (
                             <span className="unassigned">Unassigned</span>
                           )}
                         </td>
-                        <td>{s.lastUpdated ? new Date(s.lastUpdated).toLocaleDateString() : 'N/A'}</td>
-                        <td>
-                          <select 
+                        <td data-label="Last Updated">{s.lastUpdated ? new Date(s.lastUpdated).toLocaleDateString() : 'N/A'}</td>
+                        <td data-label="Assign Action">
+                          <select
                             className="assign-select"
                             value={s.volunteer?._id || ''}
                             onChange={(e) => handleAssignVolunteer(s._id, e.target.value)}
@@ -596,12 +616,12 @@ const AdminDashboard = () => {
 
                         return (
                           <tr key={o._id}>
-                            <td><code>#{o._id.slice(-6).toUpperCase()}</code></td>
-                            <td>
+                            <td data-label="Order ID"><code>#{o._id.slice(-6).toUpperCase()}</code></td>
+                            <td data-label="Target Shop">
                               <strong>{shopName}</strong>
                               {o.shop?.address && <div className="sub-text">{o.shop.address}</div>}
                             </td>
-                            <td>
+                            <td data-label="Placed By">
                               <div className={`placed-by-badge ${isVolunteer ? 'volunteer' : 'customer'}`}>
                                 {placedByName}
                               </div>
@@ -609,13 +629,13 @@ const AdminDashboard = () => {
                                 <div className="sub-text">{o.customer.contactNumber}</div>
                               )}
                             </td>
-                            <td>
+                            <td data-label="Order Type">
                               <span className={`order-type-badge ${o.orderType === 'bulk' ? 'bulk' : 'normal'}`}>
                                 {o.orderType === 'bulk' ? 'BULK WHOLESALE' : 'RETAIL ORDER'}
                               </span>
                             </td>
-                            <td><strong>₹{o.totalAmount ? o.totalAmount.toLocaleString() : '0'}</strong></td>
-                            <td>
+                            <td data-label="Total Amount"><strong>₹{o.totalAmount ? o.totalAmount.toLocaleString() : '0'}</strong></td>
+                            <td data-label="Status Action">
                               <select
                                 className={`status-select ${o.status || 'pending'}`}
                                 value={o.status || 'pending'}
@@ -629,7 +649,7 @@ const AdminDashboard = () => {
                                 <option value="cancelled">CANCELLED</option>
                               </select>
                             </td>
-                            <td>{o.createdAt ? new Date(o.createdAt).toLocaleString() : '—'}</td>
+                            <td data-label="Date & Time">{o.createdAt ? new Date(o.createdAt).toLocaleString() : '—'}</td>
                           </tr>
                         );
                       })
@@ -649,6 +669,16 @@ const AdminDashboard = () => {
         {/* TAB 6: DONATIONS DESK */}
         {activeTab === 'donations' && (
           <AdminDonations onAction={(msg) => triggerAlert(msg.type, msg.text)} />
+        )}
+
+        {/* TAB 7: CONTACT / OUTREACH ENQUIRIES */}
+        {activeTab === 'contacts' && (
+          <AdminContacts onAction={(msg) => triggerAlert(msg.type, msg.text)} />
+        )}
+
+        {/* TAB 8: SECURITY ALERTS */}
+        {activeTab === 'security' && (
+          <AdminSecurity onAction={(msg) => triggerAlert(msg.type, msg.text)} />
         )}
 
       </main>

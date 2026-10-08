@@ -351,3 +351,259 @@
     margin-bottom: 0;
   }
 }
+
+/* ============================================================
+   Forgot-password panel + home link
+   ============================================================ */
+
+.auth-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1.5px solid #d7ddd4;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #1e293b;
+  resize: vertical;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.auth-textarea:focus {
+  border-color: #1b4d2e;
+  box-shadow: 0 0 0 3px rgba(27, 77, 46, 0.12);
+}
+
+.optional-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.auth-spin {
+  animation: auth-spin 1s linear infinite;
+}
+
+@keyframes auth-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.link-switch-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #1b4d2e;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link-switch-btn:hover {
+  color: #b45309;
+}
+
+.auth-forgot-row {
+  margin-top: 8px;
+}
+
+.auth-home-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eef2ea;
+}
+
+.auth-home-row .link-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ============================================================
+   Login lockout, attempt warning & contact-admin
+   ============================================================ */
+
+/* Warning banner shown when the user has only 2 attempts left */
+.auth-attempt-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 15px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.auth-attempt-warning svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: #d97706;
+}
+
+.auth-attempt-warning strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.auth-attempt-warning span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #a16207;
+}
+
+/* Locked-out panel — replaces the password entry entirely */
+.auth-locked-panel {
+  padding: 24px 20px;
+  border-radius: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  text-align: center;
+}
+
+.auth-locked-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-locked-panel h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #991b1b;
+}
+
+.auth-locked-panel > p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #b91c1c;
+}
+
+.auth-locked-panel > p strong {
+  color: #7f1d1d;
+  font-weight: 800;
+  word-break: break-word;
+}
+
+/* Highlighted forgot-password action */
+.auth-locked-forgot-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 50px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  border: 2px solid #dc2626;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.32);
+  transition: all 0.2s ease;
+  animation: auth-forgot-pulse 2.4s ease-in-out infinite;
+}
+
+.auth-locked-forgot-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.4);
+  animation-play-state: paused;
+}
+
+@keyframes auth-forgot-pulse {
+  0%, 100% { box-shadow: 0 6px 18px rgba(220, 38, 38, 0.32); }
+  50% { box-shadow: 0 6px 24px rgba(220, 38, 38, 0.55); }
+}
+
+/* Contact-admin card */
+.auth-contact-admin {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e8e3d8;
+  text-align: left;
+}
+
+.auth-contact-admin h4 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f1712;
+}
+
+.auth-contact-admin p {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.auth-contact-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.auth-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #cbd5c7;
+  background: #f8faf5;
+  color: #1b4d2e;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.auth-contact-btn:hover {
+  background: #f0fdf4;
+  border-color: #86efac;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .auth-locked-panel {
+    padding: 20px 15px;
+  }
+
+  .auth-locked-forgot-btn {
+    font-size: 13px;
+    padding: 13px 14px;
+  }
+
+  .auth-contact-actions {
+    grid-template-columns: 1fr;
+  }
+}

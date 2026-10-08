@@ -7,7 +7,9 @@ import WeeklyFeedbackModal from '../components/volunteer/WeeklyFeedbackModal';
 import VolunteerShopOrders from '../components/volunteer/VolunteerShopOrders';
 import EventProposalForm from '../components/volunteer/EventProposalForm';
 import VolunteerNotifications from '../components/volunteer/VolunteerNotifications';
-import { MapPin, Store, Plus, AlertTriangle, CheckCircle, Clock, LogOut, RefreshCw, X, Package, ShoppingBag } from 'lucide-react';
+import VolunteerAdminMessages from '../components/volunteer/VolunteerAdminMessages';
+import ConfirmDialog from '../components/common/ConfirmDialog';
+import { MapPin, Store, Plus, AlertTriangle, CheckCircle, Clock, LogOut, RefreshCw, X, Package, ShoppingBag, Trash2 } from 'lucide-react';
 import './VolunteerDashboard.css';
 
 const VolunteerDashboard = () => {
@@ -41,6 +43,10 @@ const VolunteerDashboard = () => {
   // Weekly Feedback Modal State
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [feedbackTargetShop, setFeedbackTargetShop] = useState(null);
+
+  // Delete confirmation dialog state (replaces window.confirm)
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const volunteerCity = user?.city || 'Mumbai';
 
@@ -128,17 +134,27 @@ const VolunteerDashboard = () => {
     setTimeout(() => setActionMsg(null), 4000);
   };
 
-  // Delete Shop Action
-  const handleDeleteShop = async (shopId, shopName) => {
-    if (!window.confirm(`Are you sure you want to remove "${shopName}"?`)) return;
+  // Delete Shop Action — opens the styled confirmation dialog instead of window.confirm
+  const handleDeleteShop = (shopId, shopName) => {
+    const shopObj = shops.find((s) => s._id === shopId);
+    setDeleteTarget({ id: shopId, name: shopName, shop: shopObj });
+  };
+
+  // Runs once the volunteer confirms deletion in the dialog
+  const confirmDeleteShop = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      await shopService.deleteShop(shopId);
-      setActionMsg({ type: 'success', text: `Shop "${shopName}" removed.` });
+      await shopService.deleteShop(deleteTarget.id);
+      setActionMsg({ type: 'success', text: `Shop "${deleteTarget.name}" removed from your zone.` });
+      setDeleteTarget(null);
       fetchShops();
     } catch (err) {
       setActionMsg({ type: 'error', text: err.message || 'Delete failed.' });
+    } finally {
+      setIsDeleting(false);
+      setTimeout(() => setActionMsg(null), 4000);
     }
-    setTimeout(() => setActionMsg(null), 4000);
   };
 
   // Open Direct Order Modal
@@ -190,7 +206,7 @@ const VolunteerDashboard = () => {
 
   return (
     <div className="volunteer-dashboard-container">
-      
+
       {/* Top Banner Header */}
       <header className="volunteer-dash-header">
         <div className="volunteer-header-info">
@@ -209,6 +225,11 @@ const VolunteerDashboard = () => {
 
         <div className="volunteer-header-actions">
           <VolunteerNotifications />
+
+          <VolunteerAdminMessages
+            onAction={(message) => { setActionMsg(message); setTimeout(() => setActionMsg(null), 4000); }}
+          />
+
           <button className="btn-add-shop-main" onClick={openAddShopModal}>
             <Plus size={18} />
             Add New Shop
@@ -245,8 +266,8 @@ const VolunteerDashboard = () => {
 
           <div className="stale-shops-quick-actions">
             {staleShops.map((s) => (
-              <button 
-                key={s._id} 
+              <button
+                key={s._id}
                 className="btn-quick-update-shop"
                 onClick={() => openFeedbackModal(s)}
               >
@@ -286,8 +307,11 @@ const VolunteerDashboard = () => {
       </div>
 
       {/* Main Segmented Tab Navigation Control */}
-      <div className="vol-tab-switch">
+      <div className="vol-tab-switch" role="tablist" aria-label="Volunteer dashboard views">
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'shops'}
           onClick={() => setActiveTab('shops')}
           className={`vol-tab-btn ${activeTab === 'shops' ? 'active' : ''}`}
         >
@@ -296,6 +320,9 @@ const VolunteerDashboard = () => {
         </button>
 
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'orders'}
           onClick={() => setActiveTab('orders')}
           className={`vol-tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
         >
@@ -491,6 +518,28 @@ const VolunteerDashboard = () => {
         onClose={() => setIsFeedbackModalOpen(false)}
         shop={feedbackTargetShop}
         onSuccess={handleFeedbackSuccess}
+      />
+
+      {/* Delete Shop Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        tone="danger"
+        title="Remove this shop?"
+        confirmLabel="Yes, Remove Shop"
+        cancelLabel="Keep Shop"
+        busy={isDeleting}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={confirmDeleteShop}
+        message={
+          deleteTarget && (
+            <>
+              You are about to permanently remove{' '}
+              <strong>{deleteTarget.name}</strong>
+              {deleteTarget.shop?.city ? <> from the <strong>{deleteTarget.shop.city}</strong> zone</> : null}.
+              This will also hide its order history from your shop desk. This action cannot be undone.
+            </>
+          )
+        }
       />
 
     </div>

@@ -1,56 +1,72 @@
 // src/components/ImpactSection.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Heart, HeartHandshake } from 'lucide-react';
+import { ArrowRight, Heart, HeartHandshake, RefreshCw } from 'lucide-react';
 import axiosClient from '../api/axiosClient';
 import './ImpactSection.css';
 
 const ImpactSection = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
   const [impactStats, setImpactStats] = useState(null);
-  const [statsStatus, setStatsStatus] = useState('loading');
+  const [statsStatus, setStatsStatus] = useState('loading'); // 'loading' | 'live' | 'error'
 
   const handleDonateClick = () => {
     navigate('/donate'); // Navigates to the /donate page
   };
 
+  const loadImpactStats = useCallback(async () => {
+    setStatsStatus('loading');
+    try {
+      const response = await axiosClient.get('/api/impact/stats');
+      if (response.data?.success && response.data?.data) {
+        setImpactStats(response.data.data);
+        setStatsStatus('live');
+      } else {
+        setStatsStatus('error');
+      }
+    } catch (error) {
+      console.error('Failed to load impact stats:', error);
+      setStatsStatus('error');
+    }
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
 
-    const loadImpactStats = async () => {
+    const fetchStats = async () => {
       try {
         const response = await axiosClient.get('/api/impact/stats');
-        if (isMounted && response.data?.success) {
+        if (isMounted && response.data?.success && response.data?.data) {
           setImpactStats(response.data.data);
           setStatsStatus('live');
+        } else if (isMounted) {
+          setStatsStatus('error');
         }
       } catch (error) {
-        if (isMounted) setStatsStatus('fallback');
+        if (isMounted) {
+          console.error('Failed to load impact stats:', error);
+          setStatsStatus('error');
+        }
       }
     };
 
-    loadImpactStats();
+    fetchStats();
     return () => { isMounted = false; };
   }, []);
 
-  const stats = impactStats
-    ? [
-        { number: impactStats.volunteers, label: 'Approved Volunteers' },
-        { number: impactStats.shops, label: 'Community Shops' },
-        { number: impactStats.products, label: 'Nutrition Products' },
-        { number: impactStats.orders, label: 'Orders Supported' },
-      ]
-    : [
-        { number: '24', label: 'Approved Volunteers' },
-        { number: '18', label: 'Community Shops' },
-        { number: '6', label: 'Nutrition Products' },
-        { number: '258', label: 'Orders Supported' },
-      ];
+  // Real values only. Placeholders keep the layout stable while loading, but we
+  // never present invented figures as real data.
+  const stats = [
+    { number: impactStats?.volunteers ?? '—', label: 'Approved Volunteers' },
+    { number: impactStats?.shops ?? '—', label: 'Community Shops' },
+    { number: impactStats?.products ?? '—', label: 'Nutrition Products' },
+    { number: impactStats?.orders ?? '—', label: 'Orders Supported' },
+  ];
 
   return (
     <section className="impact-section">
       <div className="impact-container">
-        
+
         {/* Main Hero Card */}
         <div className="impact-hero-card">
           {/* Solid Left Green Content Block */}
@@ -69,18 +85,18 @@ const ImpactSection = () => {
 
           {/* Right Image Block with Feathered Left Edge */}
           <div className="impact-image-block">
-            <img 
+            <img
               src="/images/impacts.png"
-              alt="Help a Working Horse" 
+              alt="Help a Working Horse"
               className="impact-photo"
             />
           </div>
         </div>
 
         {/* 2x2 Stats Grid */}
-        <div className="impact-stats-grid" aria-live="polite">
+        <div className="impact-stats-grid" aria-live="polite" aria-busy={statsStatus === 'loading'}>
           {stats.map((stat, idx) => (
-            <div className="stat-box" key={idx}>
+            <div className={`stat-box ${statsStatus === 'loading' ? 'is-loading' : ''}`} key={idx}>
               <h3 className="stat-number">{stat.number}</h3>
               <p className="stat-label">{stat.label}</p>
             </div>
@@ -89,7 +105,16 @@ const ImpactSection = () => {
 
         <div className={`impact-data-status ${statsStatus}`}>
           <span className="impact-status-dot" aria-hidden="true" />
-          {statsStatus === 'live' ? 'Live community impact data' : statsStatus === 'loading' ? 'Loading latest impact data' : 'Impact data will update when the database is available'}
+          {statsStatus === 'live' && <span>Live community impact data</span>}
+          {statsStatus === 'loading' && <span>Loading latest impact data…</span>}
+          {statsStatus === 'error' && (
+            <>
+              <span>Impact data is temporarily unavailable.</span>
+              <button type="button" className="impact-retry-btn" onClick={loadImpactStats}>
+                <RefreshCw size={12} /> Retry
+              </button>
+            </>
+          )}
         </div>
 
         <div className="volunteer-invite-card">

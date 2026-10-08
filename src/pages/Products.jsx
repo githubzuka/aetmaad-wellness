@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import productService from '../services/productService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BackToHome from '../components/common/BackToHome';
 import { ShoppingCart, Package, Sparkles, Filter, Search } from 'lucide-react';
 import './Products.css';
 
@@ -61,6 +62,7 @@ const Products = () => {
   return (
     <div className="page-wrapper">
       <Header />
+      <BackToHome title="Products" />
 
       <div className="products-hero-banner">
         <div className="products-banner-container">

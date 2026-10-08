@@ -192,6 +192,43 @@
 
 .impact-data-status.live .impact-status-dot { background: #3d9b55; box-shadow: 0 0 0 3px rgba(61, 155, 85, 0.12); }
 .impact-data-status.fallback .impact-status-dot { background: #a27b18; }
+.impact-data-status.error .impact-status-dot { background: #b91c1c; box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12); }
+.impact-data-status.loading .impact-status-dot {
+  background: #a27b18;
+  animation: impact-dot-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes impact-dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+/* Skeleton shimmer while the live counters load */
+.stat-box.is-loading .stat-number {
+  color: #c9c3b6;
+  animation: impact-dot-pulse 1.4s ease-in-out infinite;
+}
+
+.impact-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #cbd5c7;
+  background: #ffffff;
+  color: #1a331e;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.impact-retry-btn:hover {
+  background: #f3f0e8;
+  border-color: #a27b18;
+}
 
 .volunteer-invite-card {
   grid-column: 1 / -1;

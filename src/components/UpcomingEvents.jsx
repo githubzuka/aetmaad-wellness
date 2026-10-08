@@ -4,23 +4,39 @@ import eventService from '../services/eventService';
 import './UpcomingEvents.css';
 
 const UpcomingEvents = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Seed from the service cache so a reload paints events instantly
+  // instead of showing the loading state again.
+  const cachedEvents = eventService.getCachedUpcomingEvents();
+  const [events, setEvents] = useState(cachedEvents || []);
+  const [loading, setLoading] = useState(!cachedEvents);
   const [error, setError] = useState(null);
 
-  const loadEvents = () => {
-    setLoading(true);
+  const loadEvents = async (force = false) => {
+    // Keep the cached list on screen while refreshing (no flash)
+    if (!events.length) setLoading(true);
     setError(null);
-    eventService.getUpcomingEvents()
-      .then((res) => setEvents(res.data || []))
-      .catch((requestError) => {
-        console.error('Failed to load upcoming events:', requestError);
-        setError(requestError.message || 'Unable to load events right now.');
-      })
-      .finally(() => setLoading(false));
+    try {
+      const res = await eventService.getUpcomingEvents({ force });
+      setEvents(res?.data || []);
+    } catch (requestError) {
+      console.error('Failed to load upcoming events:', requestError);
+      // Only surface the error if we have nothing to display
+      setError(requestError.message || 'Unable to load events right now.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { loadEvents(); }, []);
+  useEffect(() => {
+    loadEvents();
+
+    // Background refresh every 60s keeps the public calendar current
+    const interval = setInterval(() => loadEvents(true), 60000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isInitialLoading = loading && events.length === 0;
 
   return (
     <section className="upcoming-events-section" id="events">
@@ -33,12 +49,12 @@ const UpcomingEvents = () => {
         <CalendarDays className="events-heading-icon" size={46} aria-hidden="true" />
       </div>
 
-      {loading ? (
+      {isInitialLoading ? (
         <div className="events-empty-state">Loading upcoming events...</div>
-      ) : error ? (
+      ) : error && events.length === 0 ? (
         <div className="events-empty-state">
           <p>{error}</p>
-          <button type="button" className="events-retry-button" onClick={loadEvents}>Try Again</button>
+          <button type="button" className="events-retry-button" onClick={() => loadEvents(true)}>Try Again</button>
         </div>
       ) : events.length === 0 ? (
         <div className="events-empty-state">New ASHVA events will appear here soon.</div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Lock, Mail, ArrowRight, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, ArrowLeft, AlertCircle, CheckCircle2, Home } from 'lucide-react';
 import './AdminAuth.css';
 
 const AdminAuth = () => {
@@ -28,7 +28,9 @@ const AdminAuth = () => {
     setLoading(true);
 
     try {
-      const res = await login(email, password);
+      // expectedRole keeps the Admin Console restricted to administrators —
+      // customer and volunteer accounts are rejected here.
+      const res = await login(email, password, { expectedRole: 'admin' });
       if (res.user.role !== 'admin') {
         setError('Access denied. This portal is restricted to Administrator credentials.');
         return;
@@ -51,7 +53,7 @@ const AdminAuth = () => {
           <ArrowLeft size={15} />
           Back to site
         </Link>
-        
+
         <div className="admin-badge">
           <Shield size={32} />
         </div>
@@ -117,6 +119,9 @@ const AdminAuth = () => {
 
         <div className="admin-auth-footer">
           <Link to="/">← Back to ASHVA Wellness Public Site</Link>
+          <Link to="/" className="admin-auth-home-link">
+            <Home size={14} /> Back to Home
+          </Link>
         </div>
 
       </div>

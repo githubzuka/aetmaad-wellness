@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { ShoppingBag, Heart, User, LogOut, Menu, X } from 'lucide-react';
+import { ShoppingBag, Heart, User, LogOut, Menu, X, LogIn } from 'lucide-react';
+import SignInModal from './SignInModal';
 import './Header.css';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
   const { totalItemCount } = useCart();
@@ -17,7 +19,7 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="header-container">
-        
+
         {/* Brand Logo */}
         <Link to="/" className="logo-area" onClick={closeMobileMenu}>
           <span className="logo-title">ASHVA</span>
@@ -26,16 +28,16 @@ const Header = () => {
 
         {/* Desktop Navigation Links */}
         <nav className="nav-menu-desktop">
-          <NavLink 
-            to="/" 
+          <NavLink
+            to="/"
             end
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
             Home
           </NavLink>
 
-          <NavLink 
-            to="/products" 
+          <NavLink
+            to="/products"
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
             Products Catalog
@@ -43,23 +45,23 @@ const Header = () => {
 
           <a href="/#events" className="nav-link">Upcoming Events</a>
 
-          <NavLink 
-            to="/working-horses" 
+          <NavLink
+            to="/working-horses"
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
             Our Mission
           </NavLink>
 
-          <NavLink 
-            to="/donate" 
+          <NavLink
+            to="/donate"
             className={({ isActive }) => (isActive ? 'nav-link active nav-donate-highlight' : 'nav-link nav-donate-highlight')}
           >
             <Heart size={15} className="donate-heart-icon" />
             Donate
           </NavLink>
 
-          <NavLink 
-            to="/contact" 
+          <NavLink
+            to="/contact"
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
             Contact Us
@@ -68,7 +70,7 @@ const Header = () => {
 
         {/* Right Header Actions */}
         <div className="header-right-actions">
-          
+
           {/* Shopping Cart Icon with Dynamic Count Badge */}
           <Link to="/cart" className="cart-capsule-btn" aria-label="Shopping Cart">
             <ShoppingBag size={18} />
@@ -85,7 +87,7 @@ const Header = () => {
                 <User size={15} />
                 {user?.name?.split(' ')[0]} {user?.role === 'volunteer' && user?.status !== 'approved' ? '(Application Pending)' : `(${user?.role})`}
               </span>
-              
+
               {user?.role === 'admin' && (
                 <Link to="/admin/dashboard" className="dash-link">Admin Desk</Link>
               )}
@@ -107,9 +109,14 @@ const Header = () => {
               </button>
             </div>
           ) : (
-            <Link to="/login" className="btn-signin-nav">
+            <button
+              type="button"
+              className="btn-signin-nav"
+              onClick={() => setIsSignInOpen(true)}
+            >
+              <LogIn size={15} />
               Sign In
-            </Link>
+            </button>
           )}
 
           {/* Mobile Hamburger Toggle */}
@@ -142,12 +149,20 @@ const Header = () => {
               Sign Out ({user?.name})
             </button>
           ) : (
-            <Link to="/login" onClick={closeMobileMenu} className="mobile-signin-btn">
+            <button
+              type="button"
+              onClick={() => { setIsSignInOpen(true); closeMobileMenu(); }}
+              className="mobile-signin-btn"
+            >
+              <LogIn size={16} />
               Sign In / Register
-            </Link>
+            </button>
           )}
         </div>
       )}
+
+      {/* Role chooser so customers, volunteers and admins can all sign in */}
+      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
     </header>
   );
 };

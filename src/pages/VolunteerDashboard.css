@@ -411,6 +411,205 @@
 .btn-edit-shop:hover { background: #f1f5f9; color: #1b4d2e; }
 .btn-remove-shop:hover { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
 
+/* Shop card title / meta rows (ShopCard.jsx) */
+.shop-title-block {
+  min-width: 0;
+  flex: 1;
+}
+
+.shop-address {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  line-height: 1.45;
+}
+
+.shop-address-icon {
+  color: #94a3b8;
+  flex: 0 0 auto;
+}
+
+.shop-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  line-height: 1.5;
+}
+
+.shop-meta-icon {
+  color: #94a3b8;
+  flex: 0 0 auto;
+}
+
+.shop-meta-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.shop-meta-value {
+  color: #0f1712;
+  font-weight: 700;
+}
+
+.shop-meta-contact {
+  color: #64748b;
+}
+
+/* Fresh / stale update pill */
+.update-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 99px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.update-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+.update-pill.is-fresh {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.update-pill.is-stale {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* Weekly Feedback secondary button (was unstyled) */
+.btn-shop-feedback {
+  flex: 2;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-shop-feedback:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+/* Loading + empty shop states (were unstyled) */
+.volunteer-loading {
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+}
+
+.empty-shops-card {
+  background: #ffffff;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 20px;
+  padding: 48px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.empty-shops-card .empty-icon {
+  color: #cbd5e1;
+  margin-bottom: 4px;
+}
+
+.empty-shops-card h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f1712;
+}
+
+.empty-shops-card p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #64748b;
+  max-width: 420px;
+}
+
+/* ============================================================
+   Segmented tab switcher ("Assigned City Shops" / "Shop Orders History")
+   ============================================================ */
+.vol-tab-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  margin-bottom: 24px;
+  background: #f1f5f0;
+  border: 1px solid #e2e8dd;
+  border-radius: 14px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.vol-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #64748b;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.vol-tab-btn svg {
+  flex: 0 0 auto;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.vol-tab-btn:hover {
+  color: #1b4d2e;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.vol-tab-btn.active {
+  background: #ffffff;
+  color: #0f1712;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(15, 45, 27, 0.1);
+}
+
+.vol-tab-btn.active svg {
+  color: #1b4d2e;
+}
+
 /* Modal Styling */
 .vol-modal-overlay {
   position: fixed;
@@ -563,14 +762,31 @@
 }
 /* ============================================================
    📱 MOBILE RESPONSIVE — Volunteer Dashboard
+   Breakpoints: 1024px (tablet) · 768px (mobile) · 480px (small)
    ============================================================ */
+
+@media (max-width: 1024px) {
+  .volunteer-dashboard-container {
+    padding: 20px;
+  }
+
+  .volunteer-metrics-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .shops-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+}
 
 @media (max-width: 768px) {
   .volunteer-dashboard-container {
     padding: 14px;
   }
 
-  /* Header: Stack vertically on mobile */
+  /* ---------- Header: stack vertically ---------- */
   .volunteer-dash-header {
     flex-direction: column;
     align-items: stretch;
@@ -582,17 +798,24 @@
 
   .volunteer-header-info {
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .volunteer-avatar-badge {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
   }
 
   .volunteer-header-info h1 {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   .volunteer-header-info p {
     font-size: 12.5px;
   }
 
-  /* Header actions: wrap and stretch buttons */
+  /* Header actions: 2-up grid, then full-width buttons */
   .volunteer-header-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -604,16 +827,23 @@
   .btn-logout-vol {
     justify-content: center;
     font-size: 12.5px;
-    padding: 9px 12px;
+    padding: 10px 12px;
+    width: 100%;
   }
 
-  /* Zone pill row */
+  /* ---------- Pills / badges ---------- */
   .zone-pill-row {
     flex-wrap: wrap;
     gap: 6px;
   }
 
-  /* Action alerts */
+  .zone-badge,
+  .status-badge.approved {
+    font-size: 10px;
+    padding: 3px 9px;
+  }
+
+  /* ---------- Action alerts ---------- */
   .volunteer-action-alert {
     font-size: 13px;
     padding: 12px 14px;
@@ -621,7 +851,7 @@
     margin-bottom: 16px;
   }
 
-  /* Weekly alert banner: Stack on mobile */
+  /* ---------- Weekly update banner ---------- */
   .weekly-update-alert-banner {
     flex-direction: column;
     align-items: flex-start;
@@ -655,7 +885,7 @@
     padding: 10px 16px;
   }
 
-  /* Metrics: 1 column on mobile */
+  /* ---------- Metrics ---------- */
   .volunteer-metrics-row {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -671,18 +901,30 @@
     font-size: 20px;
   }
 
-  /* Tab navigation */
-  .inline-flex {
-    display: flex !important;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+  /* ---------- Tab switcher: full width, side by side ---------- */
+  .vol-tab-switch {
+    display: flex;
     width: 100%;
-    gap: 6px;
-    margin-bottom: 20px !important;
+    margin-bottom: 20px;
+    padding: 4px;
+    gap: 4px;
   }
 
-  /* Shop section header */
+  .vol-tab-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 10px 8px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .vol-tab-btn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ---------- Shop section header ---------- */
   .shops-section-header {
     flex-direction: column;
     align-items: flex-start;
@@ -699,13 +941,46 @@
     justify-content: center;
   }
 
-  /* Shop cards: 1 per row */
+  /* ---------- Shop cards: single column ---------- */
   .shops-cards-grid {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 
-  /* Modal: Full-screen on mobile */
+  .shop-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .shop-card:hover {
+    transform: none;
+  }
+
+  .update-pill {
+    margin-left: 0;
+  }
+
+  .shop-secondary-btns {
+    gap: 6px;
+  }
+
+  .btn-shop-feedback,
+  .btn-edit-shop,
+  .btn-remove-shop {
+    min-height: 42px;
+  }
+
+  /* ---------- Empty / loading states ---------- */
+  .empty-shops-card {
+    padding: 34px 18px;
+    border-radius: 16px;
+  }
+
+  .empty-shops-card h3 {
+    font-size: 16px;
+  }
+
+  /* ---------- Modals: bottom sheet ---------- */
   .vol-modal-overlay {
     align-items: flex-end;
     padding: 0;
@@ -724,7 +999,6 @@
     font-size: 16px;
   }
 
-  /* Modal actions: Stack on mobile */
   .vol-modal-actions {
     flex-direction: column;
     gap: 10px;
@@ -735,6 +1009,11 @@
   .btn-submit-order {
     flex: none;
     width: 100%;
+    min-height: 46px;
+  }
+
+  .event-proposal-card {
+    max-width: 100%;
   }
 }
 
@@ -744,10 +1023,15 @@
   }
 
   .volunteer-avatar-badge {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
   }
 
+  .volunteer-header-info h1 {
+    font-size: 17px;
+  }
+
+  /* Single column action buttons on very small screens */
   .volunteer-header-actions {
     grid-template-columns: 1fr;
   }
@@ -755,5 +1039,28 @@
   .btn-add-shop-main,
   .btn-logout-vol {
     width: 100%;
+  }
+
+  /* Tabs stack their icon + label tightly */
+  .vol-tab-btn {
+    padding: 9px 6px;
+    font-size: 11.5px;
+  }
+
+  .vol-tab-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .metric-num {
+    font-size: 19px;
+  }
+
+  .shop-card {
+    padding: 16px;
+  }
+
+  .shop-name {
+    font-size: 16px;
   }
 }

@@ -9,6 +9,8 @@ import Donate from '../pages/Donate';
 import Contact from '../pages/Contact';
 import ProductOrder from '../pages/ProductOrder';
 import Cart from '../pages/Cart';
+import TermsConditions from '../pages/TermsConditions';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
 
 // Gateways & Auth Pages
 import Login from '../pages/Login';
@@ -40,6 +42,8 @@ const AppRoutes = () => {
       <Route path="/working-horses" element={<WorkingHorses />} />
       <Route path="/donate" element={<Donate />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/terms" element={<TermsConditions />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/order/:productId" element={<ProductOrder />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/unauthorized" element={<Unauthorized />} />

@@ -19,7 +19,7 @@ const notificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['shop_feedback', 'order_status', 'volunteer_application', 'event_proposal', 'event_upcoming', 'general', 'system'],
+      enum: ['shop_feedback', 'order_status', 'volunteer_application', 'event_proposal', 'event_upcoming', 'general', 'system', 'security'],
       default: 'shop_feedback',
     },
     referenceId: {
@@ -37,6 +37,17 @@ const notificationSchema = new mongoose.Schema(
     metadata: {
       type: mongoose.Schema.Types.Mixed,
       default: {},
+    },
+    // How many times an identical request collapsed into this one notification.
+    // 1 = a single event, >1 = a repeated request shown only once.
+    repeatCount: {
+      type: Number,
+      default: 1,
+      min: 1,
+    },
+    lastRepeatAt: {
+      type: Date,
+      default: null,
     },
   },
   {

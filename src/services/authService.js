@@ -23,6 +23,15 @@ const authService = {
   },
 
   /**
+   * How many recent failed login attempts an account has.
+   * Used by the login page to warn before the lockout takes effect.
+   */
+  async getLoginAttempts(email) {
+    const response = await axiosClient.get('/api/auth/login-attempts', { params: { email } });
+    return response.data;
+  },
+
+  /**
    * Get logged-in user profile
    */
   async getProfile() {
@@ -41,6 +50,26 @@ const authService = {
    */
   async updateProfile(profileData) {
     const response = await axiosClient.put('/api/auth/profile', profileData);
+    return response.data;
+  },
+
+  /**
+   * Request a password reset. The request is routed to the admin team who
+   * verify identity and reset the account.
+   * @param {Object} payload - { email, note }
+   */
+  async requestPasswordReset(payload) {
+    const response = await axiosClient.post('/api/auth/forgot-password', payload);
+    return response.data;
+  },
+
+  /**
+   * Admin: reset another user's password
+   * @param {string} userId
+   * @param {string} newPassword
+   */
+  async adminResetPassword(userId, newPassword) {
+    const response = await axiosClient.patch(`/api/auth/users/${userId}/password`, { newPassword });
     return response.data;
   },
 };

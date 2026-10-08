@@ -109,28 +109,28 @@ const ShopCard = ({
             <span>Weekly Feedback</span>
           </button>
 
-          {canEdit && onEdit && (
-            <button
-              type="button"
-              onClick={() => onEdit(shop)}
-              className="btn-edit-shop"
-              title="Edit Shop"
-              aria-label="Edit Shop"
-            >
-              <Edit3 size={15} />
-            </button>
-          )}
+          {canEdit && (
+            <>
+              <button
+                type="button"
+                onClick={() => onEdit(shop)}
+                className="btn-edit-shop"
+                title="Edit Shop"
+                aria-label="Edit Shop"
+              >
+                <Edit3 size={15} />
+              </button>
 
-          {canEdit && onDelete && (
-            <button
-              type="button"
-              onClick={() => onDelete(shop._id)}
-              className="btn-remove-shop"
-              title="Delete Shop"
-              aria-label="Delete Shop"
-            >
-              <Trash2 size={15} />
-            </button>
+              <button
+                type="button"
+                onClick={() => onDelete(shop._id)}
+                className="btn-remove-shop"
+                title="Delete Shop"
+                aria-label="Delete Shop"
+              >
+                <Trash2 size={15} />
+              </button>
+            </>
           )}
         </div>
       </div>

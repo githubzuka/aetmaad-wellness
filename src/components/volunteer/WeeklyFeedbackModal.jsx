@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
-import { X, Send, AlertCircle, CheckCircle2, MessageSquarePlus } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Send, AlertCircle, CheckCircle2, MessageSquarePlus, Store, Calendar } from 'lucide-react';
 import shopService from '../../services/shopService';
+import './WeeklyFeedbackModal.css';
+
+const STATUS_OPTIONS = [
+  { value: 'Active', label: 'Active & Operating' },
+  { value: 'Inventory Low', label: 'Inventory Low' },
+  { value: 'Needs Restock', label: 'Needs Urgent Restock' },
+  { value: 'Closed Temporarily', label: 'Closed Temporarily' },
+];
 
 const WeeklyFeedbackModal = ({ isOpen, onClose, shop, onSuccess }) => {
   const [status, setStatus] = useState('Active');
@@ -10,29 +18,58 @@ const WeeklyFeedbackModal = ({ isOpen, onClose, shop, onSuccess }) => {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
 
+  // Reset the form each time the modal opens for a (possibly different) shop
+  useEffect(() => {
+    if (isOpen) {
+      setStatus(shop?.status || 'Active');
+      setSuppliesNote('');
+      setNotes('');
+      setError(null);
+      setSuccessMsg(null);
+      setLoading(false);
+    }
+  }, [isOpen, shop]);
+
+  // Close on Escape + lock background scroll while open
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const handleKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen || !shop) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     setLoading(true);
     setError(null);
     setSuccessMsg(null);
 
     try {
-      const payload = {
+      const res = await shopService.submitShopFeedback(shop._id, {
         status,
-        suppliesNote,
-        notes,
-      };
-
-      const res = await shopService.submitShopFeedback(shop._id, payload);
+        suppliesNote: suppliesNote.trim(),
+        notes: notes.trim(),
+      });
 
       if (res && res.success) {
-        setSuccessMsg(`Weekly feedback submitted for ${shop.name}!`);
+        setSuccessMsg(`Weekly feedback submitted for ${shop.name}. Admin notified & timer reset.`);
         setTimeout(() => {
           if (onSuccess) onSuccess(res.shopLastUpdated || new Date());
           onClose();
-        }, 1200);
+        }, 1100);
       } else {
         setError(res?.message || 'Failed to submit weekly feedback.');
       }
@@ -44,114 +81,113 @@ const WeeklyFeedbackModal = ({ isOpen, onClose, shop, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200">
-        
+    <div className="feedback-modal-overlay" role="presentation" onClick={onClose}>
+      <div
+        className="feedback-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="feedback-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
+        <div className="feedback-modal-header">
+          <div className="feedback-modal-heading">
+            <div className="feedback-modal-icon">
               <MessageSquarePlus size={20} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-stone-900 leading-tight">Weekly Shop Feedback</h2>
-              <p className="text-xs text-stone-500 font-medium">Submitting update for <strong>{shop.name}</strong></p>
+              <h2 id="feedback-modal-title">Weekly Shop Feedback</h2>
+              <p>Submitting update for <strong>{shop.name}</strong></p>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
-          >
+          <button type="button" className="feedback-modal-close" onClick={onClose} aria-label="Close feedback form">
             <X size={18} />
           </button>
         </div>
 
+        {/* Shop summary */}
+        <div className="feedback-shop-summary">
+          <div className="feedback-summary-row">
+            <Store size={14} className="feedback-summary-icon" />
+            <span>{shop.name} — {shop.city}</span>
+          </div>
+          <div className="feedback-summary-row">
+            <Calendar size={14} className="feedback-summary-icon" />
+            <span>
+              Last updated:{' '}
+              {shop.lastUpdated ? new Date(shop.lastUpdated).toLocaleDateString() : 'Never'}
+            </span>
+          </div>
+        </div>
+
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
-            <AlertCircle size={16} className="shrink-0" />
+          <div className="feedback-alert error" role="alert">
+            <AlertCircle size={16} />
             <span>{error}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
-            <CheckCircle2 size={16} className="shrink-0" />
+          <div className="feedback-alert success" role="status">
+            <CheckCircle2 size={16} />
             <span>{successMsg}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          
-          {/* Shop Status Select */}
-          <div>
-            <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-              Shop Operating Status <span className="text-rose-500">*</span>
+        <form onSubmit={handleSubmit} className="feedback-modal-form">
+          <div className="feedback-field">
+            <label htmlFor="feedback-status">
+              Shop Operating Status <span className="req">*</span>
             </label>
             <select
+              id="feedback-status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full bg-stone-50 border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm font-medium text-stone-800 focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none transition-all"
+              required
             >
-              <option value="Active">Active & Operating</option>
-              <option value="Inventory Low">Inventory Low</option>
-              <option value="Needs Restock">Needs Urgent Restock</option>
-              <option value="Closed Temporarily">⚪ Closed Temporarily</option>
+              {STATUS_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
             </select>
           </div>
 
-          {/* Stock & Supplies Notes */}
-          <div>
-            <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-              Feed & Nutrition Stock Notes
-            </label>
+          <div className="feedback-field">
+            <label htmlFor="feedback-supplies">Feed &amp; Nutrition Stock Notes</label>
             <textarea
+              id="feedback-supplies"
               rows={3}
               value={suppliesNote}
               onChange={(e) => setSuppliesNote(e.target.value)}
-              placeholder="e.g. ASHVA Mix stocks at 15 bags. High demand for Working Horse feed blend..."
-              className="w-full bg-stone-50 border border-stone-300 rounded-xl p-3 text-xs font-normal text-stone-800 focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none transition-all"
+              placeholder="e.g. ASHVA Mix stock at 15 bags. High demand for working-horse feed blend…"
             />
           </div>
 
-          {/* General Notes & Issues */}
-          <div>
-            <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-              General Observations & Issues Faced
-            </label>
+          <div className="feedback-field">
+            <label htmlFor="feedback-notes">General Observations &amp; Issues Faced</label>
             <textarea
+              id="feedback-notes"
               rows={3}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Detail any vendor concerns, local animal care feedback, or delivery delays..."
-              className="w-full bg-stone-50 border border-stone-300 rounded-xl p-3 text-xs font-normal text-stone-800 focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none transition-all"
+              placeholder="Detail any vendor concerns, local animal care feedback, or delivery delays…"
             />
           </div>
 
-          {/* Footer Actions */}
-          <div className="pt-4 border-t border-stone-100 flex items-center justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-100 transition-colors cursor-pointer"
-            >
+          <div className="feedback-modal-actions">
+            <button type="button" className="btn-feedback-cancel" onClick={onClose}>
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-sm flex items-center gap-2 transition-all cursor-pointer"
-            >
+            <button type="submit" className="btn-feedback-submit" disabled={loading}>
               <Send size={14} />
-              <span>{loading ? 'Submitting...' : 'Submit Feedback & Reset Timer'}</span>
+              <span>{loading ? 'Submitting…' : 'Submit Feedback & Reset Timer'}</span>
             </button>
           </div>
-
         </form>
-
       </div>
     </div>
   );
 };
 
 export default WeeklyFeedbackModal;
+

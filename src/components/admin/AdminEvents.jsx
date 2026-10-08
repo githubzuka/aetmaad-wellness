@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CalendarDays, CheckCircle, XCircle, Trash2, Plus } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
+import eventService from '../../services/eventService';
 import './AdminEvents.css';
 
 const emptyForm = { title: '', description: '', date: '', time: '', location: '', city: '', organizer: 'ASHVA Wellness Team' };
@@ -35,6 +36,7 @@ const AdminEvents = ({ onAction }) => {
       await axiosClient.post('/api/admin/events', form);
       setForm(emptyForm);
       setShowForm(false);
+      eventService.clearUpcomingCache();
       onAction({ type: 'success', text: 'Event details added successfully and published on the official website.' });
       loadEvents();
     } catch (error) {
@@ -45,6 +47,7 @@ const AdminEvents = ({ onAction }) => {
   const updateStatus = async (id, status) => {
     try {
       await axiosClient.patch(`/api/admin/events/${id}/status`, { status });
+      eventService.clearUpcomingCache();
       onAction({ type: 'success', text: `Event ${status}.` });
       loadEvents();
     } catch (error) {
@@ -56,6 +59,7 @@ const AdminEvents = ({ onAction }) => {
     if (!window.confirm('Delete this event?')) return;
     try {
       await axiosClient.delete(`/api/admin/events/${id}`);
+      eventService.clearUpcomingCache();
       onAction({ type: 'success', text: 'Event deleted.' });
       loadEvents();
     } catch (error) {

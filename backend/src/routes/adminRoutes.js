@@ -8,6 +8,15 @@ import {
 import { getAllOrders } from '../controllers/orderController.js';
 import { getAdminNotifications, markNotificationAsRead } from '../controllers/notificationController.js';
 import {
+  createAdminReply,
+  getAdminReplies,
+  closeAdminReply,
+  getMessageableVolunteers,
+  sendDirectMessage,
+  getAuditTrail,
+} from '../controllers/adminReplyController.js';
+import { getAdminContacts, updateContactStatus } from '../controllers/contactController.js';
+import {
   getAdminEvents,
   createAdminEvent,
   updateEvent,
@@ -73,5 +82,21 @@ router.patch('/donations/:id/status', updateDonationStatus);
 router.get('/notifications', getAdminNotifications);
 router.patch('/notifications/:id/read', markNotificationAsRead);
 router.put('/notifications/:id/read', markNotificationAsRead);
+
+// Admin <-> Volunteer conversation threads (event proposals / direct replies)
+router.get('/replies', getAdminReplies);
+router.post('/replies', createAdminReply);
+router.patch('/replies/:id/close', closeAdminReply);
+
+// Direct admin -> volunteer messaging
+router.get('/messageable-volunteers', getMessageableVolunteers);
+router.post('/messages', sendDirectMessage);
+
+// Audit trail: everything that came in, admin decisions, and saved responses
+router.get('/audit-trail', getAuditTrail);
+
+// Contact / outreach enquiries from the public site
+router.get('/contacts', getAdminContacts);
+router.patch('/contacts/:id', updateContactStatus);
 
 export default router;

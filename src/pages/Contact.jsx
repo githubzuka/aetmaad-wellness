@@ -1,27 +1,57 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Mail, Phone, MapPin, Send, CheckCircle2, MessageSquare } from 'lucide-react';
+import BackToHome from '../components/common/BackToHome';
+import { Mail, Phone, MapPin, Send, CheckCircle2, MessageSquare, AlertCircle, Loader2 } from 'lucide-react';
+import contactService from '../services/contactService';
 import './Contact.css';
+
+const CATEGORIES = [
+  { value: 'general', label: 'General Enquiry' },
+  { value: 'order', label: 'Order / Product' },
+  { value: 'volunteer', label: 'Volunteer Programme' },
+  { value: 'donation', label: 'Donation' },
+  { value: 'complaint', label: 'Complaint / Feedback' },
+];
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: '',
+    category: 'general',
     message: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      await contactService.submitContact(formData);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || 'Could not send your message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setFormData({ name: '', email: '', phone: '', subject: '', category: 'general', message: '' });
   };
 
   return (
     <div className="page-wrapper">
       <Header />
+      <BackToHome title="Contact Us" />
 
       <section className="contact-hero-banner">
         <div className="contact-banner-container">
@@ -33,19 +63,26 @@ const Contact = () => {
 
       <main className="contact-main-container">
         <div className="contact-grid">
-          
+
           {/* Left Column: Contact Form */}
           <div className="contact-form-card">
             {submitted ? (
               <div className="contact-success-state">
                 <CheckCircle2 size={48} className="success-icon" />
                 <h2>Message Received!</h2>
-                <p>Thank you for reaching out to ASHVA Wellness. Our team will respond to <strong>{formData.email}</strong> within 24 hours.</p>
-                <button className="btn-send-another" onClick={() => setSubmitted(false)}>Send Another Message</button>
+                <p>Thank you for reaching out to ASHVA Wellness. Our admin team has been notified and will respond to <strong>{formData.email}</strong> within 24 hours.</p>
+                <button className="btn-send-another" onClick={resetForm}>Send Another Message</button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form">
                 <h2>Send Us a Message</h2>
+
+                {error && (
+                  <div className="contact-form-alert" role="alert">
+                    <AlertCircle size={16} />
+                    <span>{error}</span>
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label>Your Full Name *</label>
@@ -58,25 +95,51 @@ const Contact = () => {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label>Email Address *</label>
-                  <input
-                    type="email"
-                    placeholder="name@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
+                <div className="contact-field-row">
+                  <div className="form-group">
+                    <label>Email Address *</label>
+                    <input
+                      type="email"
+                      placeholder="name@example.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Contact Number</label>
+                    <input
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                  </div>
                 </div>
 
-                <div className="form-group">
-                  <label>Subject</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Bulk Shop Order Query / Volunteer Interest"
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  />
+                <div className="contact-field-row">
+                  <div className="form-group">
+                    <label>Category</label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    >
+                      {CATEGORIES.map((c) => (
+                        <option key={c.value} value={c.value}>{c.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Subject</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Bulk Shop Order Query"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    />
+                  </div>
                 </div>
 
                 <div className="form-group">
@@ -90,9 +153,9 @@ const Contact = () => {
                   />
                 </div>
 
-                <button type="submit" className="btn-submit-contact">
-                  <Send size={16} />
-                  Send Inquiry
+                <button type="submit" className="btn-submit-contact" disabled={loading}>
+                  {loading ? <Loader2 size={16} className="contact-spin" /> : <Send size={16} />}
+                  {loading ? 'Sending…' : 'Send Inquiry'}
                 </button>
               </form>
             )}

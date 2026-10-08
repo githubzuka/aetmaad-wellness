@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BackToHome from '../components/common/BackToHome';
 import axiosClient from '../api/axiosClient';
 import { Heart, ShieldCheck, CheckCircle2, AlertCircle, ArrowRight, Award, Lock } from 'lucide-react';
 import './Donate.css';
@@ -70,6 +71,7 @@ const Donate = () => {
   return (
     <div className="page-wrapper">
       <Header />
+      <BackToHome title="Donate" />
 
       <section className="donate-hero-banner">
         <div className="donate-banner-container">

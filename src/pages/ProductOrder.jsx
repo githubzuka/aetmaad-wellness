@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import productService from '../services/productService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BackToHome from '../components/common/BackToHome';
 import { ShoppingBag, ArrowLeft, Plus, Minus, Check, Sparkles, ShieldCheck, Truck, Package } from 'lucide-react';
 import './ProductOrder.css';
 
@@ -82,6 +83,7 @@ const ProductOrder = () => {
   return (
     <div className="page-wrapper">
       <Header />
+      <BackToHome title="Place Your Order" />
 
       <main className="product-order-container">
         

@@ -44,3 +44,68 @@
   .contact-main-container { padding: 40px 20px 60px; }
   .contact-form-card { padding: 26px 20px; }
 }
+
+/* ============================================================
+   Contact page — extended form (category, phone, states)
+   ============================================================ */
+
+.contact-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.contact-form-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.contact-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #d7ddd4;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #1e293b;
+  background: #ffffff;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.contact-form select:focus {
+  border-color: #1b4d2e;
+  box-shadow: 0 0 0 3px rgba(27, 77, 46, 0.12);
+}
+
+.btn-submit-contact:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.contact-spin {
+  animation: contact-spin 1s linear infinite;
+}
+
+@keyframes contact-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .contact-field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Lock, Phone, MapPin, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
+import { User, Mail, Lock, Phone, MapPin, ArrowRight, ArrowLeft, AlertCircle, Home } from 'lucide-react';
 import './Login.css';
 
 const Signup = () => {
@@ -183,6 +183,11 @@ const Signup = () => {
           <p className="auth-admin-link-row">
             Managing the platform?{' '}
             <Link to="/admin" className="link-switch">Admin Login</Link>
+          </p>
+          <p className="auth-home-row">
+            <Link to="/" className="link-switch">
+              <Home size={14} /> Back to Home
+            </Link>
           </p>
         </div>
       </div>

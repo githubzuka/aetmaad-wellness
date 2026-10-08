@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import orderService from '../services/orderService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BackToHome from '../components/common/BackToHome';
 import PaymentModal from '../components/Cart/PaymentModal';
 import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, Sparkles, CheckCircle2, AlertCircle, Lock, Truck, CreditCard } from 'lucide-react';
 import './Cart.css';
@@ -46,7 +47,7 @@ const Cart = () => {
 
     try {
       const res = await orderService.createOrder(orderPayload);
-      const createdOrder = res.data || { 
+      const createdOrder = res.data || {
         _id: `ASHVA-${Date.now().toString().slice(-6)}`,
         paymentMethod: 'COD',
         paymentStatus: 'pending',
@@ -67,6 +68,7 @@ const Cart = () => {
   return (
     <div className="page-wrapper">
       <Header />
+      <BackToHome title="Your Cart" />
 
       <main className="cart-main-container">
         

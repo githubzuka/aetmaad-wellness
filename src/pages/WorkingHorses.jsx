@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BackToHome from '../components/common/BackToHome';
 import ImpactSection from '../components/ImpactSection';
 import FeedingGuidelines from '../components/FeedingGuidelines';
 import { Heart, ShieldCheck, Award, Users, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -11,6 +12,7 @@ const WorkingHorses = () => {
   return (
     <div className="page-wrapper">
       <Header />
+      <BackToHome title="Working Horses Initiative" />
 
       {/* Hero Banner */}
       <section className="initiative-hero-banner">

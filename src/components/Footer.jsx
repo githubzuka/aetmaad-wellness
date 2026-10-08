@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
@@ -6,7 +7,7 @@ const Footer = () => {
     <footer className="site-footer">
       <div className="footer-top-container">
         <div className="footer-grid">
-          
+
           {/* Column 1: Stay Connected */}
           <div className="footer-col col-connected">
             <h4 className="footer-col-title">Stay Connected</h4>
@@ -14,15 +15,15 @@ const Footer = () => {
               Subscribe to our newsletter for the latest updates, tips and stories.
             </p>
             <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
+              <input
+                type="email"
+                placeholder="Enter your email"
                 className="newsletter-input"
-                required 
+                required
               />
               <button type="submit" className="btn-subscribe">Subscribe</button>
             </form>
-            
+
             {/* SVG Social Icons */}
             <div className="social-icons">
               {/* Facebook */}
@@ -61,14 +62,16 @@ const Footer = () => {
           <div className="footer-col col-links">
             <h4 className="footer-col-title">Quick Links</h4>
             <ul className="footer-nav">
-              <li><a href="/#home">Home</a></li>
-              <li><a href="#about">About Us</a></li>
-              <li><a href="/#products">Nutrition Mix</a></li>
-              <li><a href="/#events">Upcoming Events</a></li>
-              <li><a href="/#initiative">Our Impact</a></li>
-              <li><a href="/#feeding">Feeding Guide</a></li>
-              <li><a href="/donate">Donate Now</a></li>
-              <li><a href="/contact">Contact Us</a></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/#about">About Us</Link></li>
+              <li><Link to="/products">Nutrition Mix</Link></li>
+              <li><Link to="/#events">Upcoming Events</Link></li>
+              <li><Link to="/#initiative">Our Impact</Link></li>
+              <li><Link to="/#feeding">Feeding Guide</Link></li>
+              <li><Link to="/donate">Donate Now</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
+              <li><Link to="/privacy">Privacy Policy</Link></li>
+              <li><Link to="/terms">Terms &amp; Conditions</Link></li>
             </ul>
           </div>
 
@@ -120,7 +123,7 @@ const Footer = () => {
             <p className="footer-col-text">
               Dedicated to improving the health and welfare of working horses through natural nutrition and community support.
             </p>
-            
+
             {/* Updated path from /image/horse.png to /images/horse.png */}
             <div className="horse-silhouette-bg">
               <img src="/images/horse.png" alt="Horse Silhouette" className="horse-img" />
@@ -137,9 +140,9 @@ const Footer = () => {
             © 2024 ASHVA. All Rights Reserved.
           </p>
           <div className="legal-links">
-            <a href="#privacy">Privacy Policy</a>
+            <Link to="/privacy">Privacy Policy</Link>
             <span className="divider">|</span>
-            <a href="#terms">Terms & Conditions</a>
+            <Link to="/terms">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>
