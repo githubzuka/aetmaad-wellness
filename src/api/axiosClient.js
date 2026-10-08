@@ -13,11 +13,16 @@ const getBaseURL = () => {
     return process.env.REACT_APP_API_URL;
   }
 
-  // Production safety net: never ship a build that points at localhost.
-  // If the env var was missing at build time we still aim at the deployed API
-  // so the live site works instead of failing every request.
+  // No API URL configured.
+  // In production this is a misconfiguration — every request would otherwise
+  // silently hit localhost and fail with a confusing network error. Surface it
+  // loudly in the console so it is obvious what to fix.
   if (import.meta?.env?.PROD) {
-    return 'https://ashva-backend.onrender.com';
+    console.error(
+      '[ASHVA] VITE_API_URL is not set for this build.\n' +
+      'Set VITE_API_URL to your deployed backend (e.g. https://your-api.onrender.com) ' +
+      'in the frontend host\'s environment variables, then redeploy.'
+    );
   }
 
   return 'http://localhost:5000';
