@@ -13,16 +13,10 @@ const getBaseURL = () => {
     return process.env.REACT_APP_API_URL;
   }
 
-  // No API URL configured.
-  // In production this is a misconfiguration — every request would otherwise
-  // silently hit localhost and fail with a confusing network error. Surface it
-  // loudly in the console so it is obvious what to fix.
+  // Production safety net: never ship a build that points at localhost.
+  // The deployed Render backend URL, so a missing VITE_API_URL still works.
   if (import.meta?.env?.PROD) {
-    console.error(
-      '[ASHVA] VITE_API_URL is not set for this build.\n' +
-      'Set VITE_API_URL to your deployed backend (e.g. https://your-api.onrender.com) ' +
-      'in the frontend host\'s environment variables, then redeploy.'
-    );
+    return 'https://aetmaad-backend.onrender.com';
   }
 
   return 'http://localhost:5000';

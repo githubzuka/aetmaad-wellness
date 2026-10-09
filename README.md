@@ -1,15 +1,72 @@
-# React + Vite
+# ASHVA Wellness — Equine Nutrition & Volunteer Portal
 
-## Deploying ASHVA AI
+React + Vite frontend with an Express/MongoDB backend.
 
-The chatbot needs the Express backend to be deployed separately from the Vite frontend. A phone cannot reach `localhost:5000` on your computer.
+## Deployment
 
-1. Deploy the `backend` folder to a Node hosting service and set `GROQ_API_KEY` and `PORT` in that service's environment variables.
-2. Copy the root `.env.example` to `.env` before building the frontend.
-3. Set `VITE_API_URL` to the public backend URL, for example `https://ashva-api.example.com`.
-4. Run `npm run build` and deploy the generated `dist` folder.
+| Piece | Host | URL |
+|---|---|---|
+| Frontend | Vercel | https://aetmaad-wellness.vercel.app |
+| Backend | Render | https://aetmaad-backend.onrender.com |
 
-For local development, leave `VITE_API_URL` empty, start the backend with `cd backend; npm start`, then run `npm run dev` from the repository root. Vite proxies `/api` to port 5000 locally.
+**Root Directory must be the repository root (`./`).** There is only one app,
+and it lives in `/src`. A stale duplicate used to sit in `frontend/`, which broke
+Vercel builds for a long time — see `_deprecated_frontend/README.md`.
+
+### Backend (Render)
+
+Config is in `render.yaml` (`rootDir: backend`).
+
+Required environment variables:
+
+```
+NODE_ENV     = production
+MONGO_URI    = <MongoDB connection string>
+JWT_SECRET   = <secret>
+JWT_EXPIRE   = 7d
+ADMIN_EMAIL  = <admin email>
+```
+
+Optional:
+
+```
+CORS_ORIGINS = https://aetmaad-wellness.vercel.app
+```
+
+(Requests from any `*.vercel.app` or `*.onrender.com` origin are allowed
+automatically.)
+
+### Frontend (Vercel)
+
+Required environment variable:
+
+```
+VITE_API_URL = https://aetmaad-backend.onrender.com
+```
+
+Vite bakes environment variables in **at build time**, so you must redeploy
+after changing this. If it is missing, the production build falls back to the
+Render URL above rather than pointing at `localhost`.
+
+## Local development
+
+1. Start the backend:
+
+   ```bash
+   cd backend
+   npm install
+   npm start          # http://localhost:5000
+   ```
+
+2. Start the frontend from the repository root:
+
+   ```bash
+   npm install
+   npm run dev        # http://localhost:5173
+   ```
+
+Leave `VITE_API_URL` unset locally — `vite.config.js` proxies `/api` to port
+5000.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
