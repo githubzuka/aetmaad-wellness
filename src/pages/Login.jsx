@@ -68,13 +68,16 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // expectedRole keeps this portal for customers/volunteers only —
-      // administrators must sign in through the Admin Console.
-      const res = await login(email, password, { expectedRole: 'customer' });
+      // No expectedRole: this single portal accepts customers, volunteers AND
+      // administrators. Admins are sent straight to the console, so the /admin
+      // route never has to be shared with end users.
+      const res = await login(email, password);
       setSuccess('Sign in successful!');
 
       setTimeout(() => {
-        if (res.user.role === 'volunteer') {
+        if (res.user.role === 'admin') {
+          navigate('/admin/dashboard', { replace: true });
+        } else if (res.user.role === 'volunteer') {
           if (res.user.status === 'approved') {
             navigate('/volunteer/dashboard', { replace: true });
           } else {
@@ -95,8 +98,9 @@ const Login = () => {
         return;
       }
 
-      // Role isolation: an administrator cannot sign in from the customer portal
-      if (err.code === 'ROLE_MISMATCH' || message.toLowerCase().includes('administrator')) {
+      // Role isolation error should not appear here since this portal accepts
+      // every role, but keep the handling for safety.
+      if (err.code === 'ROLE_MISMATCH') {
         setError(message);
         return;
       }

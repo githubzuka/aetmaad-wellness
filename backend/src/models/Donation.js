@@ -17,5 +17,5 @@ const donationSchema = new mongoose.Schema(
 
 donationSchema.index({ donorEmail: 1, createdAt: -1 });
 
-const Donation = mongoose.model('Donation', donationSchema);
+const Donation = mongoose.models.Donation || mongoose.model('Donation', donationSchema);
 export default Donation;

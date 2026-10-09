@@ -85,7 +85,7 @@ const AdminAuth = () => {
               <Mail size={18} className="input-icon" />
               <input
                 type="email"
-                placeholder="admin@aetmaad.com"
+                placeholder="admin@ashvawellness.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

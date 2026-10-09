@@ -56,8 +56,7 @@ const Contact = () => {
       <section className="contact-hero-banner">
         <div className="contact-banner-container">
           <span className="contact-tag">GET IN TOUCH</span>
-          <h1>Contact ASHVA Wellness</h1>
-          <p>Have questions about equine nutrition, bulk shop distribution, or volunteer initiatives? We are here to help.</p>
+          <h1>Contact ASHVA Wellness</h1>          <p>Have questions about equine nutrition, bulk shop distribution, or volunteer initiatives? We are here to help.</p>
         </div>
       </section>
 
@@ -167,8 +166,9 @@ const Contact = () => {
             <div className="info-card">
               <div className="info-icon"><Mail size={22} /></div>
               <div>
-                <h3>Support & Order Inquiries</h3>
-                <p>enquinemix@gmail.com</p>
+                <h3>Support &amp; Order Inquiries</h3>
+                <p>support@ashvawellness.org</p>
+                <p>orders@ashvawellness.org</p>
               </div>
             </div>
 

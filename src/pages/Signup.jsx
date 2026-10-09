@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Lock, Phone, MapPin, ArrowRight, ArrowLeft, AlertCircle, Home } from 'lucide-react';
+import { User, Mail, Lock, Phone, MapPin, ArrowRight, ArrowLeft, AlertCircle, Home, HeartHandshake, ShoppingBag, Info } from 'lucide-react';
 import './Login.css';
 
 const Signup = () => {
@@ -12,6 +12,10 @@ const Signup = () => {
     contactNumber: '',
     city: '',
   });
+
+  // Customers and volunteers can self-register. Administrators cannot — admin
+  // accounts are provisioned internally and sign in through the same portal.
+  const [accountType, setAccountType] = useState('customer');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,10 +43,17 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      await register({
+      const res = await register({
         ...formData,
-        role: 'customer',
+        role: accountType,
       });
+
+      // Volunteer accounts await admin approval before they get a desk
+      if (accountType === 'volunteer') {
+        navigate('/volunteer', { replace: true });
+        return;
+      }
+
       navigate(fromPath, {
         replace: true,
         state: location.state?.mode === 'apply' ? { mode: 'apply' } : undefined,
@@ -55,6 +66,7 @@ const Signup = () => {
   };
 
   const accountAlreadyExists = error?.toLowerCase().includes('already exists');
+  const isVolunteer = accountType === 'volunteer';
 
   return (
     <div className="auth-page-container">
@@ -66,10 +78,14 @@ const Signup = () => {
         <div className="auth-card-header">
           <Link to="/" className="auth-brand-logo">
             <span className="brand-ashva">ASHVA</span>
-            <span className="brand-sub">Wellness Store</span>
+            <span className="brand-sub">Wellness Portal</span>
           </Link>
-          <h2>Create Customer Account</h2>
-          <p className="auth-subtitle">Register to order equine nutrition mixes and track your deliveries.</p>
+          <h2>{isVolunteer ? 'Become a Volunteer' : 'Create Your Account'}</h2>
+          <p className="auth-subtitle">
+            {isVolunteer
+              ? 'Register to support shops and horse welfare in your city zone.'
+              : 'Register to order equine nutrition mixes and track your deliveries.'}
+          </p>
         </div>
 
         {error && (
@@ -87,6 +103,43 @@ const Signup = () => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
+          {/* Account type — customers and volunteers only */}
+          <div className="form-group">
+            <label>I am registering as</label>
+            <div className="signup-role-picker" role="radiogroup" aria-label="Account type">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={accountType === 'customer'}
+                className={`signup-role-option ${accountType === 'customer' ? 'active' : ''}`}
+                onClick={() => setAccountType('customer')}
+              >
+                <ShoppingBag size={17} />
+                <span>Customer</span>
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={accountType === 'volunteer'}
+                className={`signup-role-option ${accountType === 'volunteer' ? 'active' : ''}`}
+                onClick={() => setAccountType('volunteer')}
+              >
+                <HeartHandshake size={17} />
+                <span>Volunteer</span>
+              </button>
+            </div>
+          </div>
+
+          {isVolunteer && (
+            <div className="signup-role-note">
+              <Info size={15} />
+              <span>
+                Volunteer applications are reviewed by the ASHVA team. You will be
+                notified once your account is approved.
+              </span>
+            </div>
+          )}
+
           <div className="form-group">
             <label>Full Name</label>
             <div className="input-with-icon">
@@ -164,9 +217,11 @@ const Signup = () => {
           </div>
 
           <button type="submit" className="auth-submit-btn" disabled={loading}>
-            {loading ? 'Creating Account...' : (
+            {loading ? (
+              'Creating Account...'
+            ) : (
               <>
-                Register Account
+                {isVolunteer ? 'Submit Volunteer Application' : 'Register Account'}
                 <ArrowRight size={18} />
               </>
             )}
@@ -179,10 +234,6 @@ const Signup = () => {
             <Link to="/login" state={{ from: fromPath }} className="link-switch">
               Sign In Here
             </Link>
-          </p>
-          <p className="auth-admin-link-row">
-            Managing the platform?{' '}
-            <Link to="/admin" className="link-switch">Admin Login</Link>
           </p>
           <p className="auth-home-row">
             <Link to="/" className="link-switch">

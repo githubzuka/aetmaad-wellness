@@ -27,7 +27,7 @@ const DonateFAQ = () => {
     },
     {
       question: 'Who should I contact if I face an issue with my donation?',
-      answer: 'If you have any questions or require immediate support regarding your contribution, please reach out to our team at support@aetmaadwellness.org with your transaction details.',
+      answer: 'If you have any questions or require immediate support regarding your contribution, please reach out to our team at support@ashvawellness.org with your transaction details.',
     },
   ];
 

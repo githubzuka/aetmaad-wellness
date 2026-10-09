@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Bell, Check, RefreshCw, X, MessageSquare, Store, Calendar,
   CalendarDays, ShoppingBag, UserPlus, AlertTriangle, Info, Send, Reply,
-  ShieldAlert, History, PenSquare, CheckCircle2, Users, Lock
+  ShieldAlert, History, PenSquare, CheckCircle2, Users, Lock, Inbox, BellDot
 } from 'lucide-react';
 import notificationService from '../../services/notificationService';
 import replyService from '../../services/replyService';
@@ -38,7 +38,7 @@ const SEVERITY_ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
 
 /** Sections available in the panel. */
 const SECTIONS = [
-  { key: 'inbox', label: 'Inbox', icon: Bell },
+  { key: 'inbox', label: 'Inbox', icon: Inbox },
   { key: 'audit', label: 'Audit Trail', icon: History },
   { key: 'security', label: 'Security', icon: ShieldAlert },
 ];
@@ -54,6 +54,10 @@ const AdminNotifications = () => {
 
   // Inbox sub-filter: requests | everything
   const [inboxTab, setInboxTab] = useState('requests');
+
+  // Seen notifications (moved out of the notification list into the inbox)
+  const [seenItems, setSeenItems] = useState([]);
+  const [showSeen, setShowSeen] = useState(false);
 
   // Detail alert box — always holds exactly ONE notification
   const [detailNotification, setDetailNotification] = useState(null);
@@ -83,10 +87,21 @@ const AdminNotifications = () => {
   const fetchNotifications = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
     try {
-      const res = await notificationService.getAdminNotifications();
-      if (res && res.success) {
-        setNotifications(res.data || []);
-        setUnreadCount(res.unreadCount || 0);
+      const [pendingRes, inboxRes] = await Promise.allSettled([
+        notificationService.getAdminNotifications(),
+        notificationService.getAdminInbox(),
+      ]);
+
+      if (pendingRes.status === 'fulfilled' && pendingRes.value?.success) {
+        // Only UNSEEN items belong in the notification list. Once the admin has
+        // seen one it moves to the inbox below.
+        const unseen = (pendingRes.value.data || []).filter((n) => !n.read && !n.isRead);
+        setNotifications(unseen);
+        setUnreadCount(pendingRes.value.unreadCount || unseen.length);
+      }
+
+      if (inboxRes.status === 'fulfilled' && inboxRes.value?.success) {
+        setSeenItems(inboxRes.value.data || []);
       }
     } catch (err) {
       console.error('Failed to fetch admin notifications', err);
@@ -149,9 +164,18 @@ const AdminNotifications = () => {
   const markAsRead = useCallback(async (id) => {
     try {
       await notificationService.markAsRead(id);
-      setNotifications((prev) =>
-        prev.map((n) => (n._id === id ? { ...n, read: true, isRead: true } : n))
-      );
+      // Move it out of the notification list and into the inbox immediately,
+      // so a seen item never lingers in Notifications.
+      setNotifications((prev) => {
+        const moving = prev.find((n) => n._id === id);
+        if (moving) {
+          const moved = { ...moving, read: true, isRead: true };
+          setSeenItems((seen) =>
+            seen.some((s) => s._id === id) ? seen : [moved, ...seen]
+          );
+        }
+        return prev.filter((n) => n._id !== id);
+      });
       setUnreadCount((prev) => Math.max(0, prev - 1));
       setDetailNotification((cur) => (cur && cur._id === id ? { ...cur, read: true, isRead: true } : cur));
     } catch (err) {
@@ -370,7 +394,7 @@ const AdminNotifications = () => {
             {SECTIONS.map((section) => {
               const SectionIcon = section.icon;
               const counts = {
-                inbox: requestUnread + otherUnread,
+                inbox: unreadCount,
                 audit: 0,
                 security: securityUnread,
               };
@@ -443,7 +467,6 @@ const AdminNotifications = () => {
                   </div>
                 ) : (
                   visibleNotifications.map((n) => {
-                    const isUnread = !n.read && !n.isRead;
                     const meta = getNotificationMeta(n.type);
                     const TypeIcon = meta.icon;
                     const replyable = canReply(n);
@@ -452,7 +475,7 @@ const AdminNotifications = () => {
                       <div
                         key={n._id}
                         onClick={() => openDetail(n)}
-                        className={`admin-notif-item ${isUnread ? 'unread' : ''}`}
+                        className="admin-notif-item unread"
                         role="button"
                         tabIndex={0}
                         onKeyDown={(e) => e.key === 'Enter' && openDetail(n)}
@@ -466,9 +489,7 @@ const AdminNotifications = () => {
                             <h4 className="admin-notif-item-title">
                               {n.title || meta.label}
                             </h4>
-                            {isUnread && (
-                              <span className="admin-notif-unread-dot" aria-label="Unread"></span>
-                            )}
+                            <span className="admin-notif-unread-dot" aria-label="Unseen"></span>
                           </div>
 
                           <p className="admin-notif-item-message">
@@ -501,16 +522,14 @@ const AdminNotifications = () => {
                               </button>
                             )}
 
-                            {isUnread && (
-                              <button
-                                type="button"
-                                onClick={(e) => handleMarkAsRead(n._id, e)}
-                                className="admin-link-btn"
-                              >
-                                <Check size={12} />
-                                <span>Mark Read</span>
-                              </button>
-                            )}
+                            <button
+                              type="button"
+                              onClick={(e) => handleMarkAsRead(n._id, e)}
+                              className="admin-link-btn"
+                            >
+                              <Check size={12} />
+                              <span>Mark Seen</span>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -518,6 +537,55 @@ const AdminNotifications = () => {
                   })
                 )}
               </div>
+
+              {/* ---------- SEEN ITEMS (moved out of the notification list) ---------- */}
+              {seenItems.length > 0 && (
+                <div className="admin-seen-block">
+                  <button
+                    type="button"
+                    className="admin-seen-toggle"
+                    onClick={() => setShowSeen((v) => !v)}
+                    aria-expanded={showSeen}
+                  >
+                    <CheckCircle2 size={14} />
+                    <span>Seen ({seenItems.length})</span>
+                    <span className="admin-seen-chevron">{showSeen ? 'Hide' : 'Show'}</span>
+                  </button>
+
+                  {showSeen && (
+                    <div className="admin-seen-list">
+                      {seenItems.map((n) => {
+                        const meta = getNotificationMeta(n.type);
+                        const TypeIcon = meta.icon;
+                        return (
+                          <button
+                            type="button"
+                            key={n._id}
+                            onClick={() => setDetailNotification(n)}
+                            className="admin-seen-row"
+                          >
+                            <div className="admin-seen-icon">
+                              <TypeIcon size={14} />
+                            </div>
+                            <div className="admin-seen-body">
+                              <div className="admin-seen-top">
+                                <strong>{n.title || meta.label}</strong>
+                                {(n.repeatCount || 1) > 1 && (
+                                  <span className="admin-notif-repeat-badge">×{n.repeatCount}</span>
+                                )}
+                              </div>
+                              <p>{n.message}</p>
+                              <span className="admin-seen-time">
+                                <Check size={10} /> Seen · {new Date(n.lastRepeatAt || n.createdAt).toLocaleString()}
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
 

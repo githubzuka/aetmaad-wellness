@@ -10,10 +10,18 @@ const notificationService = {
   },
 
   /**
-   * Get admin notifications (including Weekly Shop Feedback notifications)
+   * Get admin notifications (unread items awaiting review)
    */
   async getAdminNotifications() {
     const response = await axiosClient.get('/api/admin/notifications');
+    return response.data;
+  },
+
+  /**
+   * Admin inbox — notifications already seen and actioned
+   */
+  async getAdminInbox() {
+    const response = await axiosClient.get('/api/admin/notifications/inbox');
     return response.data;
   },
 

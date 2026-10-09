@@ -1413,3 +1413,121 @@
   font-weight: 800;
   white-space: nowrap;
 }
+
+/* ============================================================
+   Seen block — items the admin has already viewed
+   ============================================================ */
+.admin-seen-block {
+  border-top: 1px solid #eef0ec;
+  background: #fbfbfa;
+}
+
+.admin-seen-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 14px;
+  border: none;
+  background: transparent;
+  color: #55604f;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.admin-seen-toggle:hover {
+  background: #f4f6f1;
+}
+
+.admin-seen-chevron {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.admin-seen-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 0 12px 12px;
+}
+
+.admin-seen-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 11px;
+  border: 1px solid #eef0ec;
+  background: #ffffff;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  opacity: 0.92;
+}
+
+.admin-seen-row:hover {
+  border-color: #cfe0d2;
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 45, 27, 0.06);
+}
+
+.admin-seen-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  background: #eef2ea;
+  color: #6b7d68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-seen-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-seen-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.admin-seen-top strong {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #3f4a3d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-seen-body p {
+  margin: 4px 0 0;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: #7b857a;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.admin-seen-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: #9ca3af;
+}

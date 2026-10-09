@@ -25,8 +25,8 @@ const CookieBanner = () => {
       zIndex: 10000, flexWrap: 'wrap', gap: '12px', boxShadow: '0 -4px 12px rgba(0,0,0,0.15)'
     }}>
       <p style={{ margin: 0, fontSize: '14px', maxWidth: '800px' }}>
-        We use cookies to improve your experience on Aetmaad Wellness. By continuing, you agree to our 
-        <a href="/privacy-policy" style={{ color: '#34d399', marginLeft: '5px' }}>Privacy Policy</a>.
+        We use cookies to improve your experience on ASHVA Wellness. By continuing, you agree to our
+        <a href="/privacy" style={{ color: '#34d399', marginLeft: '5px' }}>Privacy Policy</a>.
       </p>
       <button 
         onClick={handleAccept} 

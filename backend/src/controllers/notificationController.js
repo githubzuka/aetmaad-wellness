@@ -192,3 +192,36 @@ export const markAllNotificationsAsRead = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * @desc    Admin Inbox — notifications the admin has ALREADY seen.
+ *          Unread items stay in the Notifications list; once marked read they
+ *          move here. Repeated identical events collapse into one row.
+ * @route   GET /api/admin/notifications/inbox
+ * @access  Private (Admin)
+ */
+export const getAdminInbox = async (req, res, next) => {
+  try {
+    const limit = Math.min(Number(req.query.limit) || 100, 300);
+
+    const inbox = await Notification.find({
+      $or: [
+        { user: req.user._id },
+        { user: null },
+        { user: { $exists: false } },
+      ],
+      $and: [{ $or: [{ read: true }, { isRead: true }] }],
+    })
+      .sort({ lastRepeatAt: -1, createdAt: -1 })
+      .limit(limit)
+      .lean();
+
+    res.json({
+      success: true,
+      count: inbox.length,
+      data: inbox,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

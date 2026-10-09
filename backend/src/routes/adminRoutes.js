@@ -6,7 +6,7 @@ import {
   getAdminStats,
 } from '../controllers/adminController.js';
 import { getAllOrders } from '../controllers/orderController.js';
-import { getAdminNotifications, markNotificationAsRead } from '../controllers/notificationController.js';
+import { getAdminNotifications, markNotificationAsRead, getAdminInbox } from '../controllers/notificationController.js';
 import {
   createAdminReply,
   getAdminReplies,
@@ -80,6 +80,8 @@ router.patch('/donations/:id/status', updateDonationStatus);
 
 // Admin Notification Routes
 router.get('/notifications', getAdminNotifications);
+// Seen notifications move out of the notification list into the inbox
+router.get('/notifications/inbox', getAdminInbox);
 router.patch('/notifications/:id/read', markNotificationAsRead);
 router.put('/notifications/:id/read', markNotificationAsRead);
 

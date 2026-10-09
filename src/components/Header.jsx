@@ -85,7 +85,12 @@ const Header = () => {
             <div className="user-profile-dropdown">
               <span className="user-name-tag">
                 <User size={15} />
-                {user?.name?.split(' ')[0]} {user?.role === 'volunteer' && user?.status !== 'approved' ? '(Application Pending)' : `(${user?.role})`}
+                <span className="user-name-text">
+                  {user?.name?.split(' ')[0]}{' '}
+                  {user?.role === 'volunteer' && user?.status !== 'approved'
+                    ? '(Pending)'
+                    : `(${user?.role})`}
+                </span>
               </span>
 
               {user?.role === 'admin' && (
@@ -115,7 +120,7 @@ const Header = () => {
               onClick={() => setIsSignInOpen(true)}
             >
               <LogIn size={15} />
-              Sign In
+              <span>Sign In</span>
             </button>
           )}
 
@@ -132,22 +137,40 @@ const Header = () => {
         <div className="mobile-drawer-menu">
           <NavLink to="/" end onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
           <NavLink to="/products" onClick={closeMobileMenu} className="mobile-link">Products Catalog</NavLink>
-          <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Working Horses Initiative</NavLink>
-          <a href="/#events" onClick={closeMobileMenu} className="mobile-link">Upcoming Events</a>
           <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Our Mission</NavLink>
+          <a href="/#events" onClick={closeMobileMenu} className="mobile-link">Upcoming Events</a>
           <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">
             <Heart size={16} aria-hidden="true" />
             Donate Now
           </NavLink>
           <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">Contact Us</NavLink>
           <NavLink to="/cart" onClick={closeMobileMenu} className="mobile-link">
-            Cart ({totalItemCount} Items)
+            <ShoppingBag size={16} />
+            Cart ({totalItemCount} {totalItemCount === 1 ? 'Item' : 'Items'})
           </NavLink>
 
           {isAuthenticated ? (
-            <button className="mobile-logout-btn" onClick={() => { logout(); closeMobileMenu(); }}>
-              Sign Out ({user?.name})
-            </button>
+            <>
+              {user?.role === 'admin' && (
+                <Link to="/admin/dashboard" onClick={closeMobileMenu} className="mobile-link">Admin Dashboard</Link>
+              )}
+              {user?.role === 'volunteer' && user?.status === 'approved' && (
+                <Link to="/volunteer/dashboard" onClick={closeMobileMenu} className="mobile-link">Volunteer Dashboard</Link>
+              )}
+              {user?.role === 'volunteer' && user?.status !== 'approved' && (
+                <Link to="/volunteer" onClick={closeMobileMenu} className="mobile-link">Approval Status</Link>
+              )}
+              {user?.role === 'customer' && (
+                <>
+                  <Link to="/orders" onClick={closeMobileMenu} className="mobile-link">My Orders</Link>
+                  <Link to="/volunteer" state={{ mode: 'apply' }} onClick={closeMobileMenu} className="mobile-link">Apply as Volunteer</Link>
+                </>
+              )}
+              <button className="mobile-logout-btn" onClick={() => { logout(); closeMobileMenu(); }}>
+                <LogOut size={16} />
+                Sign Out ({user?.name?.split(' ')[0]})
+              </button>
+            </>
           ) : (
             <button
               type="button"
