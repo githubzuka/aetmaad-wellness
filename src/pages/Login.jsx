@@ -224,10 +224,13 @@ const Login = () => {
                   <h4><MessageSquare size={15} /> Need it faster?</h4>
                   <p>Reach the admin team directly and mention your registered email address.</p>
                   <div className="auth-contact-actions">
-                    <a href="mailto:info@ashva.com" className="auth-contact-btn">
+                    <a href="mailto:enquinemix@gmail.com" className="auth-contact-btn">
                       <Mail size={14} /> Email Admin
                     </a>
-                    <a href="tel:+917715079304" className="auth-contact-btn">
+                    <a href="https://wa.me/918422060195" target="_blank" rel="noopener noreferrer" className="auth-contact-btn">
+                      <MessageSquare size={14} /> WhatsApp
+                    </a>
+                    <a href="tel:+918422060195" className="auth-contact-btn">
                       <Phone size={14} /> Call Helpline
                     </a>
                   </div>
@@ -325,10 +328,13 @@ const Login = () => {
               <h4><MessageSquare size={15} /> Contact the Administrator</h4>
               <p>Reach the ASHVA admin team directly to restore access to your account.</p>
               <div className="auth-contact-actions">
-                <a href="mailto:info@ashva.com" className="auth-contact-btn">
+                <a href="mailto:enquinemix@gmail.com" className="auth-contact-btn">
                   <Mail size={14} /> Email Admin
                 </a>
-                <a href="tel:+917715079304" className="auth-contact-btn">
+                <a href="https://wa.me/918422060195" target="_blank" rel="noopener noreferrer" className="auth-contact-btn">
+                  <MessageSquare size={14} /> WhatsApp
+                </a>
+                <a href="tel:+918422060195" className="auth-contact-btn">
                   <Phone size={14} /> Call Helpline
                 </a>
                 <Link to="/contact" className="auth-contact-btn">
