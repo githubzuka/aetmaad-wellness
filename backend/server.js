@@ -79,16 +79,27 @@ const isAllowedOrigin = (origin) => {
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (isAllowedOrigin(origin)) {
-        callback(null, true);
-      } else {
-        // Reject unknown origins rather than silently allowing them
-        callback(new Error(`Origin not allowed by CORS: ${origin}`));
-      }
+      // `false` (not an Error) tells the cors package not to send the
+      // allow-origin header, so the browser blocks the response. Crucially it
+      // keeps the status at 403 instead of turning into a 500 + stack trace.
+      callback(null, isAllowedOrigin(origin));
     },
     credentials: true,
   })
 );
+
+// Give a clean, informative answer when a browser sends a request from an
+// origin we do not allow, rather than letting it bubble up as a server error.
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && !isAllowedOrigin(origin)) {
+    return res.status(403).json({
+      success: false,
+      message: 'Request blocked: this origin is not allowed to access the API.',
+    });
+  }
+  next();
+});
 
 // 3. Body Parsing & Compression Middleware
 // Security headers (nosniff, X-Frame-Options, referrer policy, HSTS, etc.)

@@ -33,6 +33,16 @@ export const errorHandler = (err, req, res, next) => {
     message = Object.values(err.errors).map((val) => val.message).join(', ');
   }
 
+  // Handle oversized / malformed request bodies (express.json limit is 1mb)
+  if (err.type === 'entity.too.large') {
+    statusCode = 413;
+    message = 'Request payload is too large. Please reduce the size and try again.';
+  }
+  if (err.type === 'entity.parse.failed') {
+    statusCode = 400;
+    message = 'Request body could not be parsed as valid JSON.';
+  }
+
   res.status(statusCode).json({
     success: false,
     message,

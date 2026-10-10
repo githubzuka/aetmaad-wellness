@@ -11,7 +11,20 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Environment / secrets — NEVER commit these
+.env
+.env.*
+!.env.example
 backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Test artefacts
+*.png
+backend-test.log
+backend-test.err
+build-check.log
 
 # Editor directories and files
 .vscode/*
