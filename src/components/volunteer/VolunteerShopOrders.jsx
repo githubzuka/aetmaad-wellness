@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ShoppingBag, RefreshCw, AlertCircle, Clock, MapPin, Package } from 'lucide-react';
+import { ShoppingBag, RefreshCw, AlertCircle, Clock, MapPin, Move } from 'lucide-react';
 import orderService from '../../services/orderService';
 import './VolunteerShopOrders.css'; // Standard CSS Import
 
@@ -52,7 +52,7 @@ const VolunteerShopOrders = () => {
       delivered: 'badge-delivered',
       cancelled: 'badge-cancelled'
     };
-    
+
     const badgeClass = classMap[s] || 'badge-pending';
 
     return (
@@ -105,56 +105,11 @@ const VolunteerShopOrders = () => {
         </div>
       ) : (
         <>
-          {/* Mobile Card List (Visible below 768px via CSS) */}
-          <div className="mobile-orders-list">
-            {orders.map((order) => {
-              const shopName = order.shop?.name || 'Assigned Shop';
-              const shopCity = order.shop?.city || '';
-              const orderDate = new Date(order.createdAt).toLocaleString();
-
-              return (
-                <div key={order._id} className="order-card-mobile">
-                  <div className="order-card-header">
-                    <span className="order-id">#{order._id.slice(-6).toUpperCase()}</span>
-                    {getStatusBadge(order.status)}
-                  </div>
-
-                  <div>
-                    <div className="mobile-shop-name">{shopName}</div>
-                    <div className="mobile-shop-meta">
-                      {shopCity && (
-                        <span className="meta-item">
-                          <MapPin size={12} style={{ color: '#f43f5e' }} /> {shopCity}
-                        </span>
-                      )}
-                      <span className="meta-item">
-                        <Clock size={12} /> {orderDate}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="order-items-box">
-                    <div className="items-box-label">
-                      <Package size={12} /> ITEMS
-                    </div>
-                    {order.items?.map((item, idx) => (
-                      <div key={idx} className="item-row">
-                        <span>{item.name || 'ASHVA Equine Mix'}</span>
-                        <span className="item-qty">x {item.quantity}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mobile-card-footer">
-                    <span>Total Amount</span>
-                    <span className="amount-text">₹{order.totalAmount?.toLocaleString()}</span>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="orders-scroll-hint">
+            <Move size={13} /> Swipe sideways to see all columns
           </div>
 
-          {/* Desktop Table View (Visible 768px and above via CSS) */}
+          {/* Tabular view on every screen size — scrolls horizontally on mobile */}
           <div className="desktop-orders-table">
             <table className="orders-table">
               <thead>

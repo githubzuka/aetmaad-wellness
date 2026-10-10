@@ -9,6 +9,7 @@ import AdminDonations from '../components/admin/AdminDonations';
 import AdminContacts from '../components/admin/AdminContacts';
 import AdminSecurity from '../components/admin/AdminSecurity';
 import BackToHome from '../components/common/BackToHome';
+import DashMobileMenu from '../components/common/DashMobileMenu';
 import {
   Users,
   Store,
@@ -23,7 +24,8 @@ import {
   LogOut,
   CalendarDays,
   Inbox,
-  ShieldAlert
+  ShieldAlert,
+  Move
 } from 'lucide-react';
 import './AdminDashboard.css';
 
@@ -44,6 +46,9 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('volunteers'); // 'volunteers' | 'customers' | 'shops' | 'orders' | 'events' | 'donations'
   const [orderFilter, setOrderFilter] = useState('all'); // 'all' | 'bulk' | 'customer'
   const [customerSearch, setCustomerSearch] = useState('');
+
+  // Mobile section drawer
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Primary Data Fetcher
   const fetchData = async () => {
@@ -138,6 +143,26 @@ const AdminDashboard = () => {
     }
   };
 
+  // Mobile section navigator — sections, labels, icons and live counts
+  const DASH_SECTIONS = [
+    { key: 'volunteers', label: 'Volunteer Desk', icon: UserCheck, countKey: 'pending' },
+    { key: 'customers', label: 'Customers', icon: Users, countKey: 'customers' },
+    { key: 'shops', label: 'Shops', icon: Store, countKey: 'shops' },
+    { key: 'orders', label: 'Orders', icon: ShoppingBag, countKey: 'orders' },
+    { key: 'events', label: 'Events Desk', icon: CalendarDays },
+    { key: 'donations', label: 'Donations', icon: DollarSign },
+    { key: 'contacts', label: 'Contact Enquiries', icon: Inbox, countKey: 'contacts', badgeKey: 'contacts' },
+    { key: 'security', label: 'Security Alerts', icon: ShieldAlert },
+  ];
+
+  const counts = {
+    pending: pendingVolunteers.length,
+    customers: customers.length,
+    shops: shops.length,
+    orders: orders.length,
+    contacts: 0,
+  };
+
   return (
     <div className="admin-dashboard-container">
       <BackToHome title="Admin Console" />
@@ -219,7 +244,21 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Mobile section navigator (replaces the tab strip on small screens) */}
+      <DashMobileMenu
+        items={DASH_SECTIONS.map((s) => ({
+          ...s,
+          count: s.countKey ? counts[s.countKey] : undefined,
+          badge: s.badgeKey ? counts[s.badgeKey] > 0 : false,
+        }))}
+        activeKey={activeTab}
+        onSelect={setActiveTab}
+        title="Admin Sections"
+        isOpen={isMenuOpen}
+        onToggle={() => setIsMenuOpen((v) => !v)}
+      />
+
+      {/* Navigation Tabs (desktop) */}
       <nav className="admin-nav-tabs" aria-label="Dashboard views">
         <button
           className={`tab-btn ${activeTab === 'volunteers' ? 'active' : ''}`}
@@ -355,6 +394,10 @@ const AdminDashboard = () => {
               <h2>Active / All Volunteers List ({allVolunteers.length})</h2>
             </div>
 
+            <div className="admin-table-hint">
+              <Move size={13} /> Swipe sideways to see all columns
+            </div>
+
             <div className="admin-table-wrapper">
               <table className="admin-data-table">
                 <thead>
@@ -419,6 +462,10 @@ const AdminDashboard = () => {
               <span className="customers-count-badge">{customers.length} found</span>
             </div>
 
+            <div className="admin-table-hint">
+              <Move size={13} /> Swipe sideways to see all columns
+            </div>
+
             <div className="admin-table-wrapper">
               <table className="admin-data-table">
                 <thead>
@@ -454,7 +501,7 @@ const AdminDashboard = () => {
                         <td data-label="Email Address">{cust.email}</td>
                         <td data-label="Contact Number">{cust.contactNumber || '—'}</td>
                         <td data-label="City / Zone">{cust.city || '—'}</td>
-                        <td data-label="Address">{cust.address || '—'}</td>
+                        <td data-label="Address" className="wrap-cell">{cust.address || '—'}</td>
                         <td data-label="Registered On">
                           {cust.createdAt
                             ? new Date(cust.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
@@ -480,6 +527,10 @@ const AdminDashboard = () => {
             <div className="desk-header">
               <h2>All Registered Shops ({shops.length})</h2>
               <p>Assign community volunteers to shops and track shop activity.</p>
+            </div>
+
+            <div className="admin-table-hint">
+              <Move size={13} /> Swipe sideways to see all columns
             </div>
 
             <div className="admin-table-wrapper">
@@ -511,7 +562,7 @@ const AdminDashboard = () => {
                           <div className="sub-text">{s.contactNumber || s.contact || s.phone || 'N/A'}</div>
                         </td>
                         <td data-label="City / Zone">{s.city || '—'}</td>
-                        <td data-label="Address">{s.address || '—'}</td>
+                        <td data-label="Address" className="wrap-cell">{s.address || '—'}</td>
                         <td data-label="Assigned Volunteer">
                           {s.volunteer ? (
                             <span className="vol-assigned">{s.volunteer.name}</span>
@@ -584,6 +635,10 @@ const AdminDashboard = () => {
                 >
                   Customer Orders ({customerOrdersCount})
                 </button>
+              </div>
+
+              <div className="admin-table-hint">
+                <Move size={13} /> Swipe sideways to see all columns
               </div>
 
               <div className="admin-table-wrapper">

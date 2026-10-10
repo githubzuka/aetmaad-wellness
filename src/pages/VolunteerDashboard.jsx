@@ -9,6 +9,7 @@ import EventProposalForm from '../components/volunteer/EventProposalForm';
 import VolunteerNotifications from '../components/volunteer/VolunteerNotifications';
 import VolunteerAdminMessages from '../components/volunteer/VolunteerAdminMessages';
 import ConfirmDialog from '../components/common/ConfirmDialog';
+import DashMobileMenu from '../components/common/DashMobileMenu';
 import { MapPin, Store, Plus, AlertTriangle, CheckCircle, Clock, LogOut, RefreshCw, X, Package, ShoppingBag, Trash2 } from 'lucide-react';
 import './VolunteerDashboard.css';
 
@@ -47,6 +48,9 @@ const VolunteerDashboard = () => {
   // Delete confirmation dialog state (replaces window.confirm)
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Mobile section drawer
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const volunteerCity = user?.city || 'Mumbai';
 
@@ -306,7 +310,20 @@ const VolunteerDashboard = () => {
         </div>
       </div>
 
-      {/* Main Segmented Tab Navigation Control */}
+      {/* Mobile section navigator (replaces the tab strip on small screens) */}
+      <DashMobileMenu
+        items={[
+          { key: 'shops', label: 'Assigned City Shops', icon: Store, count: shops.length },
+          { key: 'orders', label: 'Shop Orders History', icon: ShoppingBag },
+        ]}
+        activeKey={activeTab}
+        onSelect={setActiveTab}
+        title="Volunteer Sections"
+        isOpen={isMenuOpen}
+        onToggle={() => setIsMenuOpen((v) => !v)}
+      />
+
+      {/* Main Segmented Tab Navigation Control (desktop) */}
       <div className="vol-tab-switch" role="tablist" aria-label="Volunteer dashboard views">
         <button
           type="button"

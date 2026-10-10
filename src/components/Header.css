@@ -358,7 +358,8 @@
     border-radius: 99px;
     border: none;
     background: #1b4d2e;
-    color: #ffffff;
+    color: #ffffff !important;
+    text-decoration: none !important;
     font-family: inherit;
     font-size: 15px;
     font-weight: 800;

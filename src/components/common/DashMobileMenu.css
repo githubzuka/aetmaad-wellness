@@ -1,0 +1,8 @@
+/* ============================================================
+   Dashboard mobile section menu (shared by Admin & Volunteer)
+   The styles live in AdminDashboard.css so they apply to both
+   dashboards without a second import. This file is imported by
+   the component for clarity and future overrides.
+   ============================================================ */
+
+/* All rules are defined in AdminDashboard.css */

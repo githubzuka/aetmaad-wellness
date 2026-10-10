@@ -3,12 +3,10 @@ import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { ShoppingBag, Heart, User, LogOut, Menu, X, LogIn } from 'lucide-react';
-import SignInModal from './SignInModal';
 import './Header.css';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
   const { totalItemCount } = useCart();
@@ -114,14 +112,10 @@ const Header = () => {
               </button>
             </div>
           ) : (
-            <button
-              type="button"
-              className="btn-signin-nav"
-              onClick={() => setIsSignInOpen(true)}
-            >
+            <Link to="/login" className="btn-signin-nav">
               <LogIn size={15} />
               <span>Sign In</span>
-            </button>
+            </Link>
           )}
 
           {/* Mobile Hamburger Toggle */}
@@ -172,20 +166,17 @@ const Header = () => {
               </button>
             </>
           ) : (
-            <button
-              type="button"
-              onClick={() => { setIsSignInOpen(true); closeMobileMenu(); }}
+            <Link
+              to="/login"
+              onClick={closeMobileMenu}
               className="mobile-signin-btn"
             >
               <LogIn size={16} />
               Sign In / Register
-            </button>
+            </Link>
           )}
         </div>
       )}
-
-      {/* Role chooser so customers, volunteers and admins can all sign in */}
-      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
     </header>
   );
 };

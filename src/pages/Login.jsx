@@ -148,11 +148,48 @@ const Login = () => {
 
   return (
     <div className="auth-page-container">
-      <div className="auth-card-wrapper">
-        <button type="button" className="auth-back-link" onClick={handleBack}>
-          <ArrowLeft size={15} />
-          Back
-        </button>
+      {/* ---------- Brand panel (desktop only) ---------- */}
+      <aside className="auth-brand-panel" aria-hidden="true">
+        <div className="auth-brand-panel-inner">
+          <Link to="/" className="auth-panel-logo">
+            <span className="auth-panel-mark">ASHVA</span>
+            <span className="auth-panel-sub">EQUINE WELLNESS</span>
+          </Link>
+
+          <div className="auth-panel-copy">
+            <h1>Welcome back to ASHVA</h1>
+            <p>
+              Natural equine nutrition and community care for working horses.
+              Sign in to manage your orders, shop zone and weekly updates.
+            </p>
+          </div>
+
+          <ul className="auth-panel-points">
+            <li>
+              <span className="auth-panel-dot" />
+              Track your nutrition orders and deliveries
+            </li>
+            <li>
+              <span className="auth-panel-dot" />
+              Manage your city zone shops as a volunteer
+            </li>
+            <li>
+              <span className="auth-panel-dot" />
+              One sign-in for customers, volunteers and admins
+            </li>
+          </ul>
+
+          <div className="auth-panel-glow" />
+        </div>
+      </aside>
+
+      {/* ---------- Form panel ---------- */}
+      <main className="auth-form-panel">
+        <div className="auth-card-wrapper">
+          <button type="button" className="auth-back-link" onClick={handleBack}>
+            <ArrowLeft size={15} />
+            Back
+          </button>
 
         {showForgot ? (
           <>
@@ -246,8 +283,8 @@ const Login = () => {
             <span className="brand-ashva">ASHVA</span>
             <span className="brand-sub">Wellness Portal</span>
           </Link>
-          <h2>Customer Sign In</h2>
-          <p className="auth-subtitle">Sign in to your account to complete checkout and manage orders.</p>
+          <h2>Sign In</h2>
+          <p className="auth-subtitle">Access your ASHVA account — orders, volunteer desk and shop management.</p>
         </div>
 
         {/* Warning: only two attempts left before the password field locks */}
@@ -385,7 +422,8 @@ const Login = () => {
         </div>
           </>
         )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

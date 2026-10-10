@@ -322,26 +322,47 @@
 .badge-cancelled { background-color: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3; }
 .badge-cancelled .badge-dot { background-color: #f43f5e; }
 
-/* Responsive Views (Mobile vs Desktop) */
+/* Responsive Views (Mobile vs Desktop)
+   The table stays TABULAR on mobile — it scrolls horizontally inside its own
+   container so the column structure is preserved and nothing looks scattered. */
 .mobile-orders-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: none;
 }
 
 .desktop-orders-table {
-  display: none;
+  display: block;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
 }
 
-@media (min-width: 768px) {
-  .mobile-orders-list {
-    display: none;
-  }
+@media (max-width: 900px) {
   .desktop-orders-table {
-    display: block;
+    /* Subtle hint that the table scrolls sideways */
+    background-image: linear-gradient(to left, rgba(27, 77, 46, 0.05), transparent 24px);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 24px 100%;
+  }
+
+  .orders-table {
+    min-width: 720px;
+  }
+
+  .orders-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    white-space: nowrap;
+    font-size: 10.5px;
+    padding: 11px 12px;
+  }
+
+  .orders-table td {
+    padding: 12px;
+    font-size: 12.5px;
+    white-space: nowrap;
   }
 }
 
@@ -587,5 +608,22 @@
   .error-alert-box {
     font-size: 12.5px;
     padding: 11px 12px;
+  }
+}
+
+/* Table scroll hint — shown on mobile only */
+.orders-scroll-hint {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .orders-scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #94a3b8;
   }
 }

@@ -807,158 +807,296 @@
 }
 /* ==========================================================================
    RESPONSIVE DATA TABLES
-   On small screens every .admin-data-table row becomes a stacked card so the
-   tables stay readable without horizontal scrolling. Each <td> shows its
-   column name via the data-label attribute set in AdminDashboard.jsx.
+   Tables STAY TABULAR on mobile — they scroll horizontally inside their own
+   container rather than collapsing into stacked cards, so the column structure
+   is preserved and nothing looks disjointed.
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .admin-table-wrapper {
-    border: none;
-    border-radius: 0;
-    overflow-x: visible;
-    background: transparent;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+    border: 1px solid #e8e3d8;
+    background: #ffffff;
+    /* subtle hint that the table scrolls sideways */
+    background-image: linear-gradient(to left, rgba(27, 77, 46, 0.05), transparent 24px);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 24px 100%;
   }
 
-  .admin-data-table,
-  .admin-data-table tbody,
-  .admin-data-table tr,
-  .admin-data-table td {
-    display: block;
+  .admin-data-table {
+    min-width: 720px;
     width: 100%;
   }
 
-  /* Hide the header row — labels come from data-label instead */
-  .admin-data-table thead {
-    display: none;
-  }
-
-  .admin-data-table tbody tr {
-    margin-bottom: 12px;
-    padding: 14px 14px 6px;
-    border: 1px solid #e8e3d8;
-    border-radius: 14px;
-    background: #ffffff;
-    box-shadow: 0 2px 8px rgba(15, 45, 27, 0.04);
-  }
-
-  .admin-data-table tbody tr:last-child {
-    margin-bottom: 0;
+  .admin-data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    white-space: nowrap;
+    font-size: 10.5px;
+    padding: 11px 12px;
   }
 
   .admin-data-table tbody td {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 9px 0;
-    border-bottom: 1px solid #f4f2ed;
-    font-size: 13px;
-    text-align: right;
-    max-width: none !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    white-space: normal !important;
+    padding: 12px;
+    font-size: 12.5px;
+    white-space: nowrap;
+    vertical-align: middle;
   }
 
-  .admin-data-table tbody td:last-child {
-    border-bottom: none;
+  /* Only address / long text cells are allowed to wrap */
+  .admin-data-table tbody td.wrap-cell {
+    white-space: normal;
+    min-width: 180px;
+    max-width: 240px;
   }
 
-  /* Column label, pulled from the data-label attribute */
-  .admin-data-table tbody td::before {
-    content: attr(data-label);
-    flex: 0 0 auto;
-    max-width: 45%;
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #94a3b8;
-    text-align: left;
-    line-height: 1.5;
-  }
-
-  /* Cell content aligns right and wraps */
-  .admin-data-table tbody td > * {
-    min-width: 0;
-    text-align: right;
-  }
-
-  /* Full-width cells (e.g. an empty-state message spanning all columns) */
-  .admin-data-table tbody td[colspan] {
-    display: block;
-    text-align: center;
-    padding: 20px 8px;
-  }
-
-  .admin-data-table tbody td[colspan]::before {
-    display: none;
-  }
-
-  /* Inputs and selects inside tables should fill the row */
   .admin-data-table .assign-select,
   .admin-data-table .status-select {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    font-size: 12.5px;
-  }
-
-  .admin-data-table .placed-by-badge,
-  .admin-data-table .order-type-badge,
-  .admin-data-table .status-pill,
-  .admin-data-table .vol-assigned,
-  .admin-data-table .unassigned {
-    display: inline-flex;
-    align-self: flex-end;
-    white-space: normal;
-    text-align: right;
+    min-width: 150px;
+    font-size: 12px;
   }
 
   .admin-data-table code {
-    word-break: break-all;
-    text-align: right;
-  }
-
-  .admin-data-table .sub-text {
-    display: block;
-    margin-top: 2px;
-    text-align: right;
+    white-space: nowrap;
   }
 }
 
-@media (max-width: 480px) {
-  .admin-data-table tbody td {
+/* ==========================================================================
+   ADMIN / VOLUNTEER MOBILE SECTION MENU
+   A proper navigation drawer so sections are not scattered/confusing.
+   ========================================================================== */
+
+.dash-mobile-bar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .dash-mobile-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border: 1px solid #e8e3d8;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(15, 45, 27, 0.04);
+  }
+
+  .dash-mobile-bar-label {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    min-width: 0;
+  }
+
+  .dash-mobile-bar-label small {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+
+  .dash-mobile-bar-label strong {
+    font-size: 14px;
+    font-weight: 800;
+    color: #0f1712;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dash-mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    padding: 11px 16px;
+    border-radius: 11px;
+    border: 1px solid #1b4d2e;
+    background: #1b4d2e;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    min-height: 44px;
+  }
+
+  .dash-mobile-menu-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* Drawer */
+  .dash-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000000;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    animation: dash-fade 0.18s ease-out;
+  }
+
+  @keyframes dash-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .dash-menu-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000001;
+    background: #ffffff;
+    border-radius: 22px 22px 0 0;
+    padding: 10px 16px calc(18px + env(safe-area-inset-bottom));
+    max-height: 82dvh;
+    overflow-y: auto;
+    box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.22);
+    animation: dash-sheet-up 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes dash-sheet-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .dash-menu-grabber {
+    width: 42px;
+    height: 4px;
+    border-radius: 99px;
+    background: #d7ddd4;
+    margin: 4px auto 14px;
+  }
+
+  .dash-menu-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 4px 12px;
+    border-bottom: 1px solid #f1ede4;
+    margin-bottom: 8px;
+  }
+
+  .dash-menu-title h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f1712;
+  }
+
+  .dash-menu-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    border-radius: 9px;
+    background: #f4f6f1;
+    color: #55604f;
+    cursor: pointer;
+  }
+
+  .dash-menu-list {
+    display: flex;
+    flex-direction: column;
     gap: 4px;
-    text-align: left;
   }
 
-  .admin-data-table tbody td::before {
-    max-width: 100%;
+  .dash-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 12px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #1f2937;
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 700;
     text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    min-height: 50px;
+    transition: background 0.15s ease;
   }
 
-  .admin-data-table tbody td > *,
-  .admin-data-table tbody td {
-    text-align: left;
+  .dash-menu-item:hover,
+  .dash-menu-item:active {
+    background: #f4f8f4;
   }
 
-  .admin-data-table code,
-  .admin-data-table .sub-text {
-    text-align: left;
+  .dash-menu-item.active {
+    background: #f0f7f1;
+    color: #1b4d2e;
+    box-shadow: inset 3px 0 0 #1b4d2e;
   }
 
-  .admin-data-table .placed-by-badge,
-  .admin-data-table .order-type-badge,
-  .admin-data-table .status-pill,
-  .admin-data-table .vol-assigned,
-  .admin-data-table .unassigned {
-    align-self: flex-start;
-    text-align: left;
+  .dash-menu-item-icon {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    background: #f1f5f0;
+    color: #55604f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dash-menu-item.active .dash-menu-item-icon {
+    background: #e2efe5;
+    color: #1b4d2e;
+  }
+
+  .dash-menu-item-count {
+    margin-left: auto;
+    flex: 0 0 auto;
+    min-width: 22px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: #eef2ea;
+    color: #55604f;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .dash-menu-item-count.has-badge {
+    background: #d97706;
+    color: #ffffff;
+  }
+
+  /* Sections that duplicate the drawer are hidden on mobile */
+  .admin-nav-tabs,
+  .vol-tab-switch {
+    display: none;
+  }
+
+  /* Table hint text */
+  .admin-table-hint {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #94a3b8;
+  }
+}
+
+@media (min-width: 901px) {
+  .admin-table-hint {
+    display: none;
   }
 }
 
