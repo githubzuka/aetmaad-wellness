@@ -1,7 +1,7 @@
 /* ============================================================
-   ASHVA — Authentication pages (Login + Signup)
+   ASHVA — Authentication card (Sign In / Create Account / Reset)
    Two-panel layout on desktop, single column on mobile.
-   Refined, premium aesthetic with emerald + gold palette.
+   Premium emerald + gold palette, everything on one alignment grid.
    ============================================================ */
 
 .auth-page-container {
@@ -16,7 +16,7 @@
   min-height: 100dvh;
   width: 100%;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: 1.02fr 1fr;
   background: var(--ashva-cream);
   font-family: var(--font-sans, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
   box-sizing: border-box;
@@ -38,7 +38,6 @@
   padding: 56px 60px;
 }
 
-/* Subtle diagonal texture overlay */
 .auth-brand-panel::before {
   content: '';
   position: absolute;
@@ -68,7 +67,7 @@
 }
 
 .auth-panel-mark {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-serif, Georgia, 'Times New Roman', serif);
   font-size: 30px;
   font-weight: 800;
   letter-spacing: 3px;
@@ -80,16 +79,16 @@
   font-size: 8.5px;
   font-weight: 800;
   letter-spacing: 3px;
-  color: #d4af37;
+  color: var(--ashva-gold);
   margin-top: 6px;
   text-transform: uppercase;
 }
 
 .auth-panel-copy h1 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 40px;
+  font-family: var(--font-serif, Georgia, 'Times New Roman', serif);
+  font-size: 38px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.22;
   margin: 0 0 16px;
   color: #ffffff;
   letter-spacing: -0.5px;
@@ -136,7 +135,7 @@
   flex: 0 0 auto;
   margin-top: 7px;
   border-radius: 50%;
-  background: #d4af37;
+  background: var(--ashva-gold);
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
@@ -175,7 +174,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 32px;
+  padding: 44px 32px;
   background:
     radial-gradient(circle at 82% 12%, rgba(212, 175, 55, 0.12), transparent 34%),
     radial-gradient(circle at 12% 92%, rgba(27, 77, 46, 0.06), transparent 40%),
@@ -186,8 +185,8 @@
   position: relative;
   background: #ffffff;
   border-radius: 22px;
-  padding: 38px 36px 30px;
-  max-width: 460px;
+  padding: 34px 36px 28px;
+  max-width: 480px;
   width: 100%;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.9) inset,
@@ -227,7 +226,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -245,15 +244,10 @@
   gap: 9px;
 }
 
-.auth-admin-link-row {
-  margin-top: 9px;
-  font-size: 12px;
-}
-
 /* ---------- Card header ---------- */
 .auth-card-header {
   text-align: center;
-  margin-bottom: 26px;
+  margin-bottom: 20px;
 }
 
 .auth-brand-logo {
@@ -261,12 +255,12 @@
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .brand-ashva {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 27px;
+  font-family: var(--font-serif, Georgia, 'Times New Roman', serif);
+  font-size: 26px;
   font-weight: 800;
   color: #0b4622;
   letter-spacing: 2px;
@@ -283,42 +277,108 @@
 }
 
 .auth-card-header h2 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 26px;
+  font-family: var(--font-serif, Georgia, 'Times New Roman', serif);
+  font-size: 25px;
   font-weight: 700;
-  color: #142118;
-  margin: 0 0 8px 0;
+  color: var(--ashva-ink);
+  margin: 0 0 7px 0;
   line-height: 1.25;
 }
 
 .auth-subtitle {
-  font-size: 13.5px;
+  font-size: 13px;
   color: #657067;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 360px;
   line-height: 1.55;
 }
 
 /* ============================================================
-   Forms
+   Mode tabs — Sign In / Create Account / Forgot
+   ============================================================ */
+.auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 20px;
+  border-radius: 13px;
+  background: #f1f4ef;
+  border: 1px solid #e4e9e0;
+}
+
+.auth-tab {
+  padding: 10px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #5c6a5f;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-tab:hover {
+  color: #1b4d2e;
+}
+
+.auth-tab.active {
+  background: #ffffff;
+  color: #0b4622;
+  box-shadow: 0 2px 8px rgba(18, 52, 28, 0.12);
+}
+
+.auth-tab:focus-visible {
+  outline: 2px solid #1b4d2e;
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Forms — one shared alignment grid
    ============================================================ */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
+  min-width: 0;
 }
 
-.form-group>label {
-  font-size: 11.5px;
+/* Two fields side by side (Contact Number + City/Zone) */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-group>label,
+.label-row>label {
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #475569;
+  letter-spacing: 0.06em;
+  color: #4a5a4e;
+}
+
+.field-hint {
+  font-size: 11.5px;
+  color: #8b968c;
 }
 
 .input-with-icon {
@@ -343,15 +403,21 @@
 .input-with-icon input {
   width: 100%;
   box-sizing: border-box;
-  padding: 13px 14px 13px 44px;
+  height: 48px;
+  padding: 0 14px 0 44px;
   border: 1.5px solid #d7ddd4;
   border-radius: 12px;
   font-family: inherit;
   font-size: 14.5px;
-  color: #142118;
+  color: var(--ashva-ink);
   background: #fbfcfa;
   outline: none;
-  transition: all 0.18s ease;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+/* Leave room for the show/hide password button */
+.input-with-icon.has-trailing input {
+  padding-right: 46px;
 }
 
 .input-with-icon input::placeholder {
@@ -364,6 +430,34 @@
   box-shadow: 0 0 0 3px rgba(27, 77, 46, 0.12);
 }
 
+/* Show / hide password toggle */
+.input-trailing-btn {
+  position: absolute;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #8b968c;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.input-trailing-btn:hover {
+  background: #eef4ec;
+  color: #1b4d2e;
+}
+
+.input-trailing-btn:focus-visible {
+  outline: 2px solid #1b4d2e;
+  outline-offset: 1px;
+}
+
 .auth-textarea {
   width: 100%;
   box-sizing: border-box;
@@ -372,11 +466,11 @@
   border-radius: 12px;
   font-family: inherit;
   font-size: 14px;
-  color: #142118;
+  color: var(--ashva-ink);
   background: #fbfcfa;
   resize: vertical;
   outline: none;
-  transition: all 0.18s ease;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .auth-textarea:focus {
@@ -462,7 +556,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 13px 15px;
+  padding: 12px 14px;
   border-radius: 12px;
   font-size: 13px;
   font-weight: 600;
@@ -488,18 +582,23 @@
 }
 
 .auth-alert-action {
-  display: inline-block;
+  display: block;
   margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
   font-weight: 800;
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
+  cursor: pointer;
 }
 
 /* ---------- Card footer ---------- */
 .auth-card-footer {
-  margin-top: 22px;
-  padding-top: 18px;
+  margin-top: 20px;
+  padding-top: 16px;
   border-top: 1px solid #f1ede4;
   text-align: center;
   font-size: 13px;
@@ -542,10 +641,6 @@
   color: #b45309;
 }
 
-.auth-forgot-row {
-  margin-top: 8px !important;
-}
-
 .auth-home-row {
   margin-top: 10px !important;
   padding-top: 10px;
@@ -566,7 +661,7 @@
   align-items: flex-start;
   gap: 11px;
   padding: 13px 15px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   border-radius: 12px;
   background: #fffbeb;
   border: 1px solid #fde68a;
@@ -676,7 +771,7 @@
   margin: 0 0 6px;
   font-size: 13px;
   font-weight: 800;
-  color: #142118;
+  color: var(--ashva-ink);
 }
 
 .auth-contact-admin p {
@@ -729,7 +824,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 48px;
+  min-height: 46px;
   padding: 12px 14px;
   border-radius: 12px;
   border: 1.5px solid #d7ddd4;
@@ -789,7 +884,7 @@
   }
 
   .auth-panel-copy h1 {
-    font-size: 31px;
+    font-size: 30px;
   }
 
   .auth-panel-copy p {
@@ -818,7 +913,14 @@
     max-width: 520px;
     margin: 0 auto;
     border-radius: 18px;
-    padding: 30px 26px 26px;
+    padding: 28px 26px 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 }
 
@@ -829,30 +931,46 @@
 
   .auth-card-wrapper {
     border-radius: 16px;
-    padding: 24px 18px 22px;
+    padding: 22px 18px 20px;
     box-shadow: 0 10px 30px rgba(18, 52, 28, 0.09);
   }
 
   .auth-card-header {
-    margin-bottom: 22px;
+    margin-bottom: 18px;
   }
 
   .brand-ashva {
-    font-size: 24px;
+    font-size: 23px;
   }
 
   .auth-card-header h2 {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   .auth-subtitle {
     font-size: 12.5px;
   }
 
+  .auth-tabs {
+    gap: 3px;
+    padding: 3px;
+    margin-bottom: 18px;
+  }
+
+  .auth-tab {
+    padding: 9px 2px;
+    font-size: 11.5px;
+  }
+
   .input-with-icon input {
-    padding: 12px 12px 12px 42px;
-    font-size: 15px;
+    height: 50px;
+    padding: 0 12px 0 42px;
+    font-size: 16px;
     /* prevents iOS zoom on focus */
+  }
+
+  .input-with-icon.has-trailing input {
+    padding-right: 44px;
   }
 
   .auth-submit-btn {
@@ -885,7 +1003,12 @@
 
 @media (max-width: 380px) {
   .auth-card-wrapper {
-    padding: 20px 14px 18px;
+    padding: 18px 14px 16px;
+  }
+
+  .auth-tab {
+    font-size: 10.5px;
+    letter-spacing: 0;
   }
 
   .signup-role-picker {
