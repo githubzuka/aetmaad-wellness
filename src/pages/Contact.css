@@ -27,6 +27,8 @@
 .info-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #ead8a6; border-radius: 50%; background: #fbf7ea; color: #a27b18; }
 .info-card h3 { margin: 0 0 7px; color: #17251a; font-family: var(--font-serif, Georgia, serif); font-size: 18px; font-weight: 700; }
 .info-card p { margin: 3px 0; color: #5d6b60; font-size: 13px; line-height: 1.5; }
+.info-card p a { color: #0b4622; font-weight: 600; text-decoration: none; word-break: break-word; transition: color 0.18s ease; }
+.info-card p a:hover { color: #a27b18; text-decoration: underline; text-underline-offset: 2px; }
 
 .contact-success-state { padding: 40px 20px; text-align: center; }
 .contact-success-state .success-icon { margin-bottom: 16px; color: #28713b; }

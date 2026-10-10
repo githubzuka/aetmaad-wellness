@@ -2,7 +2,26 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BackToHome from '../components/common/BackToHome';
-import { Mail, Phone, MapPin, Send, CheckCircle2, MessageSquare, AlertCircle, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, Loader2, MessageCircle } from 'lucide-react';
+
+// lucide-react in this project does not export an Instagram icon, so use an inline SVG.
+const InstagramIcon = ({ size = 22 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
 import contactService from '../services/contactService';
 import './Contact.css';
 
@@ -162,29 +181,51 @@ const Contact = () => {
 
           {/* Right Column: Contact Info Cards */}
           <div className="contact-info-column">
-            
+
             <div className="info-card">
               <div className="info-icon"><Mail size={22} /></div>
               <div>
                 <h3>Support &amp; Order Inquiries</h3>
-                <p>support@ashvawellness.org</p>
-                <p>orders@ashvawellness.org</p>
+                <p><a href="mailto:enquinemix@gmail.com">enquinemix@gmail.com</a></p>
+                <p>We reply within 24 hours</p>
               </div>
             </div>
 
             <div className="info-card">
               <div className="info-icon"><Phone size={22} /></div>
               <div>
-                <h3>Helpline & Volunteer Desk</h3>
-                <p>+91 84220 60195</p>
+                <h3>Helpline &amp; Volunteer Desk</h3>
+                <p><a href="tel:+918422060195">+91 84220 60195</a></p>
                 <p>Mon - Sat: 9:00 AM - 7:00 PM IST</p>
+              </div>
+            </div>
+
+            <div className="info-card">
+              <div className="info-icon"><MessageCircle size={22} /></div>
+              <div>
+                <h3>WhatsApp</h3>
+                <p><a href="https://wa.me/918422060195" target="_blank" rel="noopener noreferrer">+91 84220 60195</a></p>
+                <p>Quickest way to reach us</p>
+              </div>
+            </div>
+
+            <div className="info-card">
+              <div className="info-icon"><InstagramIcon size={22} /></div>
+              <div>
+                <h3>Instagram</h3>
+                <p>
+                  <a href="https://www.instagram.com/ashva_enquinemix?psln=MWtobDJqZHlnczVhN" target="_blank" rel="noopener noreferrer">
+                    @ashva_enquinemix
+                  </a>
+                </p>
+                <p>Follow our journey</p>
               </div>
             </div>
 
             <div className="info-card">
               <div className="info-icon"><MapPin size={22} /></div>
               <div>
-                <h3>Headquarters & Research Unit</h3>
+                <h3>Headquarters &amp; Research Unit</h3>
                 <p>ASHVA Equine Wellness Initiative</p>
               </div>
             </div>
