@@ -1,21 +1,51 @@
-import React, { useState } from 'react';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { ShoppingBag, Heart, User, LogOut, Menu, X, LogIn } from 'lucide-react';
+import { ShoppingBag, Heart, User, LogOut, Menu, X, LogIn, HelpCircle } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const headerRef = useRef(null);
+  const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   const { totalItemCount } = useCart();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  // Close the drawer whenever the route changes so it never covers the new page.
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // While the drawer is open: close on Escape, on outside click, and lock page scroll.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    const onPointerDown = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('mousedown', onPointerDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('mousedown', onPointerDown);
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
-    <header className="main-header">
+    <header className="main-header" ref={headerRef}>
       <div className="header-container">
 
         {/* Brand Logo */}
@@ -119,8 +149,15 @@ const Header = () => {
           )}
 
           {/* Mobile Hamburger Toggle */}
-          <button className="mobile-toggle-btn" onClick={toggleMobileMenu} aria-label="Toggle Menu">
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <button
+            type="button"
+            className={`mobile-toggle-btn ${isMobileMenuOpen ? 'is-open' : ''}`}
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-drawer"
+          >
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
@@ -128,54 +165,64 @@ const Header = () => {
 
       {/* Mobile Drawer Navigation */}
       {isMobileMenuOpen && (
-        <div className="mobile-drawer-menu">
-          <NavLink to="/" end onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
-          <NavLink to="/products" onClick={closeMobileMenu} className="mobile-link">Products Catalog</NavLink>
-          <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Our Mission</NavLink>
-          <a href="/#events" onClick={closeMobileMenu} className="mobile-link">Upcoming Events</a>
-          <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">
-            <Heart size={16} aria-hidden="true" />
-            Donate Now
-          </NavLink>
-          <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">Contact Us</NavLink>
-          <NavLink to="/cart" onClick={closeMobileMenu} className="mobile-link">
-            <ShoppingBag size={16} />
-            Cart ({totalItemCount} {totalItemCount === 1 ? 'Item' : 'Items'})
-          </NavLink>
+        <nav id="mobile-drawer" className="mobile-drawer-menu" aria-label="Mobile navigation">
+          <div className="mobile-drawer-sheet">
+            <div className="mobile-drawer-links">
+              <NavLink to="/" end onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
+              <NavLink to="/products" onClick={closeMobileMenu} className="mobile-link">Products Catalog</NavLink>
+              <NavLink to="/working-horses" onClick={closeMobileMenu} className="mobile-link">Our Mission</NavLink>
+              <a href="/#events" onClick={closeMobileMenu} className="mobile-link">Upcoming Events</a>
+              <a href="/#faq" onClick={closeMobileMenu} className="mobile-link">
+                <HelpCircle size={16} aria-hidden="true" />
+                FAQs
+              </a>
+              <NavLink to="/donate" onClick={closeMobileMenu} className="mobile-link donate">
+                <Heart size={16} aria-hidden="true" />
+                Donate Now
+              </NavLink>
+              <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">Contact Us</NavLink>
+              <NavLink to="/cart" onClick={closeMobileMenu} className="mobile-link">
+                <ShoppingBag size={16} aria-hidden="true" />
+                Cart ({totalItemCount} {totalItemCount === 1 ? 'Item' : 'Items'})
+              </NavLink>
+            </div>
 
-          {isAuthenticated ? (
-            <>
-              {user?.role === 'admin' && (
-                <Link to="/admin/dashboard" onClick={closeMobileMenu} className="mobile-link">Admin Dashboard</Link>
-              )}
-              {user?.role === 'volunteer' && user?.status === 'approved' && (
-                <Link to="/volunteer/dashboard" onClick={closeMobileMenu} className="mobile-link">Volunteer Dashboard</Link>
-              )}
-              {user?.role === 'volunteer' && user?.status !== 'approved' && (
-                <Link to="/volunteer" onClick={closeMobileMenu} className="mobile-link">Approval Status</Link>
-              )}
-              {user?.role === 'customer' && (
+            <div className="mobile-drawer-footer">
+              {isAuthenticated ? (
                 <>
-                  <Link to="/orders" onClick={closeMobileMenu} className="mobile-link">My Orders</Link>
-                  <Link to="/volunteer" state={{ mode: 'apply' }} onClick={closeMobileMenu} className="mobile-link">Apply as Volunteer</Link>
+                  {user?.role === 'admin' && (
+                    <Link to="/admin/dashboard" onClick={closeMobileMenu} className="mobile-link">Admin Dashboard</Link>
+                  )}
+                  {user?.role === 'volunteer' && user?.status === 'approved' && (
+                    <Link to="/volunteer/dashboard" onClick={closeMobileMenu} className="mobile-link">Volunteer Dashboard</Link>
+                  )}
+                  {user?.role === 'volunteer' && user?.status !== 'approved' && (
+                    <Link to="/volunteer" onClick={closeMobileMenu} className="mobile-link">Approval Status</Link>
+                  )}
+                  {user?.role === 'customer' && (
+                    <>
+                      <Link to="/orders" onClick={closeMobileMenu} className="mobile-link">My Orders</Link>
+                      <Link to="/volunteer" state={{ mode: 'apply' }} onClick={closeMobileMenu} className="mobile-link">Apply as Volunteer</Link>
+                    </>
+                  )}
+                  <button className="mobile-logout-btn" onClick={() => { logout(); closeMobileMenu(); }}>
+                    <LogOut size={16} />
+                    Sign Out ({user?.name?.split(' ')[0]})
+                  </button>
                 </>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={closeMobileMenu}
+                  className="mobile-signin-btn"
+                >
+                  <LogIn size={16} />
+                  Sign In / Register
+                </Link>
               )}
-              <button className="mobile-logout-btn" onClick={() => { logout(); closeMobileMenu(); }}>
-                <LogOut size={16} />
-                Sign Out ({user?.name?.split(' ')[0]})
-              </button>
-            </>
-          ) : (
-            <Link
-              to="/login"
-              onClick={closeMobileMenu}
-              className="mobile-signin-btn"
-            >
-              <LogIn size={16} />
-              Sign In / Register
-            </Link>
-          )}
-        </div>
+            </div>
+          </div>
+        </nav>
       )}
     </header>
   );

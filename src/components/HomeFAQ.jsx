@@ -36,9 +36,12 @@ const FAQ_DATA = [
 ];
 
 const HomeFAQ = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openItem, setOpenItem] = useState('0-0');
 
-  const toggle = (index) => setOpenIndex(openIndex === index ? null : index);
+  const midpoint = Math.ceil(FAQ_DATA.length / 2);
+  const columns = [FAQ_DATA.slice(0, midpoint), FAQ_DATA.slice(midpoint)];
+
+  const toggle = (key) => setOpenItem(openItem === key ? null : key);
 
   return (
     <section id="faq" className="home-faq-section">
@@ -55,32 +58,37 @@ const HomeFAQ = () => {
         </div>
 
         <div className="home-faq-accordion">
-          {FAQ_DATA.map((faq, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div
-                key={idx}
-                className={`home-faq-item ${isOpen ? 'open' : ''}`}
-              >
-                <button
-                  type="button"
-                  className="home-faq-question"
-                  aria-expanded={isOpen}
-                  onClick={() => toggle(idx)}
-                >
-                  <span className="home-faq-q-text">{faq.question}</span>
-                  <span className="home-faq-icon" aria-hidden="true">
-                    {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="home-faq-answer">
-                    <p>{faq.answer}</p>
+          {columns.map((column, colIdx) => (
+            <div className="home-faq-column" key={colIdx}>
+              {column.map((faq, rowIdx) => {
+                const key = `${colIdx}-${rowIdx}`;
+                const isOpen = openItem === key;
+                return (
+                  <div
+                    key={key}
+                    className={`home-faq-item ${isOpen ? 'open' : ''}`}
+                  >
+                    <button
+                      type="button"
+                      className="home-faq-question"
+                      aria-expanded={isOpen}
+                      onClick={() => toggle(key)}
+                    >
+                      <span className="home-faq-q-text">{faq.question}</span>
+                      <span className="home-faq-icon" aria-hidden="true">
+                        {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div className="home-faq-answer">
+                        <p>{faq.answer}</p>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          ))}
         </div>
 
         <div className="home-faq-cta">

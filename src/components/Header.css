@@ -253,23 +253,64 @@
 /* ---------- Mobile toggle ---------- */
 .mobile-toggle-btn {
   display: none;
-  background: none;
-  border: none;
-  color: #1f2937;
+  background: #f4f8f4;
+  border: 1.5px solid #e2e8e0;
+  color: #1b4d2e;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 9px;
+  padding: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
 .mobile-toggle-btn:hover {
-  background: #f4f8f4;
+  background: #e8f2ea;
+  border-color: #c8ddcc;
+}
+
+/* Open state turns into a clearly different "close" control */
+.mobile-toggle-btn.is-open {
+  background: #1b4d2e;
+  border-color: #1b4d2e;
+  color: #ffffff;
+}
+
+.mobile-toggle-btn.is-open:hover {
+  background: #133a22;
 }
 
 /* ---------- Mobile drawer ---------- */
 .mobile-drawer-menu {
   display: none;
+}
+
+.mobile-drawer-sheet {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  padding: 12px 16px 20px;
+  border-bottom: 1px solid #eae5da;
+  box-shadow: 0 16px 32px rgba(15, 45, 27, 0.1);
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: drawer-in 0.22s ease-out;
+}
+
+.mobile-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mobile-drawer-footer {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #f0ece1;
 }
 
 @media (max-width: 1024px) {
@@ -303,15 +344,7 @@
   }
 
   .mobile-drawer-menu {
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    padding: 14px 18px 22px;
-    border-bottom: 1px solid #eae5da;
-    gap: 2px;
-    max-height: calc(100dvh - 64px);
-    overflow-y: auto;
-    animation: drawer-in 0.2s ease-out;
+    display: block;
   }
 
   @keyframes drawer-in {
@@ -323,17 +356,24 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    min-height: 48px;
     font-size: 15px;
     font-weight: 700;
     color: #1f2937 !important;
     text-decoration: none !important;
-    padding: 13px 12px;
+    padding: 12px 12px;
     border-radius: 11px;
-    transition: background 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease;
   }
 
-  .mobile-link:hover {
+  .mobile-link:hover,
+  .mobile-link:active {
     background: #f4f8f4;
+    color: #1b4d2e !important;
+  }
+
+  .mobile-link.active {
+    background: #f0f7f1;
     color: #1b4d2e !important;
   }
 
@@ -353,7 +393,6 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    margin-top: 12px;
     padding: 14px 18px;
     border-radius: 99px;
     border: none;
@@ -373,7 +412,6 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    margin-top: 12px;
     padding: 14px 18px;
     border-radius: 99px;
     border: 1px solid #fca5a5;
@@ -391,7 +429,7 @@
   .header-container {
     padding: 0 14px;
     height: 60px;
-    gap: 10px;
+    gap: 8px;
   }
 
   .logo-title {
@@ -405,20 +443,35 @@
   }
 
   .header-right-actions {
-    gap: 7px;
+    gap: 6px;
   }
 
   .cart-capsule-btn {
-    padding: 9px 11px;
+    padding: 0;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
   }
 
   .cart-text {
     display: none;
   }
 
+  /* Keep the badge overlapping the icon instead of widening the pill */
+  .cart-count-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    padding: 1px 5px;
+    font-size: 10px;
+    border: 2px solid #ffffff;
+  }
+
   .btn-signin-nav {
-    padding: 9px 14px;
-    font-size: 12.5px;
+    padding: 0;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
   }
 
   .btn-signin-nav span {
@@ -428,7 +481,7 @@
   .user-profile-dropdown {
     padding: 5px 8px;
     gap: 6px;
-    max-width: 190px;
+    max-width: 168px;
   }
 
   .user-name-tag {
@@ -436,24 +489,53 @@
   }
 
   .user-name-text {
-    max-width: 78px;
+    max-width: 72px;
   }
 
   .dash-link {
     display: none;
   }
+
+  .mobile-toggle-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mobile-drawer-sheet {
+    padding: 10px 12px 18px;
+  }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 380px) {
   .logo-subtitle {
     display: none;
   }
 
   .user-profile-dropdown {
-    max-width: 150px;
+    max-width: 140px;
   }
 
   .user-name-text {
-    max-width: 56px;
+    max-width: 52px;
+  }
+
+  .header-container {
+    padding: 0 12px;
+    gap: 6px;
+  }
+
+  .header-right-actions {
+    gap: 5px;
+  }
+
+  .cart-capsule-btn,
+  .btn-signin-nav {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobile-toggle-btn {
+    width: 38px;
+    height: 38px;
   }
 }
